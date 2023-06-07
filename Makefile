@@ -12,7 +12,9 @@ MLX_DIR		:= ./minilibx-linux
 
 # SOURCE FILES
 SRCS		:=  main.c \
-			exit_game/exit_game_request.c
+			exit_game/exit_game_request.c \
+			move/straight.c move/turn.c \
+			draw_utils/draw_img.c draw_utils/draw_pixel.c
 
 OBJS		= ${SRCS:%.c=${OBJSDIR}/%.o}
 
@@ -36,6 +38,8 @@ ${NAME}:	${OBJS} ${LIBFT} mlx
 ${OBJS}:	${OBJSDIR}/%.o: ${SRCDIR}/%.c
 			@mkdir -p ${OBJSDIR}
 			@mkdir -p ${OBJSDIR}/exit_game
+			@mkdir -p ${OBJSDIR}/move
+			@mkdir -p ${OBJSDIR}/draw_utils
 			${CC} -I. -O3 ${FLAGS} -c $< -o $@
 
 ${LIBFT}:
