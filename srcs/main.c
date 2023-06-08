@@ -1,99 +1,135 @@
 #include "../includes/cub3d.h"
 
-void	draw_minimap_walls(t_root *root, int map[6][8])
+#define P2 PI/2
+#define P3 3*PI/2
+#define DR 0.0174533 // one degree in radians
+
+void	draw_line(t_root *root, t_coord begin, t_coord end, int color, void *win)
 {
-	
-	t_sprite wall;
-	(void)map;
-	wall.img = mlx_xpm_file_to_image(root->mlx, "./assets/greystone.xpm", &wall.w, &wall.h);
-	wall.addr = mlx_get_data_addr(wall.img, &wall.bits_per_pixel, &wall.line_length,
-								&wall.endian);
-	
-	put_img_to_img(&root->mini_background, wall, 0, 0);
-	mlx_put_image_to_window(root->mlx, root->win, root->mini_background.img, 0, 0);
+	t_sprite	temp;
+	t_coord	new_begin;
+	int		pixel;
+	double deltaX;
+	double deltaY;
 
-/* 	int i, j, x, y;
-	i = j = x = y = 0;
-
-	t_sprite	wall;
-	t_sprite	back;
-
-	wall.img = mlx_new_image(root->mlx, 200, 100);
-	wall.addr = mlx_get_data_addr(wall.img, &wall.bits_per_pixel, &wall.line_length,
-								&wall.endian);
-	back.img = mlx_new_image(root->mlx, 200, 100);
-	back.addr = mlx_get_data_addr(back.img, &back.bits_per_pixel, &back.line_length,
-								&back.endian);
-	while(i < 6)
+	if (begin.x == end.x && begin.y == end.y)
+		return ;
+	new_begin = begin;
+	if (end.x < begin.x)
 	{
-		while (j < 8)
-		{
-			x = 0;
-			y = 0;
-			if (map[i][j] == 1)
-			{
-				while(y < 20)
-				{
-					while (x < 20)
-					{
-						my_mlx_pixel_put(&wall, x, y, 0x000000FF);
-						x++;
-					}
-					x = 0;
-					y++;
-				}
-				mlx_put_image_to_window(root->mlx, root->win, wall.img, j * 20, i * 20);
-			}
-			else
-			{
-				while(y < 20)
-				{
-					while (x < 20)
-					{
-						my_mlx_pixel_put(&back, x, y, 0x00808080);
-						x++;
-					}
-					x = 0;
-					y++;
-				}
-				mlx_put_image_to_window(root->mlx, root->win, back.img, j * 20, i * 20);
-			}
-			j++;
-		}
-		j = 0;
-		i++;
-	} */
+		new_begin = end;
+		end = begin;
+	}
+	printf("begin: %d - %d | end: %d - %d\n", new_begin.x, new_begin.y, end.x, end.y);
+	deltaX = end.x - new_begin.x;
+	deltaY = end.y - new_begin.y;
+	temp.img = mlx_new_image(root->mlx, 800, 600);
+	temp.addr = mlx_get_data_addr(temp.img, &temp.bits_per_pixel, &temp.line_length,
+								&temp.endian);
+	pixel = sqrt((deltaX * deltaX) + (deltaY * deltaY));
+	deltaX /= pixel;
+	deltaY /= pixel;
+
+	double pixelX = new_begin.x;
+	double pixelY = new_begin.y;
+	while (pixel)
+	{
+		my_mlx_pixel_put(&temp, pixelX, pixelY, color);
+		pixelX += deltaX;
+		pixelY += deltaY;
+		--pixel;
+	}
+	//draw_2dmap(root, root->map);
+	put_draw_to_img(&root->background, temp, 0,0);
+	mlx_destroy_image(root->mlx, temp.img);
+	mlx_put_image_to_window(root->mlx, win, root->background.img, 0, 0);
 }
 
-void	draw_mini_player(t_root *root)
+float	dist(float ax, float ay, float bx, float by, float ang)
 {
-	int	i = 0;
-	int	j = 0;
+	(void)ang;
+	return (sqrt((bx-ax) * (bx - ax) + (by-ay) * (by-ay)));
+}
 
-	while(i < 5)
+
+void	draw_ray(t_root *root)
+{
+	int r, mx, my, dof, hx, hy, vx, vy, finalD;
+	float aTan, nTan, rx, ry, ra, xo, yo;
+
+	xo = 0;
+	yo = 0;
+	ry = 0;
+	rx = 0;
+	vy = 0;
+	vx = 0;
+	hx = 0;
+	hy = 0;
+	finalD = 0;
+	ra = root->player.angle - DR * 30;
+	if (ra<0)
+		ra+=2*PI;
+	if (ra > 2*PI)
+		ra-=2*PI;
+	float disH, disV;
+	for (r = 0; r<60; r++)
 	{
-		while (j < 5)
+		/* HORIZONTAL CHECKER */
+		dof = 0;
+		disH=100000; hx = root->player.x_pos; hy = root->player.y_pos;
+		aTan=-1/tan(ra);
+		if (ra>PI) { ry=(((int)root->player.y_pos>>6)<<6)-0.0001; rx = (root->player.y_pos-ry)*aTan+root->player.x_pos; yo=-64; xo=-yo*aTan;}
+		if (ra<PI) { ry=(((int)root->player.y_pos>>6)<<6)+64; rx = (root->player.y_pos-ry)*aTan+root->player.x_pos; yo=64; xo=-yo*aTan;}
+		if (ra == 0 || ra == PI) {rx=root->player.x_pos; ry=root->player.y_pos; dof=5;}
+		while(dof<5)
 		{
-			my_mlx_pixel_put(&root->angle, j, i, 0x00FF0000);
-			j++;
+			mx=(int)(rx)>>6;
+			my=(int)(ry)>>6;
+			printf("ra = %f - my = %d - mx = %d\n", ra, my, mx);
+			if((mx >= 0 && my >= 0) && (mx < 5 && my < 5) && root->map[my][mx] == '1')
+			{
+				hx = rx; hy = ry; disH = dist(root->player.x_pos,root->player.y_pos,hx, hy, ra);
+				dof = 5;
+
+			}//hit wall
+			else {rx+=xo; ry+=yo; dof += 1;}
 		}
-		j = 0;
-		i++;
-	}
-	i = 0;
-	j = 0;
-	while(i < 10)
-	{
-		while (j < 10)
+
+		/* VERTICAL CHECKER */
+		dof = 0;
+		disV=100000; vx = root->player.x_pos; vy = root->player.y_pos;
+		nTan=-tan(ra);
+		if (ra > P2 && ra < P3) { rx=(((int)root->player.x_pos>>6)<<6)-0.0001; ry = (root->player.x_pos-rx)*nTan+root->player.y_pos; xo=-64; yo=-xo*nTan;}
+		if (ra < P2 || ra > P3) { rx=(((int)root->player.x_pos>>6)<<6)+64; ry = (root->player.x_pos-rx)*nTan+root->player.y_pos; xo=64; yo=-xo*nTan;}
+		if (ra==0 || ra == PI) {rx=root->player.x_pos; ry=root->player.y_pos; dof=5;}
+		while(dof<5)
 		{
-			my_mlx_pixel_put(&root->player, j, i, 0x0000FF00);
-			j++;
+			mx=rx/64;
+			my=ry/64;
+			printf("ra = %f - my = %d - mx = %d\n", ra, my, mx);
+			if((mx >= 0 && my >= 0) && (mx < 5 && my < 5) && root->map[my][mx] == '1')
+			{
+				vx = rx; vy = ry; disV = dist(root->player.x_pos,root->player.y_pos,vx, vy, ra);
+				dof = 5;
+			}
+			else {rx+=xo; ry+=yo; dof += 1;}
 		}
-		j = 0;
-		i++;
+		if (disV<disH) {rx=vx; ry=vy; finalD=disV;}
+		if (disH<disV) {rx=hx; ry=hy; finalD=disH;}
+		//draw_line(root, (t_coord){root->player.x_pos, root->player.y_pos}, (t_coord){rx, ry}, 0x00FF0000);
+		float lineH=(64*320)/finalD; if (lineH>320) {lineH=320;}
+		//float lineO=160-lineH/2;
+		draw_line(root, (t_coord){r*5+200,0}, (t_coord){r*5+200,lineH}, 0x00FF0000, root->win);
+		/* Draw 3d*/
+
+		ra+=DR;
+		if (ra<0)
+			ra+=2*PI;
+		if (ra > 2*PI)
+			ra-=2*PI;
 	}
-	mlx_put_image_to_window(root->mlx, root->win, root->angle.img, root->player.x_pos + 2 + (root->player.delta_x * 2), root->player.y_pos + 2 + (root->player.delta_y * 2));
-	mlx_put_image_to_window(root->mlx, root->win, root->player.img, root->player.x_pos, root->player.y_pos);
+	mlx_destroy_image(root->mlx, root->background.img);
+	root->background.img = mlx_new_image(root->mlx, 800, 600);
 }
 
 int	input(int keycode, t_root *root)
@@ -112,7 +148,14 @@ int	input(int keycode, t_root *root)
 		if (keycode == RIGHT)
 			turn_right(root);
 	}
-	draw_player(root);
+	return (0);
+}
+
+int	game_loop(t_root *root)
+{
+	draw_mini_player(root);
+	draw_ray(root);
+	mlx_do_sync(root->mlx);
 	return (0);
 }
 
@@ -120,42 +163,42 @@ int	main()
 {
 	t_root	root;
 
- 	int	map1[6][8] = {
-		{1,1,1,1,1,1,1,1},
-		{1,0,0,1,0,0,0,1},
-		{1,0,0,1,0,0,0,1},
-		{1,0,0,0,0,1,0,1},
-		{1,0,0,0,0,0,0,1},
-		{1,1,1,1,1,1,1,1}
-	};
+	root.map = ft_calloc(sizeof(char *), 6);
+	for (int i = 0; i < 5; i++)
+		root.map[i] = ft_calloc(sizeof(char), 6);
+	root.map[0] = ft_strdup("11111");
+	root.map[1] = ft_strdup("10101");
+	root.map[2] = ft_strdup("10101");
+	root.map[3] = ft_strdup("10001");
+	root.map[4] = ft_strdup("11111");
 
-	root.map = map1;
-
-	root.player.y_pos = 0;
-	root.player.x_pos = 0;
+	root.player.y_pos = 64;
+	root.player.x_pos = 64;
 	root.player.delta_x = 0;
 	root.player.delta_y = 0;
 	root.player.angle = 0;
 
 	root.mlx = mlx_init();
 	root.win = mlx_new_window(root.mlx, 800, 600, "Cub3d");
+	root.win2 = mlx_new_window(root.mlx, 800, 600, "2dmap");
 
 	root.mini_background.img = mlx_new_image(root.mlx, 800, 600);
 	root.mini_background.addr = mlx_get_data_addr(root.mini_background.img, &root.mini_background.bits_per_pixel, &root.mini_background.line_length,
 								&root.mini_background.endian);
-	mlx_put_image_to_window(root.mlx, root.win, root.mini_background.img, 0, 0);
+	
+	root.background.img = mlx_new_image(root.mlx, 800, 600);
+	root.background.addr = mlx_get_data_addr(root.background.img, &root.background.bits_per_pixel, &root.background.line_length,
+								&root.background.endian);
+	mlx_put_image_to_window(root.mlx, root.win2, root.mini_background.img, 0, 0);
 
 	root.player.img = mlx_new_image(root.mlx, 10, 10);
 	root.player.addr = mlx_get_data_addr(root.player.img, &root.player.bits_per_pixel, &root.player.line_length,
 								&root.player.endian);
 
-	root.angle.img = mlx_new_image(root.mlx, 5, 5);
-	root.angle.addr = mlx_get_data_addr(root.angle.img, &root.angle.bits_per_pixel, &root.angle.line_length,
-								&root.angle.endian);
+	draw_2dmap(&root, root.map);
 	
-	draw_minimap_walls(&root, map);
 	mlx_hook(root.win, 02, 0, input, &root);
-	//mlx_key_hook(root.win, input, &root);
+	mlx_loop_hook(root.mlx, game_loop, &root);
 	mlx_hook(root.win, 17, 1L<<0, exit_game_request, &root);
 	mlx_loop(root.mlx);
 	return (0);

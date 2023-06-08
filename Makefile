@@ -14,7 +14,9 @@ MLX_DIR		:= ./minilibx-linux
 SRCS		:=  main.c \
 			exit_game/exit_game_request.c \
 			move/straight.c move/turn.c \
-			draw_utils/draw_img.c draw_utils/draw_pixel.c
+			draw_utils/draw_img.c draw_utils/draw_pixel.c \
+			mini_map/draw_minimap.c mini_map/draw_miniplayer.c \
+			2dmap/draw_2d_map.c
 
 OBJS		= ${SRCS:%.c=${OBJSDIR}/%.o}
 
@@ -32,7 +34,7 @@ all: ${NAME}
 # EXECUTION
 ${NAME}:	${OBJS} ${LIBFT} mlx
 			@echo "${GREEN}Compilation ${CLR_RMV}of ${YELLOW}${NAME} ${CLR_RMV}..."
-			${CC} ${OBJS} -L${MLX_DIR} ${MLXFLAGS} ${FLAGS} -o ${NAME}
+			${CC} ${OBJS} -L${MLX_DIR} ${LIBFT} ${MLXFLAGS} ${FLAGS} -o ${NAME}
 			@echo "${GREEN}${NAME} created[0m 🎮 ✔️"
 
 ${OBJS}:	${OBJSDIR}/%.o: ${SRCDIR}/%.c
@@ -40,6 +42,8 @@ ${OBJS}:	${OBJSDIR}/%.o: ${SRCDIR}/%.c
 			@mkdir -p ${OBJSDIR}/exit_game
 			@mkdir -p ${OBJSDIR}/move
 			@mkdir -p ${OBJSDIR}/draw_utils
+			@mkdir -p ${OBJSDIR}/mini_map
+			@mkdir -p ${OBJSDIR}/2dmap
 			${CC} -I. -O3 ${FLAGS} -c $< -o $@
 
 ${LIBFT}:

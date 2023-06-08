@@ -1,24 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_game_request.c                                :+:      :+:    :+:   */
+/*   draw_miniplayer.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/05 10:39:42 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/06/08 10:23:06 by hmaciel-         ###   ########.fr       */
+/*   Created: 2023/06/08 09:33:21 by hmaciel-          #+#    #+#             */
+/*   Updated: 2023/06/08 18:54:30 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-int	exit_game_request(t_root *root)
+void	draw_mini_player(t_root *root)
 {
-	mlx_clear_window(root->mlx, root->win);
-	mlx_destroy_window(root->mlx, root->win);
-	mlx_destroy_display(root->mlx);
-	free(root->mlx);
-	printf("Good bye and thanks for playing!!\n");
-	exit (0);
-	return (1);
+	int	line;
+	int	col;
+
+	line = -1;
+	col = -1;
+	while (++line < 10)
+	{
+		while (++col < 10)
+			my_mlx_pixel_put(&root->player, col, line, 0x0000FF00);
+		col = -1;
+	}
+	mlx_put_image_to_window(root->mlx, root->win2, root->player.img, \
+		root->player.x_pos, root->player.y_pos);
 }
