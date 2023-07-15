@@ -6,13 +6,13 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:05:24 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/06/08 15:25:07 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/15 15:53:58 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-unsigned int	get_pixel_img(t_sprite img, int x, int y)
+int	get_pixel_img(t_sprite img, int x, int y)
 {
 	return (*(unsigned int *)((img.addr
 			+ (y * img.line_length) + (x * img.bits_per_pixel / 8))));

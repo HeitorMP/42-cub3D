@@ -5,12 +5,34 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 202'3'/07/14 10:51:41 by hmaciel-          #+#    #+#             */
-/*   Updated: 202'3'/07/14 11:5'3':51 by hmaciel-         ###   ########.fr       */
+/*   Created: 2023/07/14 18:54:42 by hmaciel-          #+#    #+#             */
+/*   Updated: 2023/07/15 16:03:58 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
+
 #include "includes/cub3d.h"
+
+void	draw_back(t_root *root)
+{
+	int y = 0;
+	int x = 0;
+	while (y < 600)
+	{
+		while (x < 800)
+		{
+			if (y < 300)
+				my_mlx_pixel_put(&root->background, x, y, 0x000000FF);
+			else
+				my_mlx_pixel_put(&root->background, x, y, 0x00808080);
+			x++;
+		}
+		x = 0;
+		y++;
+	}
+
+}
 
 void	draw_line(t_root *root, int begin, int end, int color, int col)
 {
@@ -40,6 +62,7 @@ int	game_loop(t_root *game)
 {
 	int w = 800;
 	game->time = clock();
+	draw_back(game);
 	for(int x = 0; x < w; x++)
 	{
 		//calculate ray position and direction
@@ -132,32 +155,29 @@ int	game_loop(t_root *game)
 		int	color = 0;
 
 		if (game->map[mapX][mapY] == '1')
-			color = 0x000000FF;
+			color = 0x00F80000;
 		if (side == 1) {color = color / 2;}
 		draw_line(game, drawStart, drawEnd, color, x);
 	}
-	mlx_put_image_to_window(game->mlx, game->win, game->background.img, 0, 0);
 	game->old_time = clock();
+	put_img_to_img(&game->background, game->player, 380,480);
+	mlx_put_image_to_window(game->mlx, game->win, game->background.img, 0, 0);
 	game->frameTime = (float)(game->old_time - game->time) / CLOCKS_PER_SEC;
-	//ft_printf("%f\n", game->frameTime);
+	float fps = CLOCKS_PER_SEC / (game->old_time - game->time);
+	printf("%f\n", fps);
 	return (0);
 }
 
 int	input(int keycode, t_root *root)
 {
-	double moveSpeed = root->frameTime * 10.0f; //the constant value is in squares/second
-	double rotSpeed = root->frameTime * 5.0f; //the constant value is in radians/second
+	double moveSpeed = root->frameTime * 15.0f; //the constant value is in squares/second
+	double rotSpeed = root->frameTime * 13.0f; //the constant value is in radians/second
 	(void)rotSpeed;
 	if (keycode == ESC)
 		exit_game_request(root);
 	else if (keycode == UP || keycode == DOWN || \
 			keycode == LEFT || keycode == RIGHT)
 	{
-		ft_printf("%d - %d\n", root->player.y_pos, root->player.x_pos);
-		mlx_clear_window(root->mlx, root->win);
-		mlx_destroy_image(root->mlx, root->background.img);
-		root->background.img = mlx_new_image(root->mlx, 800, 600);
-	
 		if (keycode == UP) {
 			if(root->map[(int)(root->player.x_pos + root->player.dir_x * moveSpeed)][(int)root->player.y_pos] == '0')
 				root->player.x_pos += root->player.dir_x * moveSpeed;
@@ -194,6 +214,10 @@ int	input(int keycode, t_root *root)
 			root->player.plane_x = root->player.plane_x * cos(rotSpeed) - root->player.plane_y * sin(rotSpeed);
 			root->player.plane_y = oldPlaneX * sin(rotSpeed) + root->player.plane_y * cos(rotSpeed);
 		}
+		mlx_destroy_image(root->mlx, root->background.img);
+		//mlx_destroy_image(root->mlx, root->player.img);
+		root->background.img = mlx_new_image(root->mlx, 800, 600);
+		//root->player.img = mlx_xpm_file_to_image(&root->player, "./assets/gun.xpm", &root->player.w, &root->player.h);
 			//turn_right(root);
 	}
 	return (0);
@@ -210,10 +234,10 @@ int main(int argc, char const *argv[])
 	game.map = malloc(sizeof(char *) * 10);
 	
 	game.map[0] = ft_strdup("1111111111");
-	game.map[1] = ft_strdup("1000000001");
-	game.map[2] = ft_strdup("1001000001");
-	game.map[3] = ft_strdup("1010000001");
-	game.map[4] = ft_strdup("1100001111");
+	game.map[1] = ft_strdup("1000010101");
+	game.map[2] = ft_strdup("1001010101");
+	game.map[3] = ft_strdup("1010010101");
+	game.map[4] = ft_strdup("1100000111");
 	game.map[5] = ft_strdup("1000001001");
 	game.map[6] = ft_strdup("1001101001");
 	game.map[7] = ft_strdup("1000001001");
@@ -237,7 +261,10 @@ int main(int argc, char const *argv[])
 	game.background.img = mlx_new_image(game.mlx, 800, 600);
 	game.background.addr = mlx_get_data_addr(game.background.img, &game.background.bits_per_pixel, &game.background.line_length,
 								&game.background.endian);
-	game.win = mlx_new_window(game.mlx, 800, 600, "cub3d");
+	//game.player.img = mlx_new_image(game.mlx, 128, 128);
+	game.player.img = mlx_xpm_file_to_image(game.mlx, "./assets/gun.xpm", &game.player.w, &game.player.h);
+	game.player.addr = mlx_get_data_addr(game.player.img, &game.player.bits_per_pixel, &game.player.line_length, &game.player.endian);
+	game.win = mlx_new_window(game.mlx, 800, 600, "cub3d");		
 	mlx_hook(game.win, 17, 1L<<0, exit_game_request, &game);
 	mlx_hook(game.win, 02, 0, input, &game);
 	mlx_loop_hook(game.mlx, game_loop, &game);

@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 09:38:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/14 18:18:45 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/15 15:53:59 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define NONE 0
 
 # define PI 3.1415926535
+# define TRANSPARENCY 0x00980088
 
 typedef struct s_coord
 {
@@ -67,6 +68,7 @@ typedef struct s_root {
 	void		*win2;
 	t_sprite	player;
 	t_sprite	mini_background;
+	t_sprite	wall;
 	t_sprite	background;
 	char		**map;
 	int			map_cols;
@@ -93,6 +95,7 @@ void	my_mlx_pixel_put(t_sprite *data, int x, int y, int color);
 void	my_mlx_pixel_put_xpm(t_sprite *data, int x, int y, int color, int transparency);
 void	put_img_to_img(t_sprite *dst, t_sprite src, int x, int y);
 void	put_draw_to_img(t_sprite *dst, t_sprite src, int x, int y);
+int		get_pixel_img(t_sprite img, int x, int y);
 
 /* MINIMAP */
 void	draw_minimap(t_root *root, char **map);
