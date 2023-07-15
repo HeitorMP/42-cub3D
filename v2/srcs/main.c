@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:54:42 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/15 16:03:58 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/15 16:46:54 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,12 +152,46 @@ int	game_loop(t_root *game)
 		if(drawEnd >= 600)
 			drawEnd = 600 - 1;
 
-		int	color = 0;
+
+		//******************** DESENHA APENAS NAS PAREDES *****************************8
+
+		//calculate value of wallX
+		//int texNum = game->map[mapX][mapY] - 1;
+		double wallX; //where exactly the wall was hit
+		if (side == 0)
+			wallX = game->player.y_pos + perpWallDist * rayDirY;
+		else
+			wallX = game->player.x_pos + perpWallDist * rayDirX;
+		wallX -= floor((wallX));
+	
+		//x coordinate on the texture
+		int texX = (int)(wallX * (double)(64));
+		if(side == 0 && rayDirX > 0) texX = 64 - texX - 1;
+		if(side == 1 && rayDirY < 0) texX = 64 - texX - 1;
+
+		
+		
+		// How much to increase the texture coordinate per screen pixel
+		double step = 1.0 * 64 / lineHeight;
+		// Starting texture coordinate
+		double texPos = (drawStart - 600 / 2 + lineHeight / 2) * step;
+		for(int y = drawStart; y<drawEnd; y++)
+		{
+			// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
+			int texY = (int)texPos & (64 - 1);
+			texPos += step;
+			unsigned int color = get_pixel_img(game->wall, texX, texY);//texture[texNum][64 * texY + texX];
+			//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
+			//if(side == 1) color = (color >> 1) & 8355711;
+			my_mlx_pixel_put(&game->background, x, y, color);
+		}
+
+		/* int	color = 0;
 
 		if (game->map[mapX][mapY] == '1')
 			color = 0x00F80000;
 		if (side == 1) {color = color / 2;}
-		draw_line(game, drawStart, drawEnd, color, x);
+		draw_line(game, drawStart, drawEnd, color, x); */
 	}
 	game->old_time = clock();
 	put_img_to_img(&game->background, game->player, 380,480);
@@ -264,6 +298,10 @@ int main(int argc, char const *argv[])
 	//game.player.img = mlx_new_image(game.mlx, 128, 128);
 	game.player.img = mlx_xpm_file_to_image(game.mlx, "./assets/gun.xpm", &game.player.w, &game.player.h);
 	game.player.addr = mlx_get_data_addr(game.player.img, &game.player.bits_per_pixel, &game.player.line_length, &game.player.endian);
+	
+	game.wall.img = mlx_xpm_file_to_image(game.mlx, "./assets/greystone.xpm", &game.wall.w, &game.wall.h);
+	game.wall.addr = mlx_get_data_addr(game.wall.img, &game.wall.bits_per_pixel, &game.wall.line_length, &game.wall.endian);
+	
 	game.win = mlx_new_window(game.mlx, 800, 600, "cub3d");		
 	mlx_hook(game.win, 17, 1L<<0, exit_game_request, &game);
 	mlx_hook(game.win, 02, 0, input, &game);

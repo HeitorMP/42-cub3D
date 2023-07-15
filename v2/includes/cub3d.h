@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 09:38:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/15 15:53:59 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/15 16:20:37 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef struct s_root {
 	float		frameTime;
 	float		moveSpeed;
 	float		rotSpeed;
+	unsigned int buffer[600][800];
 }				t_root;
 
 // PROTOTYPE
