@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:54:42 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/16 11:34:13 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/16 16:00:16 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,220 +60,163 @@ int	exit_game_request(t_root *game)
 
 int	game_loop(t_root *game)
 {
-	int w = 800;
-	//game->time = clock();
-	draw_back(game);
-	for(int x = 0; x < w; x++)
+	int w = 800; // in the future will be the size of window
+	draw_back(game); // draw ceiling and floor
+	for(int x = 0; x < w; x++) // x = size of columns in windows
 	{
 		//calculate ray position and direction
 		float cameraX = 2 * x / (float)(w) - 1; //x-coordinate in camera space // -1 to correct view
-		float rayDirX = game->player.dir_x + game->player.plane_x * cameraX;
-		float rayDirY = game->player.dir_y + game->player.plane_y * cameraX;
+		game->ray.rayDirX = game->player.dir_x + game->player.plane_x * cameraX;
+		game->ray.rayDirY = game->player.dir_y + game->player.plane_y * cameraX;
 
 		//which box of the map we're in
 		int mapX = (int)(game->player.x_pos);
 		int mapY = (int)(game->player.y_pos);
 
 		//length of ray from current position to next x or y-side
-		float sideDistX;
-		float sideDistY;
+	/* 	float sideDistX;
+		float sideDistY; */
 
 		//length of ray from one x or y-side to next x or y-side
-		float deltaDistX;
-		if (rayDirX == 0)
+		//float deltaDistX;
+		if (game->ray.rayDirX == 0)
 		{
-			deltaDistX = 1e30;
+			game->ray.deltaDistX = 1e30;
 		}
 		else
 		{
-			deltaDistX = fabs(1 / rayDirX);
+			game->ray.deltaDistX = fabs(1 / game->ray.rayDirX);
 		}
-		float deltaDistY = (rayDirY == 0) ? 1e30 : fabs(1 / rayDirY);
-		float perpWallDist;
+		game->ray.deltaDistY = (game->ray.rayDirY == 0) ? 1e30 : fabs(1 / game->ray.rayDirY);
 
 		//what direction to step in x or y-direction (either +1 or -1)
-		int stepX;
-		int stepY;
+/* 		int stepX;
+		int stepY; */
 
-		int hit = 0; //was there a wall hit?
-		int side = 0; //was a NS or a EW wall hit?
-
-
-		if (rayDirX < 0)
+/* 		int hit = 0; //was there a wall hit?
+		int side = 0; //was a NS or a EW wall hit? */
+		game->ray.hit = 0;
+		if (game->ray.rayDirX < 0)
 		{
-			stepX = -1;
-			sideDistX = (game->player.x_pos - mapX) * deltaDistX;
+			game->ray.stepX = -1;
+			game->ray.sideDistX = (game->player.x_pos - mapX) * game->ray.deltaDistX;
 		}
 		else
 		{
-			stepX = 1;
-			sideDistX = (mapX + 1.0 - game->player.x_pos) * deltaDistX;
+			game->ray.stepX = 1;
+			game->ray.sideDistX = (mapX + 1.0 - game->player.x_pos) * game->ray.deltaDistX;
 		}
-		if (rayDirY < 0)
+		if (game->ray.rayDirY < 0)
 		{
-			stepY = -1;
-			sideDistY = (game->player.y_pos - mapY) * deltaDistY;
+			game->ray.stepY = -1;
+			game->ray.sideDistY = (game->player.y_pos - mapY) * game->ray.deltaDistY;
 		}
 		else
 		{
-			stepY = 1;
-			sideDistY = (mapY + 1.0 - game->player.y_pos) * deltaDistY;
+			game->ray.stepY = 1;
+			game->ray.sideDistY = (mapY + 1.0 - game->player.y_pos) * game->ray.deltaDistY;
 		}
 
-		while (hit == 0)
+		while (game->ray.hit == 0)
 		{
 			//jump to next map square, either in x-direction, or in y-direction
-			if (sideDistX < sideDistY)
+			if (game->ray.sideDistX < game->ray.sideDistY)
 			{
-				sideDistX += deltaDistX;
-				mapX += stepX;
-				side = 0;
+				game->ray.sideDistX += game->ray.deltaDistX;
+				mapX += game->ray.stepX;
+				game->ray.side = 0;
 			}
 			else
 			{
-				sideDistY += deltaDistY;
-				mapY += stepY;
-				side = 1;
+				game->ray.sideDistY += game->ray.deltaDistY;
+				mapY += game->ray.stepY;
+				game->ray.side = 1;
 			}
 			//Check if ray has hit a wall
 			if (game->map[mapX][mapY] != '0')
-				hit = 1;
+				game->ray.hit = 1;
 		}
-		if(side == 0)
-			perpWallDist = (sideDistX - deltaDistX);
+		if(game->ray.side == 0)
+			game->ray.perpWallDist = (game->ray.sideDistX - game->ray.deltaDistX);
 		else
-			perpWallDist = (sideDistY - deltaDistY);
+			game->ray.perpWallDist = (game->ray.sideDistY - game->ray.deltaDistY);
 
-		int lineHeight = (int)(600 / perpWallDist);
-		int drawStart = (lineHeight * -1) / 2 + 600 / 2;
-		if(drawStart < 0)
-			drawStart = 0;
-		int drawEnd = lineHeight / 2 + 600 / 2;
-		if(drawEnd >= 600)
-			drawEnd = 600 - 1;
-
+		game->calc.lineHeight = (int)(600 / game->ray.perpWallDist);
+		game->calc.drawStart = (game->calc.lineHeight * -1) / 2 + 600 / 2;
+		if(game->calc.drawStart < 0)
+			game->calc.drawStart = 0;
+		game->calc.drawEnd = game->calc.lineHeight / 2 + 600 / 2;
+		if(game->calc.drawEnd >= 600)
+			game->calc.drawEnd = 600 - 1;
 
 		//******************** DESENHA APENAS NAS PAREDES *****************************8
-
-		//calculate value of wallX
-		//int texNum = game->map[mapX][mapY] - 1;
-		double wallX; //where exactly the wall was hit
-		if (side == 0)
-			wallX = game->player.y_pos + perpWallDist * rayDirY;
-		else
-			wallX = game->player.x_pos + perpWallDist * rayDirX;
-		wallX -= floor((wallX));
-	
-		//x coordinate on the texture
-		int texX = (int)(wallX * (double)(64));
-		if(side == 0 && rayDirX > 0) texX = 64 - texX - 1;
-		if(side == 1 && rayDirY < 0) texX = 64 - texX - 1;
-
-		
-		
-		// How much to increase the texture coordinate per screen pixel
-		double step = 1.0 * 64 / lineHeight;
-		// Starting texture coordinate
-		double texPos = (drawStart - 600 / 2 + lineHeight / 2) * step;
-		for(int y = drawStart; y<drawEnd; y++)
-		{
-			// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
-			int texY = (int)texPos & (64 - 1);
-			texPos += step;
-			unsigned int color = get_pixel_img(game->wall, texX, texY);//texture[texNum][64 * texY + texX];
-			//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
-			//if(side == 1) color = (color >> 1) & 8355711;
-			my_mlx_pixel_put(&game->background, x, y, color);
-		}
-
-/* 		int	color = 0;
-
-		if (game->map[mapX][mapY] == '1')
-			color = 0x00F80000;
-		if (side == 1) {color = color / 2;}
-		draw_line(game, drawStart, drawEnd, color, x); */
+		draw_walls(game, x);
 	}
-	//game->old_time = clock();
 	put_img_to_img(&game->background, game->player, 380,480);
 	mlx_put_image_to_window(game->mlx, game->win, game->background.img, 0, 0);
-	game->frameTime = 0.08f;
-	//game->frameTime = (float)(game->old_time - game->time) / CLOCKS_PER_SEC;
-	//float fps = CLOCKS_PER_SEC / (game->old_time - game->time);
-	//printf("%f\n", game->frameTime);
 	return (0);
 }
 
 int	input(int keycode, t_root *root)
 {
-	double moveSpeed = root->frameTime; //the constant value is in squares/second
-	double rotSpeed = root->frameTime; //the constant value is in radians/second
-	(void)rotSpeed;
 	if (keycode == ESC)
 		exit_game_request(root);
 	else if (keycode == UP || keycode == DOWN || \
 			keycode == STRAFE_LEFT || keycode == STRAFE_RIGHT || \
 			keycode == TURN_RIGHT || keycode == TURN_LEFT)
 	{
-		if (keycode == UP) {
-			if(root->map[(int)(root->player.x_pos + root->player.dir_x * 0.1f)][(int)root->player.y_pos] == '0')
-				root->player.x_pos += root->player.dir_x * moveSpeed;
-			if(root->map[(int)(root->player.x_pos)][(int)(root->player.y_pos + root->player.dir_y * 0.1f)] == '0')
-				root->player.y_pos += root->player.dir_y * moveSpeed;
-		}
+		if (keycode == UP)
+			move_forward(root);
 		if (keycode == STRAFE_RIGHT)
-		{
-			if(root->map[(int)(root->player.x_pos + root->player.plane_x * 0.1f)][(int)root->player.y_pos] == '0')
-				root->player.x_pos += root->player.plane_x * moveSpeed;
-			if(root->map[(int)(root->player.x_pos)][(int)(root->player.y_pos + root->player.plane_y * 0.1f)] == '0')
-				root->player.y_pos += root->player.plane_y * moveSpeed;
-		}
-		//move_forward(root);
+			strafe_right(root);
 		if (keycode == DOWN)
-		{
-			if(root->map[(int)(root->player.x_pos - root->player.dir_x * 0.1f)][(int)root->player.y_pos] == '0')
-				root->player.x_pos -= root->player.dir_x * moveSpeed;
-			if(root->map[(int)(root->player.x_pos)][(int)(root->player.y_pos - root->player.dir_y * 0.1f)] == '0')
-				root->player.y_pos -= root->player.dir_y * moveSpeed;
-		}
+			move_backward(root);
 		if (keycode == STRAFE_LEFT)
-		{
-			if(root->map[(int)(root->player.x_pos - root->player.plane_x * 0.1f)][(int)root->player.y_pos] == '0')
-				root->player.x_pos -= root->player.plane_x * moveSpeed;
-			if(root->map[(int)(root->player.x_pos)][(int)(root->player.y_pos - root->player.plane_y * 0.1f)] == '0')
-				root->player.y_pos -= root->player.plane_y * moveSpeed;
-		}
-		//move_backward(root);
+			strafe_left(root);
 		if (keycode == TURN_RIGHT)
-		{
-			//both camera direction and camera plane must be rotated
-			double oldDirX = root->player.dir_x;
-			root->player.dir_x = root->player.dir_x * cos(-rotSpeed) - root->player.dir_y * sin(-rotSpeed);
-			root->player.dir_y = oldDirX * sin(-rotSpeed) + root->player.dir_y * cos(-rotSpeed);
-			double oldPlaneX = root->player.plane_x;
-			root->player.plane_x = root->player.plane_x * cos(-rotSpeed) - root->player.plane_y * sin(-rotSpeed);
-			root->player.plane_y = oldPlaneX * sin(-rotSpeed) + root->player.plane_y * cos(-rotSpeed);
-		}
-
+			turn_right(root);
 		if (keycode == TURN_LEFT)
-		{
-			//both camera direction and camera plane must be rotated
-			double oldDirX = root->player.dir_x;
-			root->player.dir_x = root->player.dir_x * cos(rotSpeed) - root->player.dir_y * sin(rotSpeed);
-			root->player.dir_y = oldDirX * sin(rotSpeed) + root->player.dir_y * cos(rotSpeed);
-			double oldPlaneX = root->player.plane_x;
-			root->player.plane_x = root->player.plane_x * cos(rotSpeed) - root->player.plane_y * sin(rotSpeed);
-			root->player.plane_y = oldPlaneX * sin(rotSpeed) + root->player.plane_y * cos(rotSpeed);
-		}
-		mlx_destroy_image(root->mlx, root->background.img);
-		//mlx_destroy_image(root->mlx, root->player.img);
+			turn_left(root);
+
+		mlx_destroy_image(root->mlx, root->background.img); // refresh main background image;
 		root->background.img = mlx_new_image(root->mlx, 800, 600);
-		//root->player.img = mlx_xpm_file_to_image(&root->player, "./assets/gun.xpm", &root->player.w, &root->player.h);
-			//turn_right(root);
 	}
 	return (0);
 }
 
-int main(int argc, char const *argv[])
+int	mouse_move(int x, int y, t_root *game)
+{
+	float	oldDirX;
+	float	oldPlaneX;
+	static int	oldx;
+	//int			direction;
+
+	(void)y;
+	(void)x;
+	
+	printf("%d\n", x);
+
+	oldDirX = game->player.dir_x;
+	if (x < oldx) {
+		game->player.dir_x = game->player.dir_x * cos(game->rotSpeed) - game->player.dir_y * sin(game->rotSpeed);
+		game->player.dir_y = oldDirX * sin(game->rotSpeed) + game->player.dir_y * cos(game->rotSpeed);
+		oldPlaneX = game->player.plane_x;
+		game->player.plane_x = game->player.plane_x * cos(game->rotSpeed) - game->player.plane_y * sin(game->rotSpeed);
+		game->player.plane_y = oldPlaneX * sin(game->rotSpeed) + game->player.plane_y * cos(game->rotSpeed);
+	}
+	else
+	{
+		game->player.dir_x = game->player.dir_x * cos(-game->rotSpeed) - game->player.dir_y * sin(-game->rotSpeed);
+		game->player.dir_y = oldDirX * sin(-game->rotSpeed) + game->player.dir_y * cos(-game->rotSpeed);
+		oldPlaneX = game->player.plane_x;
+		game->player.plane_x = game->player.plane_x * cos(-game->rotSpeed) - game->player.plane_y * sin(-game->rotSpeed);
+		game->player.plane_y = oldPlaneX * sin(-game->rotSpeed) + game->player.plane_y * cos(-game->rotSpeed);
+	}
+	oldx = x;
+	return (0);
+}
+
+int	main(int argc, char const *argv[])
 {
 	(void)argc;
 	(void)argv;
@@ -282,6 +225,9 @@ int main(int argc, char const *argv[])
 	game.map_cols = 10;
 	game.map_lines = 10;
 	game.map = malloc(sizeof(char *) * 10);
+
+	game.moveSpeed = 0.08f;
+	game.rotSpeed = 0.08f;
 	
 	game.map[0] = ft_strdup("1111111111");
 	game.map[1] = ft_strdup("1000010101");
@@ -306,6 +252,9 @@ int main(int argc, char const *argv[])
 	game.player.plane_x = 0;
 	game.player.plane_y = 0.66;
 
+	game.ray.side = 0;
+	game.ray.hit = 0;
+
 	game.mlx = mlx_init();
 
 	game.background.img = mlx_new_image(game.mlx, 800, 600);
@@ -321,6 +270,7 @@ int main(int argc, char const *argv[])
 	game.win = mlx_new_window(game.mlx, 800, 600, "cub3d");		
 	mlx_hook(game.win, 17, 1L<<0, exit_game_request, &game);
 	mlx_hook(game.win, 02, 0, input, &game);
+	mlx_hook(game.win, 06, (1L << 6), mouse_move, &game);
 	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_loop(game.mlx);
 	return (0);

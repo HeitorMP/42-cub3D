@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 09:38:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/16 09:53:42 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/16 15:04:34 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@
 # define TURN_LEFT 65361
 # define NONE 0
 
-# define PI 3.1415926535
 # define TRANSPARENCY 0x00980088
+
+# define MARGIN 0.1f
 
 typedef struct s_coord
 {
@@ -38,12 +39,28 @@ typedef struct s_coord
 	int y;
 }			t_coord;
 
+typedef struct s_calc
+{
+	int	lineHeight;
+	int	drawStart;
+	int	drawEnd;
+	int mapY;
+	int mapX;
+}			t_calc;
+
 typedef struct s_ray
 {
-	float	angle;
-	float	distance;
-	float	x;
-	float	y;
+	float	rayDirX;
+	float	rayDirY;
+	float	sideDistX;
+	float	sideDistY;
+	float	deltaDistX;
+	float	deltaDistY;
+	float	perpWallDist;
+	int		stepX;
+	int		stepY;
+	int		hit; //was there a wall hit?
+	int		side; // what side of wall was hited;
 
 }			t_ray;
 
@@ -77,10 +94,11 @@ typedef struct s_root {
 	int			map_lines;
 	clock_t		time;
 	clock_t		old_time;
-	float		frameTime;
 	float		moveSpeed;
 	float		rotSpeed;
 	unsigned int buffer[600][800];
+	t_ray		ray;
+	t_calc		calc;
 }			t_root;
 
 // PROTOTYPE
@@ -92,6 +110,8 @@ void	turn_left(t_root *root);
 void	turn_right(t_root *root);
 void	move_forward(t_root *root);
 void	move_backward(t_root *root);
+void	strafe_right(t_root *game);
+void	strafe_left(t_root *game);
 
 /* DRAW UTIS*/
 void	my_mlx_pixel_put(t_sprite *data, int x, int y, int color);
@@ -99,6 +119,9 @@ void	my_mlx_pixel_put_xpm(t_sprite *data, int x, int y, int color, int transpare
 void	put_img_to_img(t_sprite *dst, t_sprite src, int x, int y);
 void	put_draw_to_img(t_sprite *dst, t_sprite src, int x, int y);
 int		get_pixel_img(t_sprite img, int x, int y);
+
+/* DRAW */
+void	draw_walls(t_root *game, int col);
 
 /* MINIMAP */
 void	draw_minimap(t_root *root, char **map);

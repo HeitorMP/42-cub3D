@@ -12,8 +12,8 @@ MLX_DIR		:= ./minilibx-linux
 
 # SOURCE FILES
 SRCS		:=	main.c \
-				move/straight.c move/turn.c \
-				draw_utils/draw_img.c draw_utils/draw_pixel.c
+				move/straight.c move/turn.c move/strafe.c \
+				draw_utils/draw_img.c draw_utils/draw_pixel.c draw_utils/draw_walls.c
 
 OBJS		= ${SRCS:%.c=${OBJSDIR}/%.o}
 
