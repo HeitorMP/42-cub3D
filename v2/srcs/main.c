@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:54:42 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/16 16:00:16 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/16 18:16:16 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,30 +189,41 @@ int	mouse_move(int x, int y, t_root *game)
 	float	oldDirX;
 	float	oldPlaneX;
 	static int	oldx;
-	//int			direction;
+	int			direction;
 
 	(void)y;
 	(void)x;
+	direction = 2;
 	
 	printf("%d\n", x);
 
+	if (oldx < 800 / 2)
+		direction = 1;
+	else if (oldx > 800 / 2)
+		direction = 0;
+
 	oldDirX = game->player.dir_x;
-	if (x < oldx) {
+	if (direction == 1) {
 		game->player.dir_x = game->player.dir_x * cos(game->rotSpeed) - game->player.dir_y * sin(game->rotSpeed);
 		game->player.dir_y = oldDirX * sin(game->rotSpeed) + game->player.dir_y * cos(game->rotSpeed);
 		oldPlaneX = game->player.plane_x;
 		game->player.plane_x = game->player.plane_x * cos(game->rotSpeed) - game->player.plane_y * sin(game->rotSpeed);
 		game->player.plane_y = oldPlaneX * sin(game->rotSpeed) + game->player.plane_y * cos(game->rotSpeed);
+		direction = 2;
 	}
-	else
+	else if (direction == 0)
 	{
 		game->player.dir_x = game->player.dir_x * cos(-game->rotSpeed) - game->player.dir_y * sin(-game->rotSpeed);
 		game->player.dir_y = oldDirX * sin(-game->rotSpeed) + game->player.dir_y * cos(-game->rotSpeed);
 		oldPlaneX = game->player.plane_x;
 		game->player.plane_x = game->player.plane_x * cos(-game->rotSpeed) - game->player.plane_y * sin(-game->rotSpeed);
 		game->player.plane_y = oldPlaneX * sin(-game->rotSpeed) + game->player.plane_y * cos(-game->rotSpeed);
+		direction = 2;
 	}
 	oldx = x;
+	if (y != 600 / 2)
+		mlx_mouse_move(game->mlx, game->win, 400, 300);
+
 	return (0);
 }
 
@@ -227,7 +238,7 @@ int	main(int argc, char const *argv[])
 	game.map = malloc(sizeof(char *) * 10);
 
 	game.moveSpeed = 0.08f;
-	game.rotSpeed = 0.08f;
+	game.rotSpeed = 0.03f;
 	
 	game.map[0] = ft_strdup("1111111111");
 	game.map[1] = ft_strdup("1000010101");
