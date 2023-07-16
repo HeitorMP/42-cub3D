@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 09:38:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/16 15:04:34 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/16 22:19:01 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ typedef struct s_root {
 	t_sprite	mini_background;
 	t_sprite	wall;
 	t_sprite	background;
+	t_sprite	sky;
 	char		**map;
 	int			map_cols;
 	int			map_lines;

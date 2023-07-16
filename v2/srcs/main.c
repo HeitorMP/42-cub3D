@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:54:42 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/16 18:16:16 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/16 22:36:38 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,16 @@
 
 void	draw_back(t_root *root)
 {
-	int y = 0;
+	int y = 300;
 	int x = 0;
+	put_img_to_img(&root->background, root->sky, 0 , 0);
 	while (y < 600)
 	{
 		while (x < 800)
 		{
-			if (y < 300)
+			/* if (y < 300)
 				my_mlx_pixel_put(&root->background, x, y, 0x000000FF);
-			else
+			else */
 				my_mlx_pixel_put(&root->background, x, y, 0x00808080);
 			x++;
 		}
@@ -152,7 +153,7 @@ int	game_loop(t_root *game)
 		//******************** DESENHA APENAS NAS PAREDES *****************************8
 		draw_walls(game, x);
 	}
-	put_img_to_img(&game->background, game->player, 380,480);
+	put_img_to_img(&game->background, game->player, 368,480);
 	mlx_put_image_to_window(game->mlx, game->win, game->background.img, 0, 0);
 	return (0);
 }
@@ -277,6 +278,9 @@ int	main(int argc, char const *argv[])
 	
 	game.wall.img = mlx_xpm_file_to_image(game.mlx, "./assets/greystone.xpm", &game.wall.w, &game.wall.h);
 	game.wall.addr = mlx_get_data_addr(game.wall.img, &game.wall.bits_per_pixel, &game.wall.line_length, &game.wall.endian);
+	
+	game.sky.img = mlx_xpm_file_to_image(game.mlx, "./assets/sky.xpm", &game.sky.w, &game.sky.h);
+	game.sky.addr = mlx_get_data_addr(game.sky.img, &game.sky.bits_per_pixel, &game.sky.line_length, &game.sky.endian);
 	
 	game.win = mlx_new_window(game.mlx, 800, 600, "cub3d");		
 	mlx_hook(game.win, 17, 1L<<0, exit_game_request, &game);
