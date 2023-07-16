@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 09:38:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/15 16:20:37 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/16 09:53:42 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,12 @@
 
 /* KEY MACROS */
 # define ESC 65307
-# define RIGHT 100
-# define LEFT 97
+# define STRAFE_RIGHT 100
+# define STRAFE_LEFT 97
 # define UP 119
 # define DOWN 115
+# define TURN_RIGHT 65363
+# define TURN_LEFT 65361
 # define NONE 0
 
 # define PI 3.1415926535
@@ -43,7 +45,7 @@ typedef struct s_ray
 	float	x;
 	float	y;
 
-}				t_ray;
+}			t_ray;
 
 typedef struct s_sprite {
 	void	*img;
@@ -60,7 +62,7 @@ typedef struct s_sprite {
 	float	plane_x;
 	float	plane_y;
 	float	angle;
-}				t_sprite;
+}			t_sprite;
 
 typedef struct s_root {
 	void		*mlx;
@@ -79,7 +81,7 @@ typedef struct s_root {
 	float		moveSpeed;
 	float		rotSpeed;
 	unsigned int buffer[600][800];
-}				t_root;
+}			t_root;
 
 // PROTOTYPE
 /* EXIT */

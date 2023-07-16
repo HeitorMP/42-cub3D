@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:54:42 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/15 16:46:54 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/16 11:34:13 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,12 @@ int	exit_game_request(t_root *game)
 int	game_loop(t_root *game)
 {
 	int w = 800;
-	game->time = clock();
+	//game->time = clock();
 	draw_back(game);
 	for(int x = 0; x < w; x++)
 	{
 		//calculate ray position and direction
-		float cameraX = 2 * x / (float)(w) - 1; //x-coordinate in camera space
+		float cameraX = 2 * x / (float)(w) - 1; //x-coordinate in camera space // -1 to correct view
 		float rayDirX = game->player.dir_x + game->player.plane_x * cameraX;
 		float rayDirY = game->player.dir_y + game->player.plane_y * cameraX;
 
@@ -186,48 +186,64 @@ int	game_loop(t_root *game)
 			my_mlx_pixel_put(&game->background, x, y, color);
 		}
 
-		/* int	color = 0;
+/* 		int	color = 0;
 
 		if (game->map[mapX][mapY] == '1')
 			color = 0x00F80000;
 		if (side == 1) {color = color / 2;}
 		draw_line(game, drawStart, drawEnd, color, x); */
 	}
-	game->old_time = clock();
+	//game->old_time = clock();
 	put_img_to_img(&game->background, game->player, 380,480);
 	mlx_put_image_to_window(game->mlx, game->win, game->background.img, 0, 0);
-	game->frameTime = (float)(game->old_time - game->time) / CLOCKS_PER_SEC;
-	float fps = CLOCKS_PER_SEC / (game->old_time - game->time);
-	printf("%f\n", fps);
+	game->frameTime = 0.08f;
+	//game->frameTime = (float)(game->old_time - game->time) / CLOCKS_PER_SEC;
+	//float fps = CLOCKS_PER_SEC / (game->old_time - game->time);
+	//printf("%f\n", game->frameTime);
 	return (0);
 }
 
 int	input(int keycode, t_root *root)
 {
-	double moveSpeed = root->frameTime * 15.0f; //the constant value is in squares/second
-	double rotSpeed = root->frameTime * 13.0f; //the constant value is in radians/second
+	double moveSpeed = root->frameTime; //the constant value is in squares/second
+	double rotSpeed = root->frameTime; //the constant value is in radians/second
 	(void)rotSpeed;
 	if (keycode == ESC)
 		exit_game_request(root);
 	else if (keycode == UP || keycode == DOWN || \
-			keycode == LEFT || keycode == RIGHT)
+			keycode == STRAFE_LEFT || keycode == STRAFE_RIGHT || \
+			keycode == TURN_RIGHT || keycode == TURN_LEFT)
 	{
 		if (keycode == UP) {
-			if(root->map[(int)(root->player.x_pos + root->player.dir_x * moveSpeed)][(int)root->player.y_pos] == '0')
+			if(root->map[(int)(root->player.x_pos + root->player.dir_x * 0.1f)][(int)root->player.y_pos] == '0')
 				root->player.x_pos += root->player.dir_x * moveSpeed;
-			if(root->map[(int)(root->player.x_pos)][(int)(root->player.y_pos + root->player.dir_y * moveSpeed)] == '0')
+			if(root->map[(int)(root->player.x_pos)][(int)(root->player.y_pos + root->player.dir_y * 0.1f)] == '0')
 				root->player.y_pos += root->player.dir_y * moveSpeed;
+		}
+		if (keycode == STRAFE_RIGHT)
+		{
+			if(root->map[(int)(root->player.x_pos + root->player.plane_x * 0.1f)][(int)root->player.y_pos] == '0')
+				root->player.x_pos += root->player.plane_x * moveSpeed;
+			if(root->map[(int)(root->player.x_pos)][(int)(root->player.y_pos + root->player.plane_y * 0.1f)] == '0')
+				root->player.y_pos += root->player.plane_y * moveSpeed;
 		}
 		//move_forward(root);
 		if (keycode == DOWN)
 		{
-			if(root->map[(int)(root->player.x_pos - root->player.dir_x * moveSpeed)][(int)root->player.y_pos] == '0')
+			if(root->map[(int)(root->player.x_pos - root->player.dir_x * 0.1f)][(int)root->player.y_pos] == '0')
 				root->player.x_pos -= root->player.dir_x * moveSpeed;
-			if(root->map[(int)(root->player.x_pos)][(int)(root->player.y_pos - root->player.dir_y * moveSpeed)] == '0')
+			if(root->map[(int)(root->player.x_pos)][(int)(root->player.y_pos - root->player.dir_y * 0.1f)] == '0')
 				root->player.y_pos -= root->player.dir_y * moveSpeed;
 		}
-			//move_backward(root);
-		if (keycode == RIGHT)
+		if (keycode == STRAFE_LEFT)
+		{
+			if(root->map[(int)(root->player.x_pos - root->player.plane_x * 0.1f)][(int)root->player.y_pos] == '0')
+				root->player.x_pos -= root->player.plane_x * moveSpeed;
+			if(root->map[(int)(root->player.x_pos)][(int)(root->player.y_pos - root->player.plane_y * 0.1f)] == '0')
+				root->player.y_pos -= root->player.plane_y * moveSpeed;
+		}
+		//move_backward(root);
+		if (keycode == TURN_RIGHT)
 		{
 			//both camera direction and camera plane must be rotated
 			double oldDirX = root->player.dir_x;
@@ -237,10 +253,10 @@ int	input(int keycode, t_root *root)
 			root->player.plane_x = root->player.plane_x * cos(-rotSpeed) - root->player.plane_y * sin(-rotSpeed);
 			root->player.plane_y = oldPlaneX * sin(-rotSpeed) + root->player.plane_y * cos(-rotSpeed);
 		}
-			//turn_left(root);
-		if (keycode == LEFT)
+
+		if (keycode == TURN_LEFT)
 		{
-			 //both camera direction and camera plane must be rotated
+			//both camera direction and camera plane must be rotated
 			double oldDirX = root->player.dir_x;
 			root->player.dir_x = root->player.dir_x * cos(rotSpeed) - root->player.dir_y * sin(rotSpeed);
 			root->player.dir_y = oldDirX * sin(rotSpeed) + root->player.dir_y * cos(rotSpeed);
@@ -280,11 +296,11 @@ int main(int argc, char const *argv[])
 
 	//float posX = 22, posY = 12;  //x and y start position
 	game.player.x_pos = 5;
-	game.player.y_pos = 5;
+	game.player.y_pos = 4;
 	
 	//float dirX = -1, dirY = 0; //initial direction vector
 	game.player.dir_x = -1;
-	game.player.dir_y = 0;
+	game.player.dir_y = 0.1;
 	
 	//float planeX = 0, planeY = 0.66; //the 2d raycaster version of camera plane
 	game.player.plane_x = 0;

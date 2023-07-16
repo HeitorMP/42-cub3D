@@ -72,7 +72,7 @@ void	draw_ray(t_root *root)
 	if (ra > 2*PI)
 		ra-=2*PI;
 	float disH, disV;
-	for (r = 0; r<60; r++)
+	for (r = 0; r<800; r++)
 	{
 		/* HORIZONTAL CHECKER */
 		dof = 0;
@@ -102,15 +102,15 @@ void	draw_ray(t_root *root)
 		if (ra > P2 && ra < P3) { rx=(((int)root->player.x_pos>>6)<<6)-0.0001; ry = (root->player.x_pos-rx)*nTan+root->player.y_pos; xo=-64; yo=-xo*nTan;}
 		if (ra < P2 || ra > P3) { rx=(((int)root->player.x_pos>>6)<<6)+64; ry = (root->player.x_pos-rx)*nTan+root->player.y_pos; xo=64; yo=-xo*nTan;}
 		if (ra==0 || ra == PI) {rx=root->player.x_pos; ry=root->player.y_pos; dof=5;}
-		while(dof<5)
+		while(dof<1)
 		{
 			mx=rx/64;
 			my=ry/64;
 			printf("ra = %f - my = %d - mx = %d\n", ra, my, mx);
-			if((mx >= 0 && my >= 0) && (mx < 5 && my < 5) && root->map[my][mx] == '1')
+			if((mx >= 0 && my >= 0) && (mx < 1 && my < 5) && root->map[my][mx] == '1')
 			{
 				vx = rx; vy = ry; disV = dist(root->player.x_pos,root->player.y_pos,vx, vy, ra);
-				dof = 5;
+				dof = 1;
 			}
 			else {rx+=xo; ry+=yo; dof += 1;}
 		}
@@ -118,7 +118,7 @@ void	draw_ray(t_root *root)
 		if (disH<disV) {rx=hx; ry=hy; finalD=disH;}
 		float lineH=(64*320)/finalD; if (lineH>320) {lineH=320;}
 		//float lineO=160-lineH/2;
-		draw_line(root, (t_coord){r*5+200,0}, (t_coord){r*5+200,lineH}, 0x00FF0000, root->win);
+		draw_line(root, (t_coord){r*1+600,0}, (t_coord){r*1+600,lineH}, 0x00FF0000, root->win);
 		/* Draw 3d*/
 
 		ra+=DR;
