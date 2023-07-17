@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:54:42 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/17 19:11:17 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/17 21:14:41 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	game_loop(t_root *game)
 		int stepY; */
 
 /* 		int hit = 0; //was there a wall hit?
-		int side = 0; //was a NS or a EW wall hit? */
+		side = 0; //was a NS or a EW wall hit? */
 		game->ray.hit = 0;
 		if (game->ray.rayDirX < 0)
 		{
@@ -140,7 +140,7 @@ int	game_loop(t_root *game)
 		if(game->calc.drawEnd >= 600)
 			game->calc.drawEnd = 600 - 1;
 
-		//******************** DESENHA APENAS NAS PAREDES *****************************8
+		//******************** DESENHA APENAS NAS PAREDES *****************************
 		draw_walls(game, x);
 		printf("%f\n", game->player.dir_y);
 	}
@@ -222,8 +222,17 @@ int	main(int argc, char const *argv[])
 	game.player.img = mlx_xpm_file_to_image(game.mlx, "./assets/gun.xpm", &game.player.w, &game.player.h);
 	game.player.addr = mlx_get_data_addr(game.player.img, &game.player.bits_per_pixel, &game.player.line_length, &game.player.endian);
 	
-	game.wall.img = mlx_xpm_file_to_image(game.mlx, "./assets/greystone.xpm", &game.wall.w, &game.wall.h);
+	game.wall.img = mlx_xpm_file_to_image(game.mlx, "./assets/N.xpm", &game.wall.w, &game.wall.h);
 	game.wall.addr = mlx_get_data_addr(game.wall.img, &game.wall.bits_per_pixel, &game.wall.line_length, &game.wall.endian);
+	
+	game.wall1.img = mlx_xpm_file_to_image(game.mlx, "./assets/S.xpm", &game.wall1.w, &game.wall1.h);
+	game.wall1.addr = mlx_get_data_addr(game.wall1.img, &game.wall1.bits_per_pixel, &game.wall1.line_length, &game.wall1.endian);
+
+	game.wall2.img = mlx_xpm_file_to_image(game.mlx, "./assets/E.xpm", &game.wall2.w, &game.wall2.h);
+	game.wall2.addr = mlx_get_data_addr(game.wall2.img, &game.wall2.bits_per_pixel, &game.wall2.line_length, &game.wall2.endian);
+	
+	game.wall3.img = mlx_xpm_file_to_image(game.mlx, "./assets/W.xpm", &game.wall3.w, &game.wall3.h);
+	game.wall3.addr = mlx_get_data_addr(game.wall3.img, &game.wall3.bits_per_pixel, &game.wall3.line_length, &game.wall3.endian);
 	
 	game.win = mlx_new_window(game.mlx, 800, 600, "cub3d");
 	mlx_hook(game.win, 17, 1L<<0, exit_game_request, &game);
