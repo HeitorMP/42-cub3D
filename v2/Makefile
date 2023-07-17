@@ -1,7 +1,7 @@
 # VAR DECLARATION
 NAME		:= cub3D
 CC			:= cc
-FLAGS		:= -Wall -Wextra -Werror -g -fsanitize=address
+FLAGS		:= -Wall -Wextra -Werror -g #-fsanitize=address
 MLXFLAGS	:= -lmlx -lXext -lX11 -lm -lbsd
 RM			:= rm -f
 SRCDIR		:= srcs
@@ -12,8 +12,11 @@ MLX_DIR		:= ./minilibx-linux
 
 # SOURCE FILES
 SRCS		:=	main.c \
-				move/straight.c move/turn.c move/strafe.c \
-				draw_utils/draw_img.c draw_utils/draw_pixel.c draw_utils/draw_walls.c
+				move/straight.c move/turn.c move/strafe.c move/move_router.c move/mouse.c \
+				draw_utils/draw_img.c draw_utils/draw_pixel.c draw_utils/draw_walls.c \
+				events/lock_mouse.c events/input_handler.c \
+				exit_game/exit_request.c \
+				setup_game/setup.c
 
 OBJS		= ${SRCS:%.c=${OBJSDIR}/%.o}
 
@@ -36,7 +39,10 @@ ${NAME}:	${OBJS} ${LIBFT} mlx
 ${OBJS}:	${OBJSDIR}/%.o: ${SRCDIR}/%.c
 			@mkdir -p ${OBJSDIR}
 			@mkdir -p ${OBJSDIR}/move
+			@mkdir -p ${OBJSDIR}/setup_game
+			@mkdir -p ${OBJSDIR}/exit_game
 			@mkdir -p ${OBJSDIR}/draw_utils
+			@mkdir -p ${OBJSDIR}/events
 			${CC} -I. -O3 ${FLAGS} -c $< -o $@
 
 ${LIBFT}:

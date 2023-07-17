@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 09:38:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/16 22:19:01 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/17 16:11:31 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <time.h>
 # include "../minilibx-linux/mlx.h"
 # include "../libft/includes/libft.h"
+# include "../minilibx-linux/mlx_int.h"
 
 /* KEY MACROS */
 # define ESC 65307
@@ -27,11 +28,14 @@
 # define DOWN 115
 # define TURN_RIGHT 65363
 # define TURN_LEFT 65361
-# define NONE 0
+# define F1 65470
 
 # define TRANSPARENCY 0x00980088
 
-# define MARGIN 0.1f
+# define MARGIN 0.2f
+
+# define TRUE 1
+# define FALSE 0
 
 typedef struct s_coord
 {
@@ -100,23 +104,33 @@ typedef struct s_root {
 	unsigned int buffer[600][800];
 	t_ray		ray;
 	t_calc		calc;
+	int			keys[7];
+
+	Cursor cursor;
+	Pixmap blank;
+	XColor dummy;
 }			t_root;
 
 // PROTOTYPE
+
+/* SETUP INIT */
+void	init_values(t_root *game);
+
 /* EXIT */
-int		exit_game_request(t_root *root);
+int		exit_game_request(t_root *game);
 
 /* MOVES */
-void	turn_left(t_root *root);
-void	turn_right(t_root *root);
-void	move_forward(t_root *root);
-void	move_backward(t_root *root);
+void	turn_left(t_root *game);
+void	turn_right(t_root *game);
+void	move_forward(t_root *game);
+void	move_backward(t_root *game);
 void	strafe_right(t_root *game);
 void	strafe_left(t_root *game);
+void	move_player(t_root *game);
+int		mouse_move(int x, int y, t_root *game);
 
 /* DRAW UTIS*/
 void	my_mlx_pixel_put(t_sprite *data, int x, int y, int color);
-void	my_mlx_pixel_put_xpm(t_sprite *data, int x, int y, int color, int transparency);
 void	put_img_to_img(t_sprite *dst, t_sprite src, int x, int y);
 void	put_draw_to_img(t_sprite *dst, t_sprite src, int x, int y);
 int		get_pixel_img(t_sprite img, int x, int y);
@@ -130,4 +144,11 @@ void	draw_mini_player(t_root *root);
 
 /* 2D MAP*/
 void	draw_2dmap(t_root *root, char **map);
+
+/* UI */
+void	check_mouse_lock(t_root *game);
+
+/* HOOK HANDLERS */
+int	input_release(int keycode, t_root *root);
+int	input(int keycode, t_root *root);
 #endif

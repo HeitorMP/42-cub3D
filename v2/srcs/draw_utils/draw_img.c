@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:05:24 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/15 15:53:58 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/17 16:08:58 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,3 @@ void	put_draw_to_img(t_sprite *dst, t_sprite src, int x, int y)
 		i++;
 	}
 }
-

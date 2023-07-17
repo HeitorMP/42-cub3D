@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   straight.c                                         :+:      :+:    :+:   */
+/*   setup.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/07 14:36:35 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/06/08 10:11:35 by hmaciel-         ###   ########.fr       */
+/*   Created: 2023/07/17 11:33:21 by hmaciel-          #+#    #+#             */
+/*   Updated: 2023/07/17 16:36:37 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-void	move_forward(t_root *root)
+void	init_values(t_root *game)
 {
-	root->player.x_pos += root->player.delta_x;
-	root->player.y_pos += root->player.delta_y;
-}
+	int	i;
 
-void	move_backward(t_root *root)
-{
-	root->player.x_pos -= root->player.delta_x;
-	root->player.y_pos -= root->player.delta_y;
+	i = 0;
+	while (i < 6)
+	{
+		game->keys[i] = 0;
+		i++;
+	}
+	game->keys[6] = -1;
 }

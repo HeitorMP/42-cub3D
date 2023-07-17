@@ -1,23 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw_pixel.c                                       :+:      :+:    :+:   */
+/*   lock_mouse.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/07 15:26:21 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/17 16:36:16 by hmaciel-         ###   ########.fr       */
+/*   Created: 2023/07/17 11:03:12 by hmaciel-          #+#    #+#             */
+/*   Updated: 2023/07/17 16:36:06 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-void	my_mlx_pixel_put(t_sprite *data, int x, int y, int color)
+void	check_mouse_lock(t_root *game)
 {
-	char	*dst;
-
-	if (color == (int)TRANSPARENCY)
-		return ;
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int *)dst = color;
+	if (game->keys[6] != -1)
+		mlx_mouse_move(game->mlx, game->win, 400, 300);
 }

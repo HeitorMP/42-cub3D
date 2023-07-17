@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:54:42 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/16 22:36:38 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/17 17:08:23 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,6 @@ void	draw_back(t_root *root)
 
 void	draw_line(t_root *root, int begin, int end, int color, int col)
 {
-/* 	if(end < begin)
-		ft_swap(&begin, &end);
-	 */
 	while (begin < end)
 	{
 		my_mlx_pixel_put(&root->background, col, begin, color);
@@ -47,17 +44,6 @@ void	draw_line(t_root *root, int begin, int end, int color, int col)
 	}
 }
 
-
-int	exit_game_request(t_root *game)
-{
-	mlx_clear_window(game->mlx, game->win);
-	mlx_destroy_window(game->mlx, game->win);
-	mlx_destroy_display(game->mlx);
-	free(game->mlx);
-	printf("Good bye and thanks for playing!!\n");
-	exit (0);
-	return (1);
-}
 
 int	game_loop(t_root *game)
 {
@@ -152,79 +138,12 @@ int	game_loop(t_root *game)
 
 		//******************** DESENHA APENAS NAS PAREDES *****************************8
 		draw_walls(game, x);
+		printf("%f\n", game->player.dir_y);
 	}
-	put_img_to_img(&game->background, game->player, 368,480);
+	move_player(game);
+	check_mouse_lock(game);
+	put_img_to_img(&game->background, game->player, 300,480);
 	mlx_put_image_to_window(game->mlx, game->win, game->background.img, 0, 0);
-	return (0);
-}
-
-int	input(int keycode, t_root *root)
-{
-	if (keycode == ESC)
-		exit_game_request(root);
-	else if (keycode == UP || keycode == DOWN || \
-			keycode == STRAFE_LEFT || keycode == STRAFE_RIGHT || \
-			keycode == TURN_RIGHT || keycode == TURN_LEFT)
-	{
-		if (keycode == UP)
-			move_forward(root);
-		if (keycode == STRAFE_RIGHT)
-			strafe_right(root);
-		if (keycode == DOWN)
-			move_backward(root);
-		if (keycode == STRAFE_LEFT)
-			strafe_left(root);
-		if (keycode == TURN_RIGHT)
-			turn_right(root);
-		if (keycode == TURN_LEFT)
-			turn_left(root);
-
-		mlx_destroy_image(root->mlx, root->background.img); // refresh main background image;
-		root->background.img = mlx_new_image(root->mlx, 800, 600);
-	}
-	return (0);
-}
-
-int	mouse_move(int x, int y, t_root *game)
-{
-	float	oldDirX;
-	float	oldPlaneX;
-	static int	oldx;
-	int			direction;
-
-	(void)y;
-	(void)x;
-	direction = 2;
-	
-	printf("%d\n", x);
-
-	if (oldx < 800 / 2)
-		direction = 1;
-	else if (oldx > 800 / 2)
-		direction = 0;
-
-	oldDirX = game->player.dir_x;
-	if (direction == 1) {
-		game->player.dir_x = game->player.dir_x * cos(game->rotSpeed) - game->player.dir_y * sin(game->rotSpeed);
-		game->player.dir_y = oldDirX * sin(game->rotSpeed) + game->player.dir_y * cos(game->rotSpeed);
-		oldPlaneX = game->player.plane_x;
-		game->player.plane_x = game->player.plane_x * cos(game->rotSpeed) - game->player.plane_y * sin(game->rotSpeed);
-		game->player.plane_y = oldPlaneX * sin(game->rotSpeed) + game->player.plane_y * cos(game->rotSpeed);
-		direction = 2;
-	}
-	else if (direction == 0)
-	{
-		game->player.dir_x = game->player.dir_x * cos(-game->rotSpeed) - game->player.dir_y * sin(-game->rotSpeed);
-		game->player.dir_y = oldDirX * sin(-game->rotSpeed) + game->player.dir_y * cos(-game->rotSpeed);
-		oldPlaneX = game->player.plane_x;
-		game->player.plane_x = game->player.plane_x * cos(-game->rotSpeed) - game->player.plane_y * sin(-game->rotSpeed);
-		game->player.plane_y = oldPlaneX * sin(-game->rotSpeed) + game->player.plane_y * cos(-game->rotSpeed);
-		direction = 2;
-	}
-	oldx = x;
-	if (y != 600 / 2)
-		mlx_mouse_move(game->mlx, game->win, 400, 300);
-
 	return (0);
 }
 
@@ -253,20 +172,53 @@ int	main(int argc, char const *argv[])
 	game.map[9] = ft_strdup("1111111111");
 
 	//float posX = 22, posY = 12;  //x and y start position
-	game.player.x_pos = 5;
-	game.player.y_pos = 4;
+	game.player.x_pos = 4.5;
+	game.player.y_pos = 4.5;
 	
 	//float dirX = -1, dirY = 0; //initial direction vector
-	game.player.dir_x = -1;
+/* 	game.player.dir_x = -1;
 	game.player.dir_y = 0.1;
+ */
+	char dir = 'N';
+	if (dir == 'N')
+	{
+		game.player.plane_x = 0.66;
+		game.player.plane_y = 0;
+		game.player.dir_x = 0.0f;
+		game.player.dir_y = 1.0f;
+	}
+	else if (dir == 'S')
+	{
+		game.player.plane_x = -0.66;
+		game.player.plane_y = 0;
+		game.player.dir_x = 0.0f;
+		game.player.dir_y = -1.0f;
+	}
+
+	else if (dir == 'E')
+	{
+		game.player.plane_x = 0;
+		game.player.plane_y = -0.66;
+		game.player.dir_x = 1.0f;
+		game.player.dir_y = 0.1f;
+	}
+
+	else if (dir == 'W')
+	{
+		game.player.plane_x = 0;
+		game.player.plane_y = 0.66;
+		game.player.dir_x = -1.0f;
+		game.player.dir_y = 0.0f;
+	}
 	
 	//float planeX = 0, planeY = 0.66; //the 2d raycaster version of camera plane
-	game.player.plane_x = 0;
+/* 	game.player.plane_x = 0;
 	game.player.plane_y = 0.66;
-
+ */
 	game.ray.side = 0;
 	game.ray.hit = 0;
 
+	init_values(&game);
 	game.mlx = mlx_init();
 
 	game.background.img = mlx_new_image(game.mlx, 800, 600);
@@ -278,13 +230,14 @@ int	main(int argc, char const *argv[])
 	
 	game.wall.img = mlx_xpm_file_to_image(game.mlx, "./assets/greystone.xpm", &game.wall.w, &game.wall.h);
 	game.wall.addr = mlx_get_data_addr(game.wall.img, &game.wall.bits_per_pixel, &game.wall.line_length, &game.wall.endian);
-	
+
 	game.sky.img = mlx_xpm_file_to_image(game.mlx, "./assets/sky.xpm", &game.sky.w, &game.sky.h);
 	game.sky.addr = mlx_get_data_addr(game.sky.img, &game.sky.bits_per_pixel, &game.sky.line_length, &game.sky.endian);
 	
-	game.win = mlx_new_window(game.mlx, 800, 600, "cub3d");		
+	game.win = mlx_new_window(game.mlx, 800, 600, "cub3d");
 	mlx_hook(game.win, 17, 1L<<0, exit_game_request, &game);
-	mlx_hook(game.win, 02, 0, input, &game);
+	mlx_hook(game.win, 02, (1L<<0), input, &game);
+	mlx_hook(game.win, 03, (1L<<1), input_release, &game);
 	mlx_hook(game.win, 06, (1L << 6), mouse_move, &game);
 	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_loop(game.mlx);

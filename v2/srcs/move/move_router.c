@@ -1,23 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw_pixel.c                                       :+:      :+:    :+:   */
+/*   move_router.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/07 15:26:21 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/17 16:36:16 by hmaciel-         ###   ########.fr       */
+/*   Created: 2023/07/17 10:39:34 by hmaciel-          #+#    #+#             */
+/*   Updated: 2023/07/17 10:51:10 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-void	my_mlx_pixel_put(t_sprite *data, int x, int y, int color)
+void	move_player(t_root *game)
 {
-	char	*dst;
-
-	if (color == (int)TRANSPARENCY)
-		return ;
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int *)dst = color;
+	if (game->keys[0])
+		move_forward(game);
+	if (game->keys[1])
+		strafe_right(game);
+	if (game->keys[2])
+		move_backward(game);
+	if (game->keys[3])
+		strafe_left(game);
+	if (game->keys[4])
+		turn_right(game);
+	if (game->keys[5])
+		turn_left(game);
 }
