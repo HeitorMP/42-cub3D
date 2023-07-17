@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 09:38:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/17 16:11:31 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/17 18:59:17 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ typedef struct s_root {
 	t_ray		ray;
 	t_calc		calc;
 	int			keys[7];
+	int			c_color;
+	int			f_color;
 
 	Cursor cursor;
 	Pixmap blank;

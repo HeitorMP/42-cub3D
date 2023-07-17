@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:54:42 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/17 17:08:23 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/17 19:11:17 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,23 @@
 
 #include "includes/cub3d.h"
 
-void	draw_back(t_root *root)
+int	create_trgb(int t, int r, int g, int b)
 {
-	int y = 300;
+	return (t << 24 | r << 16 | g << 8 | b);
+}
+
+void	draw_back(t_root *game)
+{
+	int y = 0;
 	int x = 0;
-	put_img_to_img(&root->background, root->sky, 0 , 0);
 	while (y < 600)
 	{
 		while (x < 800)
 		{
-			/* if (y < 300)
-				my_mlx_pixel_put(&root->background, x, y, 0x000000FF);
-			else */
-				my_mlx_pixel_put(&root->background, x, y, 0x00808080);
+			if (y < 300)
+				my_mlx_pixel_put(&game->background, x, y, game->c_color);
+			else
+				my_mlx_pixel_put(&game->background, x, y, game->f_color);
 			x++;
 		}
 		x = 0;
@@ -171,50 +175,41 @@ int	main(int argc, char const *argv[])
 	game.map[8] = ft_strdup("1000001101");
 	game.map[9] = ft_strdup("1111111111");
 
-	//float posX = 22, posY = 12;  //x and y start position
 	game.player.x_pos = 4.5;
 	game.player.y_pos = 4.5;
-	
-	//float dirX = -1, dirY = 0; //initial direction vector
-/* 	game.player.dir_x = -1;
-	game.player.dir_y = 0.1;
- */
+	game.f_color = create_trgb(TRANSPARENCY, 128 ,128,128);
+	game.c_color = create_trgb(TRANSPARENCY, 0,0,0);
 	char dir = 'N';
 	if (dir == 'N')
 	{
-		game.player.plane_x = 0.66;
-		game.player.plane_y = 0;
 		game.player.dir_x = 0.0f;
 		game.player.dir_y = 1.0f;
+		game.player.plane_x = 0.66;
+		game.player.plane_y = 0;
 	}
 	else if (dir == 'S')
 	{
-		game.player.plane_x = -0.66;
-		game.player.plane_y = 0;
 		game.player.dir_x = 0.0f;
 		game.player.dir_y = -1.0f;
+		game.player.plane_x = -0.66;
+		game.player.plane_y = 0;
 	}
 
 	else if (dir == 'E')
 	{
-		game.player.plane_x = 0;
-		game.player.plane_y = -0.66;
 		game.player.dir_x = 1.0f;
 		game.player.dir_y = 0.1f;
+		game.player.plane_x = 0;
+		game.player.plane_y = -0.66;
 	}
-
 	else if (dir == 'W')
 	{
-		game.player.plane_x = 0;
-		game.player.plane_y = 0.66;
 		game.player.dir_x = -1.0f;
 		game.player.dir_y = 0.0f;
+		game.player.plane_x = 0;
+		game.player.plane_y = 0.66;
 	}
-	
-	//float planeX = 0, planeY = 0.66; //the 2d raycaster version of camera plane
-/* 	game.player.plane_x = 0;
-	game.player.plane_y = 0.66;
- */
+
 	game.ray.side = 0;
 	game.ray.hit = 0;
 
@@ -224,15 +219,11 @@ int	main(int argc, char const *argv[])
 	game.background.img = mlx_new_image(game.mlx, 800, 600);
 	game.background.addr = mlx_get_data_addr(game.background.img, &game.background.bits_per_pixel, &game.background.line_length,
 								&game.background.endian);
-	//game.player.img = mlx_new_image(game.mlx, 128, 128);
 	game.player.img = mlx_xpm_file_to_image(game.mlx, "./assets/gun.xpm", &game.player.w, &game.player.h);
 	game.player.addr = mlx_get_data_addr(game.player.img, &game.player.bits_per_pixel, &game.player.line_length, &game.player.endian);
 	
 	game.wall.img = mlx_xpm_file_to_image(game.mlx, "./assets/greystone.xpm", &game.wall.w, &game.wall.h);
 	game.wall.addr = mlx_get_data_addr(game.wall.img, &game.wall.bits_per_pixel, &game.wall.line_length, &game.wall.endian);
-
-	game.sky.img = mlx_xpm_file_to_image(game.mlx, "./assets/sky.xpm", &game.sky.w, &game.sky.h);
-	game.sky.addr = mlx_get_data_addr(game.sky.img, &game.sky.bits_per_pixel, &game.sky.line_length, &game.sky.endian);
 	
 	game.win = mlx_new_window(game.mlx, 800, 600, "cub3d");
 	mlx_hook(game.win, 17, 1L<<0, exit_game_request, &game);
