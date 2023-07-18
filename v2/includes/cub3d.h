@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 09:38:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/18 15:40:47 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/18 17:20:46 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ typedef struct s_sprite {
 	float	plane_x;
 	float	plane_y;
 	float	angle;
+	double	sprite_distance;
+	double ZBuffer[SCREENWIDTH];
 }			t_sprite;
 
 typedef struct s_root {
@@ -94,7 +96,6 @@ typedef struct s_root {
 	void		*win;
 	void		*win2;
 	t_sprite	player;
-	t_sprite	mini_background;
 	t_sprite	wall;
 	t_sprite	wall1;
 	t_sprite	wall2;
@@ -102,6 +103,8 @@ typedef struct s_root {
 	t_sprite	background;
 	t_sprite	bar;
 	t_sprite	mini_player;
+	t_sprite	mini_background;
+	t_sprite	barrel;
 	char		**map;
 	int			map_cols;
 	int			map_lines;
