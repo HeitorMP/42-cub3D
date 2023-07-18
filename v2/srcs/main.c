@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:54:42 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/17 21:14:41 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/18 08:59:20 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,52 @@ void	draw_line(t_root *root, int begin, int end, int color, int col)
 		my_mlx_pixel_put(&root->background, col, begin, color);
 		begin++;
 	}
+}
+
+void	draw_any_line(t_root *root, t_coord begin, t_coord end, int color, void *win)
+{
+	t_sprite	temp;
+	t_coord	new_begin;
+	int		pixel;
+	double deltaX;
+	double deltaY;
+
+	if (begin.x == end.x && begin.y == end.y)
+		return ;
+	new_begin = begin;
+	if (end.x < begin.x)
+	{
+		new_begin = end;
+		end = begin;
+	}
+	printf("begin: %d - %d | end: %d - %d\n", new_begin.x, new_begin.y, end.x, end.y);
+	deltaX = end.x - new_begin.x;
+	deltaY = end.y - new_begin.y;
+	temp.img = mlx_new_image(root->mlx, 64, 64);
+	temp.addr = mlx_get_data_addr(temp.img, &temp.bits_per_pixel, &temp.line_length,
+								&temp.endian);
+	pixel = sqrt((deltaX * deltaX) + (deltaY * deltaY));
+	deltaX /= pixel;
+	deltaY /= pixel;
+
+	double pixelX = new_begin.x;
+	double pixelY = new_begin.y;
+	while (pixel)
+	{
+		my_mlx_pixel_put(&temp, pixelX, pixelY, color);
+		pixelX += deltaX;
+		pixelY += deltaY;
+		--pixel;
+	}
+	put_draw_to_img(&root->mini_background, temp, 0, 0);
+	mlx_put_image_to_window(root->mlx, win, root->mini_background.img, new_begin.x, new_begin.y);
+}
+
+void	draw_ray_minimap(t_root *game)
+{
+	//draw_any_line(game, (t_coord){game->player.x_pos, game->player.y_pos}, (t_coord){game->ray.rayDirX + 10, game->ray.rayDirY + 10}, 0x00FF0000, game->win2);
+	put_img_to_img(&game->mini_background, game->mini_player, game->player.y_pos, game->player.x_pos); // inverted for minimap
+	mlx_put_image_to_window(game->mlx, game->win2, game->mini_background.img, 0,0);
 }
 
 
@@ -142,9 +188,10 @@ int	game_loop(t_root *game)
 
 		//******************** DESENHA APENAS NAS PAREDES *****************************
 		draw_walls(game, x);
-		printf("%f\n", game->player.dir_y);
+		//printf("%f\n", game->player.dir_y);
 	}
 	move_player(game);
+	draw_ray_minimap(game);
 	check_mouse_lock(game);
 	put_img_to_img(&game->background, game->player, 300,480);
 	mlx_put_image_to_window(game->mlx, game->win, game->background.img, 0, 0);
@@ -179,15 +226,15 @@ int	main(int argc, char const *argv[])
 	game.player.y_pos = 4.5;
 	game.f_color = create_trgb(TRANSPARENCY, 128 ,128,128);
 	game.c_color = create_trgb(TRANSPARENCY, 0,0,0);
-	char dir = 'N';
-	if (dir == 'N')
+	char dir = 'W';
+	if (dir == 'E')
 	{
 		game.player.dir_x = 0.0f;
 		game.player.dir_y = 1.0f;
 		game.player.plane_x = 0.66;
 		game.player.plane_y = 0;
 	}
-	else if (dir == 'S')
+	else if (dir == 'W')
 	{
 		game.player.dir_x = 0.0f;
 		game.player.dir_y = -1.0f;
@@ -195,14 +242,14 @@ int	main(int argc, char const *argv[])
 		game.player.plane_y = 0;
 	}
 
-	else if (dir == 'E')
+	else if (dir == 'S')
 	{
 		game.player.dir_x = 1.0f;
 		game.player.dir_y = 0.1f;
 		game.player.plane_x = 0;
 		game.player.plane_y = -0.66;
 	}
-	else if (dir == 'W')
+	else if (dir == 'N')
 	{
 		game.player.dir_x = -1.0f;
 		game.player.dir_y = 0.0f;
@@ -219,22 +266,30 @@ int	main(int argc, char const *argv[])
 	game.background.img = mlx_new_image(game.mlx, 800, 600);
 	game.background.addr = mlx_get_data_addr(game.background.img, &game.background.bits_per_pixel, &game.background.line_length,
 								&game.background.endian);
+	game.mini_background.img = mlx_new_image(game.mlx, 800, 600);
+	game.mini_background.addr = mlx_get_data_addr(game.mini_background.img, &game.mini_background.bits_per_pixel, &game.mini_background.line_length,
+								&game.mini_background.endian);
+								
 	game.player.img = mlx_xpm_file_to_image(game.mlx, "./assets/gun.xpm", &game.player.w, &game.player.h);
 	game.player.addr = mlx_get_data_addr(game.player.img, &game.player.bits_per_pixel, &game.player.line_length, &game.player.endian);
 	
-	game.wall.img = mlx_xpm_file_to_image(game.mlx, "./assets/N.xpm", &game.wall.w, &game.wall.h);
+	game.mini_player.img = mlx_xpm_file_to_image(game.mlx, "./assets/gun.xpm", &game.mini_player.w, &game.mini_player.h);
+	game.mini_player.addr = mlx_get_data_addr(game.mini_player.img, &game.mini_player.bits_per_pixel, &game.mini_player.line_length, &game.mini_player.endian);
+	
+	game.wall.img = mlx_xpm_file_to_image(game.mlx, "./assets/N1.xpm", &game.wall.w, &game.wall.h);
 	game.wall.addr = mlx_get_data_addr(game.wall.img, &game.wall.bits_per_pixel, &game.wall.line_length, &game.wall.endian);
 	
-	game.wall1.img = mlx_xpm_file_to_image(game.mlx, "./assets/S.xpm", &game.wall1.w, &game.wall1.h);
+	game.wall1.img = mlx_xpm_file_to_image(game.mlx, "./assets/S1.xpm", &game.wall1.w, &game.wall1.h);
 	game.wall1.addr = mlx_get_data_addr(game.wall1.img, &game.wall1.bits_per_pixel, &game.wall1.line_length, &game.wall1.endian);
 
-	game.wall2.img = mlx_xpm_file_to_image(game.mlx, "./assets/E.xpm", &game.wall2.w, &game.wall2.h);
+	game.wall2.img = mlx_xpm_file_to_image(game.mlx, "./assets/E1.xpm", &game.wall2.w, &game.wall2.h);
 	game.wall2.addr = mlx_get_data_addr(game.wall2.img, &game.wall2.bits_per_pixel, &game.wall2.line_length, &game.wall2.endian);
 	
-	game.wall3.img = mlx_xpm_file_to_image(game.mlx, "./assets/W.xpm", &game.wall3.w, &game.wall3.h);
+	game.wall3.img = mlx_xpm_file_to_image(game.mlx, "./assets/W1.xpm", &game.wall3.w, &game.wall3.h);
 	game.wall3.addr = mlx_get_data_addr(game.wall3.img, &game.wall3.bits_per_pixel, &game.wall3.line_length, &game.wall3.endian);
 	
 	game.win = mlx_new_window(game.mlx, 800, 600, "cub3d");
+	game.win2 = mlx_new_window(game.mlx, 800, 600, "minimap");
 	mlx_hook(game.win, 17, 1L<<0, exit_game_request, &game);
 	mlx_hook(game.win, 02, (1L<<0), input, &game);
 	mlx_hook(game.win, 03, (1L<<1), input_release, &game);
