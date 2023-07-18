@@ -16,7 +16,7 @@ SRCS		:=	main.c \
 				draw_utils/draw_img.c draw_utils/draw_pixel.c draw_utils/draw_walls.c \
 				events/lock_mouse.c events/input_handler.c \
 				exit_game/exit_request.c \
-				setup_game/setup.c
+				setup_game/setup.c setup_game/setup_init_direction.c
 
 OBJS		= ${SRCS:%.c=${OBJSDIR}/%.o}
 

@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 09:38:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/18 08:44:36 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/18 15:40:47 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include <time.h>
 # include "../minilibx-linux/mlx.h"
 # include "../libft/includes/libft.h"
-# include "../minilibx-linux/mlx_int.h"
 
 /* KEY MACROS */
 # define ESC 65307
@@ -36,6 +35,11 @@
 
 # define TRUE 1
 # define FALSE 0
+
+# define SCREENWIDTH 1024
+# define SCREENHEIGHT 728
+
+# define IMGSIZE 64
 
 typedef struct s_coord
 {
@@ -96,31 +100,29 @@ typedef struct s_root {
 	t_sprite	wall2;
 	t_sprite	wall3;
 	t_sprite	background;
-	t_sprite	sky;
+	t_sprite	bar;
 	t_sprite	mini_player;
 	char		**map;
 	int			map_cols;
 	int			map_lines;
-	clock_t		time;
-	clock_t		old_time;
 	float		moveSpeed;
 	float		rotSpeed;
-	unsigned int buffer[600][800];
 	t_ray		ray;
 	t_calc		calc;
 	int			keys[7];
 	int			c_color;
 	int			f_color;
-
-	Cursor cursor;
-	Pixmap blank;
-	XColor dummy;
+	char		init_dir;
 }			t_root;
 
 // PROTOTYPE
 
 /* SETUP INIT */
 void	init_values(t_root *game);
+void	init_east(t_root *game);
+void	init_west(t_root *game);
+void	init_north(t_root *game);
+void	init_south(t_root *game);
 
 /* EXIT */
 int		exit_game_request(t_root *game);

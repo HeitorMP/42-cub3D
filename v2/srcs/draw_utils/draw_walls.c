@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 12:13:28 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/18 08:58:28 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/18 13:28:52 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,16 @@ void	draw_walls(t_root *game, int col)
 	int				y;
 
 	wallx = calc_wall_x(game);
-	tex_x = (int)(wallx * (double)(64));
-	texpos = (game->calc.drawStart - 600 / 2 + game->calc.lineHeight / 2) \
-		* (1.0 * 64 / game->calc.lineHeight);
+	tex_x = (int)(wallx * (double)(IMGSIZE));
+	texpos = (game->calc.drawStart - SCREENHEIGHT / 2 + game->calc.lineHeight / 2) \
+		* (1.0 * IMGSIZE / game->calc.lineHeight);
 	y = game->calc.drawStart;
-	if(game->ray.side == 0 && game->ray.rayDirX > 0) tex_x = 64 - tex_x - 1; // to fix inverted textures
-	if(game->ray.side == 1 && game->ray.rayDirY < 0) tex_x = 64 - tex_x - 1;
+	if(game->ray.side == 0 && game->ray.rayDirX > 0) tex_x = IMGSIZE - tex_x - 1; // to fix inverted textures
+	if(game->ray.side == 1 && game->ray.rayDirY < 0) tex_x = IMGSIZE - tex_x - 1;
 	while (y < game->calc.drawEnd)
 	{
-		tex_y = (int)texpos & (64 - 1);
-		texpos += (1.0 * 64 / game->calc.lineHeight);
+		tex_y = (int)texpos & (IMGSIZE - 1);
+		texpos += (1.0 * IMGSIZE / game->calc.lineHeight);
  		if(game->ray.side == 0 && game->ray.rayDirX > 0)
 		{
 			my_mlx_pixel_put(&game->background, col, y, \

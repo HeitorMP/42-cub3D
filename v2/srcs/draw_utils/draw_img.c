@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:05:24 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/17 16:08:58 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/18 13:17:58 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ void	put_draw_to_img(t_sprite *dst, t_sprite src, int x, int y)
 	int	j;
 
 	i = 0;
-	while (i < 800)
+	while (i < SCREENWIDTH)
 	{
 		j = 0;
-		while (j < 600)
+		while (j < SCREENHEIGHT)
 		{
 			my_mlx_pixel_put(dst, x + i, y + j, get_pixel_img(src, i, j));
 			j++;
