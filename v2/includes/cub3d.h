@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 09:38:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/19 15:59:50 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/19 20:53:07 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ int		create_trgb(int t, int r, int g, int b);
 /* DRAW */
 void	draw_walls(t_root *game, int col);
 void	draw_back(t_root *game);
+void	draw_sprite(t_root *game);
 
 /* MINIMAP */
 void	draw_minimap(t_root *root, char **map);
@@ -166,4 +167,8 @@ int	input_release(int keycode, t_root *root);
 int	input(int keycode, t_root *root);
 int	mouse_input_release(int keycode, int x, int y, t_root *game);
 int	mouse_input(int keycode, int x, int y, t_root *game);
+
+/* EVENTS */
+void	player_animation(t_root *game);
+void	dda_calculation(t_root *game);
 #endif

@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:54:42 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/19 19:58:22 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/19 20:53:31 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,166 +21,19 @@ void	draw_ray_minimap(t_root *game)
 	mlx_put_image_to_window(game->mlx, game->win2, game->mini_background.img, 0,0);
 }
 
-void	player_animation(t_root *game)
-{
-	static int count_anim;
-	
-	
-	if (count_anim >= 20)
-		count_anim = 0;
-	
-	if (game->keys[7] == 0 && count_anim == 0)
-	{
-		game->player.img = mlx_xpm_file_to_image(game->mlx, "./assets/gun.xpm", &game->player.w, &game->player.h);
-		game->player.addr = mlx_get_data_addr(game->player.img, &game->player.bits_per_pixel, &game->player.line_length, &game->player.endian);
-		return ;
-	}
-
-	count_anim++;
-	if (count_anim == 1)
-	{
-		game->player.img = mlx_xpm_file_to_image(game->mlx, "./assets/gun2.xpm", &game->player.w, &game->player.h);
-		game->player.addr = mlx_get_data_addr(game->player.img, &game->player.bits_per_pixel, &game->player.line_length, &game->player.endian);
-	}
-	else if (count_anim == 11)
-	{
-		game->player.img = mlx_xpm_file_to_image(game->mlx, "./assets/gun3.xpm", &game->player.w, &game->player.h);
-		game->player.addr = mlx_get_data_addr(game->player.img, &game->player.bits_per_pixel, &game->player.line_length, &game->player.endian);
-	}
-}
-
 int	game_loop(t_root *game)
 {
+ 	
 	draw_back(game); // draw ceiling and floor
-	for(int x = 0; x < SCREENWIDTH; x++) // x = size of columns in windows
-	{
-		//calculate ray position and direction
-		float cameraX = 2 * x / (float)(SCREENWIDTH) - 1; //x-coordinate in camera space // -1 to correct view
-		game->ray.rayDirX = game->player.dir_x + game->player.plane_x * cameraX;
-		game->ray.rayDirY = game->player.dir_y + game->player.plane_y * cameraX;
-
-		//which box of the map we're in
-		int mapX = (int)(game->player.x_pos);
-		int mapY = (int)(game->player.y_pos);
-
-		//length of ray from current position to next x or y-sid
-		//length of ray from one x or y-side to next x or y-side
-		if (game->ray.rayDirX == 0)
-		{
-			game->ray.deltaDistX = 1e30;
-		}
-		else
-		{
-			game->ray.deltaDistX = fabs(1 / game->ray.rayDirX);
-		}
-		game->ray.deltaDistY = (game->ray.rayDirY == 0) ? 1e30 : fabs(1 / game->ray.rayDirY);
-		game->ray.hit = 0;
-		if (game->ray.rayDirX < 0)
-		{
-			game->ray.stepX = -1;
-			game->ray.sideDistX = (game->player.x_pos - mapX) * game->ray.deltaDistX;
-		}
-		else
-		{
-			game->ray.stepX = 1;
-			game->ray.sideDistX = (mapX + 1.0 - game->player.x_pos) * game->ray.deltaDistX;
-		}
-		if (game->ray.rayDirY < 0)
-		{
-			game->ray.stepY = -1;
-			game->ray.sideDistY = (game->player.y_pos - mapY) * game->ray.deltaDistY;
-		}
-		else
-		{
-			game->ray.stepY = 1;
-			game->ray.sideDistY = (mapY + 1.0 - game->player.y_pos) * game->ray.deltaDistY;
-		}
-		while (game->ray.hit == 0)
-		{
-			//jump to next map square, either in x-direction, or in y-direction
-			if (game->ray.sideDistX < game->ray.sideDistY)
-			{
-				game->ray.sideDistX += game->ray.deltaDistX;
-				mapX += game->ray.stepX;
-				game->ray.side = 0;
-			}
-			else
-			{
-				game->ray.sideDistY += game->ray.deltaDistY;
-				mapY += game->ray.stepY;
-				game->ray.side = 1;
-			}
-			//Check if ray has hit a wall
-			if (game->map[mapX][mapY] != '0')
-				game->ray.hit = 1;
-		}
-		if(game->ray.side == 0)
-			game->ray.perpWallDist = (game->ray.sideDistX - game->ray.deltaDistX);
-		else
-			game->ray.perpWallDist = (game->ray.sideDistY - game->ray.deltaDistY);
-
-		game->calc.lineHeight = (int)(SCREENHEIGHT / game->ray.perpWallDist);
-		game->calc.drawStart = (game->calc.lineHeight * -1) / 2 + SCREENHEIGHT / 2;
-		if(game->calc.drawStart < 0)
-			game->calc.drawStart = 0;
-		game->calc.drawEnd = game->calc.lineHeight / 2 + SCREENHEIGHT / 2;
-		if(game->calc.drawEnd >= SCREENHEIGHT)
-			game->calc.drawEnd = SCREENHEIGHT - 1;
-
-		//******************** DESENHA APENAS NAS PAREDES *****************************
-		draw_walls(game, x);
-		game->barrel.ZBuffer[x] = game->ray.perpWallDist;
-	}
-	/* Draw sprite */
-	game->barrel.sprite_distance = ((game->player.x_pos - game->barrel.x_pos) * (game->player.x_pos - game->barrel.x_pos) + (game->player.y_pos - game->barrel.y_pos) * (game->player.y_pos - game->barrel.y_pos));
-	double spriteX = game->barrel.x_pos - game->player.x_pos;
-	double spriteY = game->barrel.y_pos - game->player.y_pos;
-	double invDet = 1.0 / (game->player.plane_x *  game->player.dir_y - game->player.dir_x * game->player.plane_y); //required for correct matrix multiplication
-
-	double transformX = invDet * (game->player.dir_y * spriteX - game->player.dir_x * spriteY);
-	double transformY = invDet * (-game->player.plane_y * spriteX + game->player.plane_x * spriteY); //this is actually the depth inside the screen, that what Z is in 3D
-	int spriteScreenX = (int)((SCREENWIDTH / 2) * (1 + transformX / transformY));
-
-	 //calculate height of the sprite on screen
-      int spriteHeight = abs((int)(SCREENHEIGHT / (transformY))); //using 'transformY' instead of the real distance prevents fisheye
-      //calculate lowest and highest pixel to fill in current stripe
-      int drawStartY = -spriteHeight / 2 + SCREENHEIGHT / 2;
-      if(drawStartY < 0) drawStartY = 0;
-      int drawEndY = spriteHeight / 2 + SCREENHEIGHT / 2;
-      if(drawEndY >= SCREENHEIGHT) drawEndY = SCREENHEIGHT - 1;
-
-	   //calculate width of the sprite
-      int spriteWidth = abs( (int)(SCREENHEIGHT / (transformY)));
-      int drawStartX = -spriteWidth / 2 + spriteScreenX;
-      if(drawStartX < 0) drawStartX = 0;
-      int drawEndX = spriteWidth / 2 + spriteScreenX;
-      if(drawEndX >= SCREENWIDTH) drawEndX = SCREENWIDTH - 1;
-
-	  for(int stripe = drawStartX; stripe < drawEndX; stripe++)
-      {
-        int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * IMGSIZE / spriteWidth) / 256;
-        //the conditions in the if are:
-        //1) it's in front of camera plane so you don't see things behind you
-        //2) it's on the screen (left)
-        //3) it's on the screen (right)
-        //4) ZBuffer, with perpendicular distance
-        if(transformY > 0 && stripe > 0 && stripe < SCREENWIDTH && transformY < game->barrel.ZBuffer[stripe])
-        for(int y = drawStartY; y < drawEndY; y++) //for every pixel of the current stripe
-        {
-          int d = (y) * 256 - SCREENHEIGHT * 128 + spriteHeight * 128; //256 and 128 factors to avoid floats
-          int texY = ((d * IMGSIZE) / spriteHeight) / 256;
-		  my_mlx_pixel_put(&game->background, stripe, y, get_pixel_img(game->barrel, texX, texY));
-          //unsigned color = texture[sprite[spriteOrder[i]].texture][IMGSIZE * texY + texX]; //get current color from the texture
-          //if((color & 0x00FFFFFF) != 0) buffer[y][stripe] = color; //paint pixel if it isn't black, black is the invisible color
-        }
-	  }
-	move_player(game);
+	dda_calculation(game);
+	draw_sprite(game);
 	//draw_ray_minimap(game);
 	check_mouse_lock(game);
 	player_animation(game);
- 	put_img_to_img(&game->background, game->player, 448,539);
 	put_img_to_img(&game->background, game->bar, 0,668);
+	put_img_to_img(&game->background, game->player, 448,539);
 	mlx_put_image_to_window(game->mlx, game->win, game->background.img, 0, 0);
+	move_player(game);
 	return (0);
 }
 
