@@ -6,85 +6,13 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:54:42 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/18 17:48:19 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/19 11:46:09 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
 #include "includes/cub3d.h"
-
-int	create_trgb(int t, int r, int g, int b)
-{
-	return (t << 24 | r << 16 | g << 8 | b);
-}
-
-void	draw_back(t_root *game)
-{
-	int y = 0;
-	int x = 0;
-	while (y < SCREENHEIGHT)
-	{
-		while (x < SCREENWIDTH)
-		{
-			if (y < SCREENHEIGHT / 2)
-				my_mlx_pixel_put(&game->background, x, y, game->c_color);
-			else
-				my_mlx_pixel_put(&game->background, x, y, game->f_color);
-			x++;
-		}
-		x = 0;
-		y++;
-	}
-}
-
-void	draw_line(t_root *root, int begin, int end, int color, int col)
-{
-	while (begin < end)
-	{
-		my_mlx_pixel_put(&root->background, col, begin, color);
-		begin++;
-	}
-}
-
-void	draw_any_line(t_root *root, t_coord begin, t_coord end, int color, void *win)
-{
-	t_sprite	temp;
-	t_coord	new_begin;
-	int		pixel;
-	double deltaX;
-	double deltaY;
-
-	if (begin.x == end.x && begin.y == end.y)
-		return ;
-	new_begin = begin;
-	if (end.x < begin.x)
-	{
-		new_begin = end;
-		end = begin;
-	}
-	printf("begin: %d - %d | end: %d - %d\n", new_begin.x, new_begin.y, end.x, end.y);
-	deltaX = end.x - new_begin.x;
-	deltaY = end.y - new_begin.y;
-	temp.img = mlx_new_image(root->mlx, IMGSIZE, IMGSIZE);
-	temp.addr = mlx_get_data_addr(temp.img, &temp.bits_per_pixel, &temp.line_length,
-								&temp.endian);
-	pixel = sqrt((deltaX * deltaX) + (deltaY * deltaY));
-	deltaX /= pixel;
-	deltaY /= pixel;
-
-	double pixelX = new_begin.x;
-	double pixelY = new_begin.y;
-	while (pixel)
-	{
-		my_mlx_pixel_put(&temp, pixelX, pixelY, color);
-		pixelX += deltaX;
-		pixelY += deltaY;
-		--pixel;
-	}
-	put_draw_to_img(&root->mini_background, temp, 0, 0);
-	mlx_put_image_to_window(root->mlx, win, root->mini_background.img, new_begin.x, new_begin.y);
-}
 
 void	draw_ray_minimap(t_root *game)
 {
@@ -96,9 +24,18 @@ void	draw_ray_minimap(t_root *game)
 void	player_animation(t_root *game)
 {
 	static int count_anim;
-
+	
+	
 	if (count_anim >= 60)
 		count_anim = 0;
+	
+	if (game->keys[7] == 0 && count_anim == 0)
+	{
+		mlx_destroy_image(game->mlx, game->player.img);
+		game->player.img = mlx_xpm_file_to_image(game->mlx, "./assets/gun.xpm", &game->player.w, &game->player.h);
+		game->player.addr = mlx_get_data_addr(game->player.img, &game->player.bits_per_pixel, &game->player.line_length, &game->player.endian);
+		return ;
+	}
 
 	count_anim++;
 	mlx_destroy_image(game->mlx, game->player.img);
@@ -117,7 +54,6 @@ void	player_animation(t_root *game)
 		game->player.img = mlx_xpm_file_to_image(game->mlx, "./assets/gun3.xpm", &game->player.w, &game->player.h);
 		game->player.addr = mlx_get_data_addr(game->player.img, &game->player.bits_per_pixel, &game->player.line_length, &game->player.endian);
 	}
-	
 }
 
 int	game_loop(t_root *game)
@@ -293,8 +229,8 @@ int	main(int argc, char const *argv[])
 	game.init_dir = 'W'; // receive from parse in the future
 	
 	init_values(&game);
-	game.mlx = mlx_init();
 
+	game.mlx = mlx_init();
 	game.background.img = mlx_new_image(game.mlx, SCREENWIDTH, SCREENHEIGHT);
 	game.background.addr = mlx_get_data_addr(game.background.img, &game.background.bits_per_pixel, &game.background.line_length,
 								&game.background.endian);
@@ -329,10 +265,14 @@ int	main(int argc, char const *argv[])
 	
 	game.win = mlx_new_window(game.mlx, SCREENWIDTH, SCREENHEIGHT, "cub3d");
 	//game.win2 = mlx_new_window(game.mlx, SCREENWIDTH, SCREENHEIGHT, "minimap");
-	mlx_hook(game.win, 17, 1L<<0, exit_game_request, &game);
+	printf("%p\n", &game);
+	
 	mlx_hook(game.win, 02, (1L<<0), input, &game);
 	mlx_hook(game.win, 03, (1L<<1), input_release, &game);
-	mlx_hook(game.win, 06, (1L << 6), mouse_move, &game);
+	mlx_hook(game.win, 17, 1L<<0, exit_game_request, &game);
+	mlx_hook(game.win, 04, (1L<<2), mouse_input, &game);
+	mlx_hook(game.win, 05, (1L<<3), mouse_input_release, &game);
+	mlx_hook(game.win, 06, (1L<<6), mouse_move, &game);
 	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_loop(game.mlx);
 	return (0);

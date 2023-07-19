@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 09:38:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/18 17:20:46 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/19 11:41:08 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ typedef struct s_sprite {
 	float	plane_y;
 	float	angle;
 	double	sprite_distance;
-	double ZBuffer[SCREENWIDTH];
+	double	ZBuffer[SCREENWIDTH];
 }			t_sprite;
 
 typedef struct s_root {
@@ -112,7 +112,7 @@ typedef struct s_root {
 	float		rotSpeed;
 	t_ray		ray;
 	t_calc		calc;
-	int			keys[7];
+	int			keys[8];
 	int			c_color;
 	int			f_color;
 	char		init_dir;
@@ -145,9 +145,11 @@ void	my_mlx_pixel_put(t_sprite *data, int x, int y, int color);
 void	put_img_to_img(t_sprite *dst, t_sprite src, int x, int y);
 void	put_draw_to_img(t_sprite *dst, t_sprite src, int x, int y);
 int		get_pixel_img(t_sprite img, int x, int y);
+int		create_trgb(int t, int r, int g, int b);
 
 /* DRAW */
 void	draw_walls(t_root *game, int col);
+void	draw_back(t_root *game);
 
 /* MINIMAP */
 void	draw_minimap(t_root *root, char **map);
@@ -162,4 +164,6 @@ void	check_mouse_lock(t_root *game);
 /* HOOK HANDLERS */
 int	input_release(int keycode, t_root *root);
 int	input(int keycode, t_root *root);
+int	mouse_input_release(int keycode, int x, int y, t_root *game);
+int	mouse_input(int keycode, int x, int y, t_root *game);
 #endif

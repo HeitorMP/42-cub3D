@@ -13,7 +13,7 @@ MLX_DIR		:= ./minilibx-linux
 # SOURCE FILES
 SRCS		:=	main.c \
 				move/straight.c move/turn.c move/strafe.c move/move_router.c move/mouse.c \
-				draw_utils/draw_img.c draw_utils/draw_pixel.c draw_utils/draw_walls.c \
+				draw_utils/draw_img.c draw_utils/draw_pixel.c draw_utils/draw_walls.c draw_utils/create_rgb.c draw_utils/draw_background.c \
 				events/lock_mouse.c events/input_handler.c \
 				exit_game/exit_request.c \
 				setup_game/setup.c setup_game/setup_init_direction.c
