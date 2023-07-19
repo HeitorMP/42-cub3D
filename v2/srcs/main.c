@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:54:42 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/19 16:02:58 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/19 19:58:22 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,20 +233,20 @@ int	main(int argc, char const *argv[])
 	game.barrel.img = mlx_xpm_file_to_image(game.mlx, "./assets/barrel.xpm", &game.barrel.w, &game.barrel.h);
 	game.barrel.addr = mlx_get_data_addr(game.barrel.img, &game.barrel.bits_per_pixel, &game.barrel.line_length, &game.barrel.endian);
 	
-	game.mini_player.img = mlx_xpm_file_to_image(game.mlx, "./assets/gun.xpm", &game.mini_player.w, &game.mini_player.h);
-	game.mini_player.addr = mlx_get_data_addr(game.mini_player.img, &game.mini_player.bits_per_pixel, &game.mini_player.line_length, &game.mini_player.endian);
+/* 	game.mini_player.img = mlx_xpm_file_to_image(game.mlx, "./assets/gun.xpm", &game.mini_player.w, &game.mini_player.h);
+	game.mini_player.addr = mlx_get_data_addr(game.mini_player.img, &game.mini_player.bits_per_pixel, &game.mini_player.line_length, &game.mini_player.endian); */
 	
-	game.wall.img = mlx_xpm_file_to_image(game.mlx, "./assets/N.xpm", &game.wall.w, &game.wall.h);
+	game.wall.img = mlx_xpm_file_to_image(game.mlx, "./assets/tetris.xpm", &game.wall.w, &game.wall.h);
 	game.wall.addr = mlx_get_data_addr(game.wall.img, &game.wall.bits_per_pixel, &game.wall.line_length, &game.wall.endian);
 
 	
-	game.wall1.img = mlx_xpm_file_to_image(game.mlx, "./assets/S.xpm", &game.wall1.w, &game.wall1.h);
+	game.wall1.img = mlx_xpm_file_to_image(game.mlx, "./assets/pacman.xpm", &game.wall1.w, &game.wall1.h);
 	game.wall1.addr = mlx_get_data_addr(game.wall1.img, &game.wall1.bits_per_pixel, &game.wall1.line_length, &game.wall1.endian);
 
-	game.wall2.img = mlx_xpm_file_to_image(game.mlx, "./assets/E.xpm", &game.wall2.w, &game.wall2.h);
+	game.wall2.img = mlx_xpm_file_to_image(game.mlx, "./assets/pong.xpm", &game.wall2.w, &game.wall2.h);
 	game.wall2.addr = mlx_get_data_addr(game.wall2.img, &game.wall2.bits_per_pixel, &game.wall2.line_length, &game.wall2.endian);
 	
-	game.wall3.img = mlx_xpm_file_to_image(game.mlx, "./assets/W.xpm", &game.wall3.w, &game.wall3.h);
+	game.wall3.img = mlx_xpm_file_to_image(game.mlx, "./assets/asteroids.xpm", &game.wall3.w, &game.wall3.h);
 	game.wall3.addr = mlx_get_data_addr(game.wall3.img, &game.wall3.bits_per_pixel, &game.wall3.line_length, &game.wall3.endian);
 	
 	game.win = mlx_new_window(game.mlx, SCREENWIDTH, SCREENHEIGHT, "cub3d");
