@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:54:42 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/19 11:46:09 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/19 12:17:16 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,30 +26,23 @@ void	player_animation(t_root *game)
 	static int count_anim;
 	
 	
-	if (count_anim >= 60)
+	if (count_anim >= 20)
 		count_anim = 0;
 	
 	if (game->keys[7] == 0 && count_anim == 0)
 	{
-		mlx_destroy_image(game->mlx, game->player.img);
 		game->player.img = mlx_xpm_file_to_image(game->mlx, "./assets/gun.xpm", &game->player.w, &game->player.h);
 		game->player.addr = mlx_get_data_addr(game->player.img, &game->player.bits_per_pixel, &game->player.line_length, &game->player.endian);
 		return ;
 	}
 
 	count_anim++;
-	mlx_destroy_image(game->mlx, game->player.img);
-	if (count_anim < 20)
-	{
-		game->player.img = mlx_xpm_file_to_image(game->mlx, "./assets/gun.xpm", &game->player.w, &game->player.h);
-		game->player.addr = mlx_get_data_addr(game->player.img, &game->player.bits_per_pixel, &game->player.line_length, &game->player.endian);
-	}
-	else if (count_anim < 40)
+	if (count_anim == 1)
 	{
 		game->player.img = mlx_xpm_file_to_image(game->mlx, "./assets/gun2.xpm", &game->player.w, &game->player.h);
 		game->player.addr = mlx_get_data_addr(game->player.img, &game->player.bits_per_pixel, &game->player.line_length, &game->player.endian);
 	}
-	else
+	else if (count_anim == 11)
 	{
 		game->player.img = mlx_xpm_file_to_image(game->mlx, "./assets/gun3.xpm", &game->player.w, &game->player.h);
 		game->player.addr = mlx_get_data_addr(game->player.img, &game->player.bits_per_pixel, &game->player.line_length, &game->player.endian);
@@ -70,12 +63,8 @@ int	game_loop(t_root *game)
 		int mapX = (int)(game->player.x_pos);
 		int mapY = (int)(game->player.y_pos);
 
-		//length of ray from current position to next x or y-side
-	/* 	float sideDistX;
-		float sideDistY; */
-
+		//length of ray from current position to next x or y-sid
 		//length of ray from one x or y-side to next x or y-side
-		//float deltaDistX;
 		if (game->ray.rayDirX == 0)
 		{
 			game->ray.deltaDistX = 1e30;
@@ -106,7 +95,6 @@ int	game_loop(t_root *game)
 			game->ray.stepY = 1;
 			game->ray.sideDistY = (mapY + 1.0 - game->player.y_pos) * game->ray.deltaDistY;
 		}
-
 		while (game->ray.hit == 0)
 		{
 			//jump to next map square, either in x-direction, or in y-direction
@@ -141,11 +129,10 @@ int	game_loop(t_root *game)
 
 		//******************** DESENHA APENAS NAS PAREDES *****************************
 		draw_walls(game, x);
-		//printf("%f\n", game->player.dir_y);
-		game->barrel.ZBuffer[x] = game->ray.perpWallDist;
+		//game->barrel.ZBuffer[x] = game->ray.perpWallDist;
 	}
 	/* Draw sprite */
-	game->barrel.sprite_distance = ((game->player.x_pos - game->barrel.x_pos) * (game->player.x_pos - game->barrel.x_pos) + (game->player.y_pos - game->barrel.y_pos) * (game->player.y_pos - game->barrel.y_pos));
+	/* game->barrel.sprite_distance = ((game->player.x_pos - game->barrel.x_pos) * (game->player.x_pos - game->barrel.x_pos) + (game->player.y_pos - game->barrel.y_pos) * (game->player.y_pos - game->barrel.y_pos));
 	double spriteX = game->barrel.x_pos - game->player.x_pos;
 	double spriteY = game->barrel.y_pos - game->player.y_pos;
 	double invDet = 1.0 / (game->player.plane_x *  game->player.dir_y - game->player.dir_x * game->player.plane_y); //required for correct matrix multiplication
@@ -186,13 +173,12 @@ int	game_loop(t_root *game)
           //unsigned color = texture[sprite[spriteOrder[i]].texture][IMGSIZE * texY + texX]; //get current color from the texture
           //if((color & 0x00FFFFFF) != 0) buffer[y][stripe] = color; //paint pixel if it isn't black, black is the invisible color
         }
-	  }
+	  } */
 	move_player(game);
 	//draw_ray_minimap(game);
 	check_mouse_lock(game);
 	player_animation(game);
-	put_img_to_img(&game->background, game->player, 440,500);
-	mlx_put_image_to_window(game->mlx, game->win, game->background.img, 0, 0);
+ 	put_img_to_img(&game->background, game->player, 448,500);
 	put_img_to_img(&game->background, game->bar, 0,628);
 	mlx_put_image_to_window(game->mlx, game->win, game->background.img, 0, 0);
 	return (0);
@@ -265,8 +251,6 @@ int	main(int argc, char const *argv[])
 	
 	game.win = mlx_new_window(game.mlx, SCREENWIDTH, SCREENHEIGHT, "cub3d");
 	//game.win2 = mlx_new_window(game.mlx, SCREENWIDTH, SCREENHEIGHT, "minimap");
-	printf("%p\n", &game);
-	
 	mlx_hook(game.win, 02, (1L<<0), input, &game);
 	mlx_hook(game.win, 03, (1L<<1), input_release, &game);
 	mlx_hook(game.win, 17, 1L<<0, exit_game_request, &game);
