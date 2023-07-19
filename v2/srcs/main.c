@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:54:42 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/19 12:17:16 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/19 16:02:58 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,10 +129,10 @@ int	game_loop(t_root *game)
 
 		//******************** DESENHA APENAS NAS PAREDES *****************************
 		draw_walls(game, x);
-		//game->barrel.ZBuffer[x] = game->ray.perpWallDist;
+		game->barrel.ZBuffer[x] = game->ray.perpWallDist;
 	}
 	/* Draw sprite */
-	/* game->barrel.sprite_distance = ((game->player.x_pos - game->barrel.x_pos) * (game->player.x_pos - game->barrel.x_pos) + (game->player.y_pos - game->barrel.y_pos) * (game->player.y_pos - game->barrel.y_pos));
+	game->barrel.sprite_distance = ((game->player.x_pos - game->barrel.x_pos) * (game->player.x_pos - game->barrel.x_pos) + (game->player.y_pos - game->barrel.y_pos) * (game->player.y_pos - game->barrel.y_pos));
 	double spriteX = game->barrel.x_pos - game->player.x_pos;
 	double spriteY = game->barrel.y_pos - game->player.y_pos;
 	double invDet = 1.0 / (game->player.plane_x *  game->player.dir_y - game->player.dir_x * game->player.plane_y); //required for correct matrix multiplication
@@ -173,13 +173,13 @@ int	game_loop(t_root *game)
           //unsigned color = texture[sprite[spriteOrder[i]].texture][IMGSIZE * texY + texX]; //get current color from the texture
           //if((color & 0x00FFFFFF) != 0) buffer[y][stripe] = color; //paint pixel if it isn't black, black is the invisible color
         }
-	  } */
+	  }
 	move_player(game);
 	//draw_ray_minimap(game);
 	check_mouse_lock(game);
 	player_animation(game);
- 	put_img_to_img(&game->background, game->player, 448,500);
-	put_img_to_img(&game->background, game->bar, 0,628);
+ 	put_img_to_img(&game->background, game->player, 448,539);
+	put_img_to_img(&game->background, game->bar, 0,668);
 	mlx_put_image_to_window(game->mlx, game->win, game->background.img, 0, 0);
 	return (0);
 }

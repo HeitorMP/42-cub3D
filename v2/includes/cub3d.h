@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 09:38:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/19 12:11:47 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/19 15:59:50 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 # define FALSE 0
 
 # define SCREENWIDTH 1024
-# define SCREENHEIGHT 728
+# define SCREENHEIGHT 768
 
 # define IMGSIZE 64
 
