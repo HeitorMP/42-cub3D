@@ -6,19 +6,26 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:54:42 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/19 20:53:31 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/20 13:16:07 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include "includes/cub3d.h"
 
 void	draw_ray_minimap(t_root *game)
 {
 	//draw_any_line(game, (t_coord){game->player.x_pos, game->player.y_pos}, (t_coord){game->ray.rayDirX + 10, game->ray.rayDirY + 10}, 0x00FF0000, game->win2);
-	put_img_to_img(&game->mini_background, game->mini_player, game->player.y_pos, game->player.x_pos); // inverted for minimap
-	mlx_put_image_to_window(game->mlx, game->win2, game->mini_background.img, 0,0);
+	
+	for (int y  = 0; y < 10; y++)
+	{
+		for (int x = 0; x < 10; x++)
+		{
+			if (game->map[y][x] == '1')
+				put_img_to_img(&game->background, game->mini_wall, x * 10, y * 10);
+		}
+	}
+	put_img_to_img(&game->background, game->mini_player, (int)game->player.y_pos * 10, (int)game->player.x_pos * 10); // inverted for minimap
+	mlx_put_image_to_window(game->mlx, game->win, game->background.img, 0,0);
 }
 
 int	game_loop(t_root *game)
@@ -27,12 +34,12 @@ int	game_loop(t_root *game)
 	draw_back(game); // draw ceiling and floor
 	dda_calculation(game);
 	draw_sprite(game);
-	//draw_ray_minimap(game);
 	check_mouse_lock(game);
 	player_animation(game);
 	put_img_to_img(&game->background, game->bar, 0,668);
 	put_img_to_img(&game->background, game->player, 448,539);
 	mlx_put_image_to_window(game->mlx, game->win, game->background.img, 0, 0);
+	draw_ray_minimap(game);
 	move_player(game);
 	return (0);
 }
@@ -73,9 +80,12 @@ int	main(int argc, char const *argv[])
 	game.background.img = mlx_new_image(game.mlx, SCREENWIDTH, SCREENHEIGHT);
 	game.background.addr = mlx_get_data_addr(game.background.img, &game.background.bits_per_pixel, &game.background.line_length,
 								&game.background.endian);
-	game.mini_background.img = mlx_new_image(game.mlx, SCREENWIDTH, SCREENHEIGHT);
+	game.mini_background.img = mlx_new_image(game.mlx, 10 * 10, 10 * 10);
 	game.mini_background.addr = mlx_get_data_addr(game.mini_background.img, &game.mini_background.bits_per_pixel, &game.mini_background.line_length,
 								&game.mini_background.endian);
+
+	game.mini_wall.img = mlx_xpm_file_to_image(game.mlx, "./assets/mini_wall.xpm", &game.mini_wall.w, &game.mini_wall.h);
+	game.mini_wall.addr = mlx_get_data_addr(game.mini_wall.img, &game.mini_wall.bits_per_pixel, &game.mini_wall.line_length, &game.mini_wall.endian);
 
 	game.bar.img = mlx_xpm_file_to_image(game.mlx, "./assets/hbar.xpm", &game.bar.w, &game.bar.h);
 	game.bar.addr = mlx_get_data_addr(game.bar.img, &game.bar.bits_per_pixel, &game.bar.line_length, &game.bar.endian);
@@ -86,8 +96,8 @@ int	main(int argc, char const *argv[])
 	game.barrel.img = mlx_xpm_file_to_image(game.mlx, "./assets/barrel.xpm", &game.barrel.w, &game.barrel.h);
 	game.barrel.addr = mlx_get_data_addr(game.barrel.img, &game.barrel.bits_per_pixel, &game.barrel.line_length, &game.barrel.endian);
 	
-/* 	game.mini_player.img = mlx_xpm_file_to_image(game.mlx, "./assets/gun.xpm", &game.mini_player.w, &game.mini_player.h);
-	game.mini_player.addr = mlx_get_data_addr(game.mini_player.img, &game.mini_player.bits_per_pixel, &game.mini_player.line_length, &game.mini_player.endian); */
+ 	game.mini_player.img = mlx_xpm_file_to_image(game.mlx, "./assets/mini_player.xpm", &game.mini_player.w, &game.mini_player.h);
+	game.mini_player.addr = mlx_get_data_addr(game.mini_player.img, &game.mini_player.bits_per_pixel, &game.mini_player.line_length, &game.mini_player.endian); 
 	
 	game.wall.img = mlx_xpm_file_to_image(game.mlx, "./assets/tetris.xpm", &game.wall.w, &game.wall.h);
 	game.wall.addr = mlx_get_data_addr(game.wall.img, &game.wall.bits_per_pixel, &game.wall.line_length, &game.wall.endian);
@@ -103,7 +113,7 @@ int	main(int argc, char const *argv[])
 	game.wall3.addr = mlx_get_data_addr(game.wall3.img, &game.wall3.bits_per_pixel, &game.wall3.line_length, &game.wall3.endian);
 	
 	game.win = mlx_new_window(game.mlx, SCREENWIDTH, SCREENHEIGHT, "cub3d");
-	//game.win2 = mlx_new_window(game.mlx, SCREENWIDTH, SCREENHEIGHT, "minimap");
+	game.win2 = mlx_new_window(game.mlx, SCREENWIDTH, SCREENHEIGHT, "minimap");
 	mlx_hook(game.win, 02, (1L<<0), input, &game);
 	mlx_hook(game.win, 03, (1L<<1), input_release, &game);
 	mlx_hook(game.win, 17, 1L<<0, exit_game_request, &game);
