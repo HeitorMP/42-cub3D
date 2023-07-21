@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 09:38:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/20 12:11:11 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/21 16:31:47 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <stdio.h>
 # include <math.h>
-# include <time.h>
 # include "../minilibx-linux/mlx.h"
 # include "../libft/includes/libft.h"
 
@@ -41,32 +40,63 @@
 
 # define IMGSIZE 64
 
-typedef struct s_coord
-{
-	int x;
-	int y;
-}			t_coord;
+# define MAX_VALUE 1e30
 
-typedef struct s_calc
+typedef struct s_calc_wall
 {
-	int	lineHeight;
-	int	drawStart;
-	int	drawEnd;
-	int mapY;
-	int mapX;
-}			t_calc;
+	int		line_height;
+	int		draw_start;
+	int		draw_end;
+	int		map_y;
+	int		map_x;
+	float	wallx;
+	int		wally;
+	double	texpos;
+	int		tex_x;
+	int		tex_y;
+}			t_calc_wall;
+
+typedef struct s_calc_dda
+{
+	float	camera_x;
+	int		x;
+	int		map_x;
+	int		map_y;
+	
+}			t_calc_dda;
+
+typedef struct s_calc_sprite
+{
+	double	sprite_x;
+	double	sprite_y;
+	double	inv_det;
+	double	transform_x;
+	double	transform_y;
+	int		sprite_screen_x;
+	int		sprite_height;
+	int		draw_start_y;
+	int		draw_start_x;
+	int		draw_end_y;
+	int		draw_end_x;
+	int		sprite_width;
+	int		y;
+	int		stripe;
+	int		tex_x;
+	int		tex_y;
+	int		dir;
+}			t_calc_sprite;
 
 typedef struct s_ray
 {
-	float	rayDirX;
-	float	rayDirY;
-	float	sideDistX;
-	float	sideDistY;
-	float	deltaDistX;
-	float	deltaDistY;
-	float	perpWallDist;
-	int		stepX;
-	int		stepY;
+	float	ray_dir_x;
+	float	ray_dir_y;
+	float	side_dist_x;
+	float	side_dist_y;
+	float	delta_dist_x;
+	float	delta_dist_y;
+	float	perp_wall_dist;
+	int		step_x;
+	int		step_y;
 	int		hit; //was there a wall hit?
 	int		side; // what side of wall was hited;
 
@@ -88,7 +118,7 @@ typedef struct s_sprite {
 	float	plane_y;
 	float	angle;
 	double	sprite_distance;
-	double	ZBuffer[SCREENWIDTH];
+	double	z_buffer[SCREENWIDTH];
 }			t_sprite;
 
 typedef struct s_root {
@@ -96,23 +126,25 @@ typedef struct s_root {
 	void		*win;
 	void		*win2;
 	t_sprite	player;
-	t_sprite	wall;
-	t_sprite	wall1;
-	t_sprite	wall2;
-	t_sprite	wall3;
+	t_sprite	north_wall;
+	t_sprite	south_wall;
+	t_sprite	east_wall;
+	t_sprite	west_wall;
 	t_sprite	background;
 	t_sprite	bar;
 	t_sprite	mini_player;
-	t_sprite	mini_background;
 	t_sprite	mini_wall;
 	t_sprite	barrel;
 	char		**map;
 	int			map_cols;
 	int			map_lines;
-	float		moveSpeed;
-	float		rotSpeed;
+	int			x;
+	float		move_speed;
+	float		rot_speed;
 	t_ray		ray;
-	t_calc		calc;
+	t_calc_wall		calc_wall;
+	t_calc_sprite	calc_sp;
+	t_calc_dda		calc_dda;
 	int			keys[8];
 	int			c_color;
 	int			f_color;
@@ -144,7 +176,7 @@ int		mouse_move(int x, int y, t_root *game);
 /* DRAW UTIS*/
 void	my_mlx_pixel_put(t_sprite *data, int x, int y, int color);
 void	put_img_to_img(t_sprite *dst, t_sprite src, int x, int y);
-void	put_draw_to_img(t_sprite *dst, t_sprite src, int x, int y);
+void	put_ray_to_img(t_sprite *dst, t_sprite src, int x, int y);
 int		get_pixel_img(t_sprite img, int x, int y);
 int		create_trgb(int t, int r, int g, int b);
 
@@ -154,11 +186,7 @@ void	draw_back(t_root *game);
 void	draw_sprite(t_root *game);
 
 /* MINIMAP */
-void	draw_minimap(t_root *root, char **map);
-void	draw_mini_player(t_root *root);
-
-/* 2D MAP*/
-void	draw_2dmap(t_root *root, char **map);
+void	draw_minimap(t_root *game);
 
 /* UI */
 void	check_mouse_lock(t_root *game);
@@ -172,4 +200,8 @@ int	mouse_input(int keycode, int x, int y, t_root *game);
 /* EVENTS */
 void	player_animation(t_root *game);
 void	dda_calculation(t_root *game);
+void	init_dda_values(t_root *game);
+void	lenght_of_ray(t_root *game);
+void	calculate_step(t_root *game);
+void	jump_next_square(t_root *game);
 #endif

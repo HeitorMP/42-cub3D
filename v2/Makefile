@@ -15,9 +15,10 @@ SRCS		:=	main.c \
 				move/straight.c move/turn.c move/strafe.c move/move_router.c move/mouse.c \
 				draw_utils/draw_img.c draw_utils/draw_pixel.c draw_utils/draw_walls.c draw_utils/create_rgb.c draw_utils/draw_background.c \
 				draw_utils/draw_sprite.c \
-				events/lock_mouse.c events/input_handler.c events/player_animation.c events/dda.c\
+				events/lock_mouse.c events/input_handler.c events/player_animation.c events/dda.c events/dda_utils.c \
 				exit_game/exit_request.c \
-				setup_game/setup.c setup_game/setup_init_direction.c
+				setup_game/setup.c setup_game/setup_init_direction.c \
+				minimap/draw_minimap.c
 
 OBJS		= ${SRCS:%.c=${OBJSDIR}/%.o}
 
@@ -32,7 +33,7 @@ CYAN 		:= \033[1;36m
 all: ${NAME}
 
 # EXECUTION
-${NAME}:	${OBJS} ${LIBFT} mlx
+${NAME}:	${OBJS} ${LIBFT} MLX
 			@echo "${GREEN}Compilation ${CLR_RMV}of ${YELLOW}${NAME} ${CLR_RMV}..."
 			${CC} ${OBJS} -L${MLX_DIR} ${LIBFT} ${MLXFLAGS} ${FLAGS} -o ${NAME}
 			@echo "${GREEN}${NAME} created[0m 🎮 ✔️"
@@ -44,11 +45,12 @@ ${OBJS}:	${OBJSDIR}/%.o: ${SRCDIR}/%.c
 			@mkdir -p ${OBJSDIR}/exit_game
 			@mkdir -p ${OBJSDIR}/draw_utils
 			@mkdir -p ${OBJSDIR}/events
+			@mkdir -p ${OBJSDIR}/minimap
 			${CC} -I. -O3 ${FLAGS} -c $< -o $@
 
 ${LIBFT}:
 			${MAKE} -C ${LIBFT_DIR}
-mlx:
+MLX:
 			${MAKE} -C ${MLX_DIR}
 
 # CREATE OBJS

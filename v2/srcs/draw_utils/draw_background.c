@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 10:18:45 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/19 10:18:55 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/21 11:56:33 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,11 @@
 
 void	draw_back(t_root *game)
 {
-	int y = 0;
-	int x = 0;
+	int	y;
+	int	x;
+
+	y = 0;
+	x = 0;
 	while (y < SCREENHEIGHT)
 	{
 		while (x < SCREENWIDTH)

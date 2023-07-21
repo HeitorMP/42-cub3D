@@ -6,13 +6,13 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 12:45:13 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/14 12:45:16 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/21 16:36:54 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 void	ft_swap(int *a, int *b)
 {
-	int tmp;
+	int	tmp;
 
 	tmp = *a;
 	*a = *b;

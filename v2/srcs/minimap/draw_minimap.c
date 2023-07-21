@@ -1,37 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw_img.c                                         :+:      :+:    :+:   */
+/*   draw_minimap.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/07 15:05:24 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/21 11:57:23 by hmaciel-         ###   ########.fr       */
+/*   Created: 2023/07/21 11:16:40 by hmaciel-          #+#    #+#             */
+/*   Updated: 2023/07/21 15:36:40 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-int	get_pixel_img(t_sprite img, int x, int y)
+void	draw_minimap(t_root *game)
 {
-	return (*(unsigned int *)((img.addr
-			+ (y * img.line_length) + (x * img.bits_per_pixel / 8))));
-}
+	int	line;
+	int	col;
 
-void	put_img_to_img(t_sprite *dst, t_sprite src, int x, int y)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < src.w)
+	col = 0;
+	line = 0;
+	while (line < 10)
 	{
-		j = 0;
-		while (j < src.h)
+		while (col < 10)
 		{
-			my_mlx_pixel_put(dst, x + i, y + j, get_pixel_img(src, i, j));
-			j++;
+			if (game->map[line][col] == '1')
+				put_img_to_img(&game->background, game->mini_wall, \
+					col * 10, line * 10);
+			col++;
 		}
-		i++;
+		col = 0;
+		line++;
 	}
+	put_img_to_img(&game->background, game->mini_player, \
+		(int)game->player.x_pos * 10, (int)game->player.y_pos * 10);
+	mlx_put_image_to_window(game->mlx, game->win, game->background.img, 0, 0);
 }

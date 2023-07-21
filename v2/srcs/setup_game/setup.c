@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 11:33:21 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/19 12:15:03 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/21 16:40:48 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	init_values(t_root *game)
 	i = 0;
 	game->ray.side = 0;
 	game->ray.hit = 0;
-	game->moveSpeed = 0.08f;
-	game->rotSpeed = 0.03f;
+	game->move_speed = 0.08f;
+	game->rot_speed = 0.03f;
 	while (i < 6)
 	{
 		game->keys[i] = 0;
@@ -28,7 +28,6 @@ void	init_values(t_root *game)
 	}
 	game->keys[6] = -1;
 	game->keys[7] = 0;
-
 	if (game->init_dir == 'N')
 		init_north(game);
 	else if (game->init_dir == 'S')

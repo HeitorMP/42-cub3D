@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 15:25:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/19 12:14:19 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/21 16:43:29 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,14 @@ int	mouse_move(int x, int y, t_root *game)
 
 	(void)y;
 	direction = 2;
-
 	if (oldx < SCREENWIDTH / 2)
 		direction = 1;
 	else if (oldx > SCREENWIDTH / 2)
 		direction = 0;
 	if (game->keys[6] == -1)
 		direction = 2;
-
-	if (direction == 1) {
+	if (direction == 1)
+	{
 		turn_left(game);
 		direction = 2;
 	}
