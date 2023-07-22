@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 09:38:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/21 16:31:47 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/22 17:12:23 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,32 +15,10 @@
 
 # include <stdio.h>
 # include <math.h>
+# include "key_macros.h"
+# include "consts.h"
 # include "../minilibx-linux/mlx.h"
 # include "../libft/includes/libft.h"
-
-/* KEY MACROS */
-# define ESC 65307
-# define STRAFE_RIGHT 100
-# define STRAFE_LEFT 97
-# define UP 119
-# define DOWN 115
-# define TURN_RIGHT 65363
-# define TURN_LEFT 65361
-# define F1 65470
-
-# define TRANSPARENCY 0x00980088
-
-# define MARGIN 0.2f
-
-# define TRUE 1
-# define FALSE 0
-
-# define SCREENWIDTH 1024
-# define SCREENHEIGHT 768
-
-# define IMGSIZE 64
-
-# define MAX_VALUE 1e30
 
 typedef struct s_calc_wall
 {
@@ -62,7 +40,6 @@ typedef struct s_calc_dda
 	int		x;
 	int		map_x;
 	int		map_y;
-	
 }			t_calc_dda;
 
 typedef struct s_calc_sprite
@@ -97,8 +74,8 @@ typedef struct s_ray
 	float	perp_wall_dist;
 	int		step_x;
 	int		step_y;
-	int		hit; //was there a wall hit?
-	int		side; // what side of wall was hited;
+	int		hit;
+	int		side;
 
 }			t_ray;
 
@@ -122,33 +99,34 @@ typedef struct s_sprite {
 }			t_sprite;
 
 typedef struct s_root {
-	void		*mlx;
-	void		*win;
-	void		*win2;
-	t_sprite	player;
-	t_sprite	north_wall;
-	t_sprite	south_wall;
-	t_sprite	east_wall;
-	t_sprite	west_wall;
-	t_sprite	background;
-	t_sprite	bar;
-	t_sprite	mini_player;
-	t_sprite	mini_wall;
-	t_sprite	barrel;
-	char		**map;
-	int			map_cols;
-	int			map_lines;
-	int			x;
-	float		move_speed;
-	float		rot_speed;
-	t_ray		ray;
+	void			*mlx;
+	void			*win;
+	t_sprite		player;
+	t_sprite		north_wall;
+	t_sprite		south_wall;
+	t_sprite		east_wall;
+	t_sprite		west_wall;
+	t_sprite		background;
+	t_sprite		bar;
+	t_sprite		mini_player;
+	t_sprite		mini_wall;
+	t_sprite		barrel;
+	t_sprite		door;
+	t_sprite		mini_door;
+	char			**map;
+	int				map_cols;
+	int				map_lines;
+	int				x;
+	float			move_speed;
+	float			rot_speed;
+	t_ray			ray;
 	t_calc_wall		calc_wall;
 	t_calc_sprite	calc_sp;
 	t_calc_dda		calc_dda;
-	int			keys[8];
-	int			c_color;
-	int			f_color;
-	char		init_dir;
+	int				keys[9];
+	int				c_color;
+	int				f_color;
+	char			init_dir;
 }			t_root;
 
 // PROTOTYPE
@@ -192,10 +170,10 @@ void	draw_minimap(t_root *game);
 void	check_mouse_lock(t_root *game);
 
 /* HOOK HANDLERS */
-int	input_release(int keycode, t_root *root);
-int	input(int keycode, t_root *root);
-int	mouse_input_release(int keycode, int x, int y, t_root *game);
-int	mouse_input(int keycode, int x, int y, t_root *game);
+int		input_release(int keycode, t_root *root);
+int		input(int keycode, t_root *root);
+int		mouse_input_release(int keycode, int x, int y, t_root *game);
+int		mouse_input(int keycode, int x, int y, t_root *game);
 
 /* EVENTS */
 void	player_animation(t_root *game);
@@ -204,4 +182,5 @@ void	init_dda_values(t_root *game);
 void	lenght_of_ray(t_root *game);
 void	calculate_step(t_root *game);
 void	jump_next_square(t_root *game);
+void	open_door(t_root *game);
 #endif

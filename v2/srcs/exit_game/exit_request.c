@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 11:24:26 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/21 16:42:03 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/22 17:20:11 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	exit_game_request(t_root *game)
 	mlx_destroy_image(game->mlx, game->bar.img);
 	mlx_destroy_image(game->mlx, game->background.img);
 	mlx_destroy_image(game->mlx, game->barrel.img);
+	mlx_destroy_image(game->mlx, game->mini_door.img);
 	while (++i < 10)
 		free(game->map[i]);
 	free(game->map);

@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 20:51:18 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/21 16:30:12 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/22 16:20:01 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,14 @@
 /* if hit something different of 0 hit = 1 */
 static void	check_hit(t_root *game)
 {
+	char	current;
+
+	current = 0;
 	while (game->ray.hit == 0)
 	{
 		jump_next_square(game);
-		if (game->map[game->calc_dda.map_x][game->calc_dda.map_y] != '0')
+		current = game->map[game->calc_dda.map_x][game->calc_dda.map_y];
+		if (current == '1' || current == 'D')
 			game->ray.hit = 1;
 	}
 }

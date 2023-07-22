@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 11:16:40 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/21 15:36:40 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/22 17:12:25 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ void	draw_minimap(t_root *game)
 		{
 			if (game->map[line][col] == '1')
 				put_img_to_img(&game->background, game->mini_wall, \
+					col * 10, line * 10);
+			else if (game->map[line][col] == 'D')
+				put_img_to_img(&game->background, game->mini_door, \
 					col * 10, line * 10);
 			col++;
 		}

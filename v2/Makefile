@@ -16,7 +16,7 @@ SRCS		:=	main.c \
 				draw_utils/draw_img.c draw_utils/draw_pixel.c draw_utils/draw_walls.c draw_utils/create_rgb.c draw_utils/draw_background.c \
 				draw_utils/draw_sprite.c \
 				events/lock_mouse.c events/input_handler.c events/player_animation.c events/dda.c events/dda_utils.c \
-				exit_game/exit_request.c \
+				exit_game/exit_request.c events/door.c \
 				setup_game/setup.c setup_game/setup_init_direction.c \
 				minimap/draw_minimap.c
 

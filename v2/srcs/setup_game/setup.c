@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 11:33:21 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/21 16:40:48 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/22 13:56:35 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	init_values(t_root *game)
 	}
 	game->keys[6] = -1;
 	game->keys[7] = 0;
+	game->keys[8] = 0;
 	if (game->init_dir == 'N')
 		init_north(game);
 	else if (game->init_dir == 'S')

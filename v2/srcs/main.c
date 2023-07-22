@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:54:42 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/21 16:34:12 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/22 16:44:07 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	main(int argc, char const *argv[])
 	game.map[3] = ft_strdup("1010010101");
 	game.map[4] = ft_strdup("1100000111");
 	game.map[5] = ft_strdup("1000001001");
-	game.map[6] = ft_strdup("1001101001");
+	game.map[6] = ft_strdup("100110D001");
 	game.map[7] = ft_strdup("1000001001");
 	game.map[8] = ft_strdup("1000001101");
 	game.map[9] = ft_strdup("1111111111");
@@ -91,6 +91,12 @@ int	main(int argc, char const *argv[])
 	
 	game.west_wall.img = mlx_xpm_file_to_image(game.mlx, "./assets/W1.xpm", &game.west_wall.w, &game.west_wall.h);
 	game.west_wall.addr = mlx_get_data_addr(game.west_wall.img, &game.west_wall.bits_per_pixel, &game.west_wall.line_length, &game.west_wall.endian);
+	
+	game.door.img = mlx_xpm_file_to_image(game.mlx, "./assets/door.xpm", &game.door.w, &game.door.h);
+	game.door.addr = mlx_get_data_addr(game.door.img, &game.door.bits_per_pixel, &game.door.line_length, &game.door.endian);
+	
+	game.mini_door.img = mlx_xpm_file_to_image(game.mlx, "./assets/mini_door.xpm", &game.mini_door.w, &game.mini_door.h);
+	game.mini_door.addr = mlx_get_data_addr(game.mini_door.img, &game.mini_door.bits_per_pixel, &game.mini_door.line_length, &game.mini_door.endian);
 	
 	game.win = mlx_new_window(game.mlx, SCREENWIDTH, SCREENHEIGHT, "cub3d");
 	mlx_hook(game.win, 02, (1L<<0), input, &game);

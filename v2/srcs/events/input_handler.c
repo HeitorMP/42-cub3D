@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 15:24:09 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/19 20:48:34 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/22 16:44:39 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,26 @@
 
 static int	is_valid_key(int keycode)
 {
-	return (keycode == UP || keycode == DOWN || \
-			keycode == STRAFE_LEFT || keycode == STRAFE_RIGHT || \
-			keycode == TURN_RIGHT || keycode == TURN_LEFT || keycode == F1);
+	return (keycode == W_KEY || keycode == S_KEY || \
+			keycode == A_KEY || keycode == D_KEY || \
+			keycode == ARROW_RIGHT_KEY || keycode == ARROW_LEFT_KEY || \
+			keycode == SPACE_KEY || keycode == F1_KEY);
 }
 
 int	input_release(int keycode, t_root *game)
 {
-	if (keycode == UP)
-		game->keys[0] = 0;
-	if (keycode == STRAFE_RIGHT)
-		game->keys[1] = 0;
-	if (keycode == DOWN)
-		game->keys[2] = 0;
-	if (keycode == STRAFE_LEFT)
-		game->keys[3] = 0;
-	if (keycode == TURN_RIGHT)
-		game->keys[4] = 0;
-	if (keycode == TURN_LEFT)
-		game->keys[5] = 0;
+	if (keycode == W_KEY)
+		game->keys[UP] = 0;
+	if (keycode == D_KEY)
+		game->keys[STRAFE_RIGHT] = 0;
+	if (keycode == S_KEY)
+		game->keys[DOWN] = 0;
+	if (keycode == A_KEY)
+		game->keys[STRAFE_LEFT] = 0;
+	if (keycode == ARROW_RIGHT_KEY)
+		game->keys[TURN_RIGHT] = 0;
+	if (keycode == ARROW_LEFT_KEY)
+		game->keys[TURN_LEFT] = 0;
 	return (0);
 }
 
@@ -42,20 +43,22 @@ int	input(int keycode, t_root *game)
 		exit_game_request(game);
 	else if (is_valid_key(keycode))
 	{
-		if (keycode == UP)
-			game->keys[0] = 1;
-		if (keycode == STRAFE_RIGHT)
-			game->keys[1] = 1;
-		if (keycode == DOWN)
-			game->keys[2] = 1;
-		if (keycode == STRAFE_LEFT)
-			game->keys[3] = 1;
-		if (keycode == TURN_RIGHT)
-			game->keys[4] = 1;
-		if (keycode == TURN_LEFT)
-			game->keys[5] = 1;
-		if (keycode == F1)
-			game->keys[6] *= -1;
+		if (keycode == W_KEY)
+			game->keys[UP] = 1;
+		if (keycode == D_KEY)
+			game->keys[STRAFE_RIGHT] = 1;
+		if (keycode == S_KEY)
+			game->keys[DOWN] = 1;
+		if (keycode == A_KEY)
+			game->keys[STRAFE_LEFT] = 1;
+		if (keycode == ARROW_RIGHT_KEY)
+			game->keys[TURN_RIGHT] = 1;
+		if (keycode == ARROW_LEFT_KEY)
+			game->keys[TURN_LEFT] = 1;
+		if (keycode == F1_KEY)
+			game->keys[LOCK_MOUSE] *= -1;
+		if (keycode == SPACE_KEY)
+			open_door(game);
 	}
 	return (0);
 }
