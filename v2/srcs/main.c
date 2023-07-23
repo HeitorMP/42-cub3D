@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:54:42 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/23 16:06:29 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/23 16:48:44 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ int	game_loop(t_root *game)
  	
 	draw_back(game); // draw ceiling and floor
 	dda_calculation(game);
-	put_img_to_img(&game->background, game->bar, 0, 668);
-	put_img_to_img(&game->background, game->player, 448, 539);
 	mlx_put_image_to_window(game->mlx, game->win, game->background.img, 0, 0);
 	move_player(game);
 	return (0);
@@ -60,13 +58,6 @@ int	main(int argc, char const *argv[])
 	game.background.addr = mlx_get_data_addr(game.background.img, &game.background.bits_per_pixel, &game.background.line_length,
 								&game.background.endian);
 
-	game.bar.img = mlx_xpm_file_to_image(game.mlx, "./assets/hbar.xpm", &game.bar.w, &game.bar.h);
-	game.bar.addr = mlx_get_data_addr(game.bar.img, &game.bar.bits_per_pixel, &game.bar.line_length, &game.bar.endian);
-
-	game.player.img = mlx_xpm_file_to_image(game.mlx, "./assets/gun.xpm", &game.player.w, &game.player.h);
-	game.player.addr = mlx_get_data_addr(game.player.img, &game.player.bits_per_pixel, &game.player.line_length, &game.player.endian);
-	
-	
 	game.north_wall.img = mlx_xpm_file_to_image(game.mlx, "./assets/N1.xpm", &game.north_wall.w, &game.north_wall.h);
 	game.north_wall.addr = mlx_get_data_addr(game.north_wall.img, &game.north_wall.bits_per_pixel, &game.north_wall.line_length, &game.north_wall.endian);
 	
