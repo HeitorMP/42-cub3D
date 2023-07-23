@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dda.c                                              :+:      :+:    :+:   */
+/*   dda_bonus.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 20:51:18 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/23 16:07:17 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/23 16:32:44 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/cub3d.h"
+#include "../../includes_bonus/cub3d_bonus.h"
 
 /* While no hit do step */
 /* if hit something different of 0 hit = 1 */
@@ -23,7 +23,7 @@ static void	check_hit(t_root *game)
 	{
 		jump_next_square(game);
 		current = game->map[game->calc_dda.map_x][game->calc_dda.map_y];
-		if (current == '1')
+		if (current == '1' || current == 'D')
 			game->ray.hit = 1;
 	}
 }
@@ -61,6 +61,7 @@ void	dda_calculation(t_root *game)
 		if (game->calc_wall.draw_end >= SCREENHEIGHT)
 			game->calc_wall.draw_end = SCREENHEIGHT - 1;
 		draw_walls(game, game->x);
+		game->barrel.z_buffer[game->x] = game->ray.perp_wall_dist;
 		game->x++;
 	}
 }

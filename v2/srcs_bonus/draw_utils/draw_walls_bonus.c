@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw_walls.c                                       :+:      :+:    :+:   */
+/*   draw_walls_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 12:13:28 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/23 16:38:44 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/23 16:33:23 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/cub3d.h"
+#include "../../includes_bonus/cub3d_bonus.h"
 /* invert x y to correct moving walls*/
 static float	calc_wall_wall_x(t_root *game)
 {
@@ -63,6 +63,10 @@ static void	apply_wall_texture(t_root *game, char tex_wall, int col)
 	else if (game->ray.side == 1 && game->ray.ray_dir_y > 0 && tex_wall == '1')
 		my_mlx_pixel_put(&game->background, col, game->calc_wall.wally, \
 		get_pixel_img(game->east_wall, game->calc_wall.tex_x, \
+		game->calc_wall.tex_y));
+	else if (tex_wall == 'D')
+		my_mlx_pixel_put(&game->background, col, game->calc_wall.wally, \
+		get_pixel_img(game->door, game->calc_wall.tex_x, \
 		game->calc_wall.tex_y));
 }
 

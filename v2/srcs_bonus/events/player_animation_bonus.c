@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   player_animation.c                                 :+:      :+:    :+:   */
+/*   player_animation_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 20:36:36 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/21 11:42:20 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/23 16:32:59 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/cub3d.h"
+#include "../../includes_bonus/cub3d_bonus.h"
 
 static void	no_shoot_sprite(t_root *game)
 {

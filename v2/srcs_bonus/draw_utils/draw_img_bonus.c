@@ -1,37 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   setup.c                                            :+:      :+:    :+:   */
+/*   draw_img_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/17 11:33:21 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/23 16:05:25 by hmaciel-         ###   ########.fr       */
+/*   Created: 2023/06/07 15:05:24 by hmaciel-          #+#    #+#             */
+/*   Updated: 2023/07/23 16:33:09 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/cub3d.h"
+#include "../../includes_bonus/cub3d_bonus.h"
 
-void	init_values(t_root *game)
+int	get_pixel_img(t_sprite img, int x, int y)
+{
+	return (*(unsigned int *)((img.addr
+			+ (y * img.line_length) + (x * img.bits_per_pixel / 8))));
+}
+
+void	put_img_to_img(t_sprite *dst, t_sprite src, int x, int y)
 {
 	int	i;
+	int	j;
 
 	i = 0;
-	game->ray.side = 0;
-	game->ray.hit = 0;
-	game->move_speed = 0.08f;
-	game->rot_speed = 0.03f;
-	while (i < 6)
+	while (i < src.w)
 	{
-		game->keys[i] = 0;
+		j = 0;
+		while (j < src.h)
+		{
+			my_mlx_pixel_put(dst, x + i, y + j, get_pixel_img(src, i, j));
+			j++;
+		}
 		i++;
 	}
-	if (game->init_dir == 'N')
-		init_north(game);
-	else if (game->init_dir == 'S')
-		init_south(game);
-	else if (game->init_dir == 'W')
-		init_west(game);
-	else
-		init_east(game);
 }

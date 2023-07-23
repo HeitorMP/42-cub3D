@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:59:37 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/23 15:43:30 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/22 17:01:18 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@
 # define S_KEY 115
 # define ARROW_RIGHT_KEY 65363
 # define ARROW_LEFT_KEY 65361
+# define SPACE_KEY 32
+# define LF_BUTTON_MOUSE 1
+# define F1_KEY 65470
 
 /* KEY SLOTS */
 
@@ -30,5 +33,8 @@
 # define STRAFE_LEFT 3
 # define TURN_RIGHT 4
 # define TURN_LEFT 5
+# define LOCK_MOUSE 6
+# define FIRE_MOUSE 7
+# define ACTION 8
 
 #endif

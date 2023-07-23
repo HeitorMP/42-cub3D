@@ -1,37 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   setup.c                                            :+:      :+:    :+:   */
+/*   draw_background_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/17 11:33:21 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/23 16:05:25 by hmaciel-         ###   ########.fr       */
+/*   Created: 2023/07/19 10:18:45 by hmaciel-          #+#    #+#             */
+/*   Updated: 2023/07/23 16:33:06 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/cub3d.h"
+#include "../../includes_bonus/cub3d_bonus.h"
 
-void	init_values(t_root *game)
+void	draw_back(t_root *game)
 {
-	int	i;
+	int	y;
+	int	x;
 
-	i = 0;
-	game->ray.side = 0;
-	game->ray.hit = 0;
-	game->move_speed = 0.08f;
-	game->rot_speed = 0.03f;
-	while (i < 6)
+	y = 0;
+	x = 0;
+	while (y < SCREENHEIGHT)
 	{
-		game->keys[i] = 0;
-		i++;
+		while (x < SCREENWIDTH)
+		{
+			if (y < SCREENHEIGHT / 2)
+				my_mlx_pixel_put(&game->background, x, y, game->c_color);
+			else
+				my_mlx_pixel_put(&game->background, x, y, game->f_color);
+			x++;
+		}
+		x = 0;
+		y++;
 	}
-	if (game->init_dir == 'N')
-		init_north(game);
-	else if (game->init_dir == 'S')
-		init_south(game);
-	else if (game->init_dir == 'W')
-		init_west(game);
-	else
-		init_east(game);
 }

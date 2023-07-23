@@ -1,37 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   setup.c                                            :+:      :+:    :+:   */
+/*   create_rgb.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/17 11:33:21 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/23 16:05:25 by hmaciel-         ###   ########.fr       */
+/*   Created: 2023/07/19 10:20:23 by hmaciel-          #+#    #+#             */
+/*   Updated: 2023/07/21 11:56:41 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/cub3d.h"
-
-void	init_values(t_root *game)
+int	create_trgb(int t, int r, int g, int b)
 {
-	int	i;
-
-	i = 0;
-	game->ray.side = 0;
-	game->ray.hit = 0;
-	game->move_speed = 0.08f;
-	game->rot_speed = 0.03f;
-	while (i < 6)
-	{
-		game->keys[i] = 0;
-		i++;
-	}
-	if (game->init_dir == 'N')
-		init_north(game);
-	else if (game->init_dir == 'S')
-		init_south(game);
-	else if (game->init_dir == 'W')
-		init_west(game);
-	else
-		init_east(game);
+	return (t << 24 | r << 16 | g << 8 | b);
 }
