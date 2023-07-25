@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 09:38:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/25 08:35:20 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/25 21:37:37 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define CUB3D_H
 
 # include <stdio.h>
+# include <unistd.h>
 # include <math.h>
 # include "key_macros.h"
 # include "consts.h"
@@ -104,14 +105,16 @@ typedef struct s_root {
 // PROTOTYPE
 
 /* SETUP INIT */
-void	init_values(t_root *game);
+void	init_values(t_root *game, t_file *file);
 void	init_east(t_root *game);
 void	init_west(t_root *game);
 void	init_north(t_root *game);
 void	init_south(t_root *game);
+void	init_textures(t_root *game, t_file *file);
 
 /* EXIT */
 int		exit_game_request(t_root *game);
+void	ft_free_sfile(t_file *file);
 
 /* MOVES */
 void	turn_left(t_root *game);

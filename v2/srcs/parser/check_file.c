@@ -50,8 +50,8 @@ int	ft_checkfile(char *filemap, char *extension)
 	}
 	if (ft_strncmp(extension, ext, 4) != 0)
 	{
-		write(1, "\033[0;34mError!\033[0\n", 18);
-		write(1, "\033[0;34mInvalid map extension!\033[0\n", 34);
+		ft_putstr_fd("\033[0;34mError!\033[0\n", 2);
+		ft_putstr_fd("\033[0;34mInvalid map extension!\033[0\n", 2);
 		return (1);
 	}
 	return (0);
@@ -75,8 +75,8 @@ int	ft_checktile_ext(char *filemap, char *extension)
 	}
 	if (ft_strncmp(extension, ext, 4) != 0)
 	{
-		write(1, "\033[0;34mError!\033[0\n", 18);
-		write(1, "\033[0;34mInvalid tile extension!\033[0\n", 34);
+		ft_putstr_fd("\033[0;34mError!\033[0\n", 2);
+		ft_putstr_fd("\033[0;34mInvalid tile extension!\033[0\n", 2);
 		return (1);
 	}
 	return (0);

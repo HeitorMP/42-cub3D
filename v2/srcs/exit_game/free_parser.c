@@ -1,29 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   move_router.c                                      :+:      :+:    :+:   */
+/*   free_parser.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/17 10:39:34 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/25 21:10:41 by hmaciel-         ###   ########.fr       */
+/*   Created: 2023/07/25 10:16:58 by hmaciel-          #+#    #+#             */
+/*   Updated: 2023/07/25 10:36:57 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-void	move_player(t_root *game)
+void	ft_free_sfile(t_file *file)
 {
-	if (game->keys[UP])
-		move_forward(game);
-	if (game->keys[STRAFE_RIGHT])
-		strafe_right(game);
-	if (game->keys[DOWN])
-		move_backward(game);
-	if (game->keys[STRAFE_LEFT])
-		strafe_left(game);
-	if (game->keys[TURN_RIGHT])
-		turn_right(game);
-	if (game->keys[TURN_LEFT])
-		turn_left(game);
+	char	**temp;
+
+	if (file->map)
+	{
+		temp = file->map;
+		while (*file->map)
+			free(*(file->map++));
+		free(temp);
+	}
+	if (file->ea)
+		free(file->ea);
+	if (file->no)
+		free(file->no);
+	if (file->so)
+		free(file->so);
+	if (file->we)
+		free(file->we);
+	if (file->fd1 != -1)
+		close(file->fd1);
+	if (file->fd2 != -1)
+		close(file->fd2);
+	if (file->fd3 != -1)
+		close(file->fd3);
 }

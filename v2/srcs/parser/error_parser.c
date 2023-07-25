@@ -14,25 +14,17 @@
 
 int	ft_write_error(char *message)
 {
-	int	i;
-
-	i = ft_strlen(message);
-	write(1, "\033[0;34mError!\033[0\n", 18);
-	write(1, message, i);
-	write(1, "\n", 1);
+	ft_putstr_fd("\033[0;34mError!\033[0\n", 2);
+	ft_putstr_fd(message, 2);
+	ft_putstr_fd("\n", 2);
 	exit(EXIT_FAILURE);
 }
 
-int	ft_write_error_ext(char *message, char *extension)
+int	ft_ft_putstr_fd_error_ext(char *message, char *extension)
 {
-	int	i;
-	int	j;
-
-	i = ft_strlen(message);
-	j = ft_strlen(extension);
-	write(1, "\033[0;34mError!\033[0\n", 18);
-	write(1, message, i);
-	write(1, extension, j);
-	write(1, "\n", 1);
+	ft_putstr_fd("\033[0;34mError!\033[0\n", 2);
+	ft_putstr_fd(message, 2);
+	ft_putstr_fd(extension, 2);
+	ft_putstr_fd("\n", 2);
 	exit(EXIT_FAILURE);
 }

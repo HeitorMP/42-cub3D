@@ -27,8 +27,8 @@ static int rgb_color_parser(char *str)
 		num += str[i] - 48;
 		i++; 
 	}
-	if ((str[i] >= '0' && str[i] <= '9') || str[i] != ',')
-		return (-2);
+/* 	if ((str[i] >= '0' && str[i] <= '9') || str[i] != ',')
+		return (-2); */
 	if (i && (num >= 0 && num <= 255))
 		return (num);
 	return (-1);
@@ -41,16 +41,19 @@ static int parse_colors(t_rgb *rgb, char *str)
 	temp = str;
 	if (*str && *str == ',')
 		str++;
+	printf("antes do red %s\n", str);
 	rgb->red = rgb_color_parser(str);
 	while (*str && (*str >= '0' && *str <= '9'))
 		str++;
 	if (*str && *str == ',')
 		str++;
+	printf("antes do green %s\n", str);	
 	rgb->green = rgb_color_parser(str);
 	while (*str && (*str >= '0' && *str <= '9'))
 		str++;
 	if (*str && *str == ',')
 		str++;
+	printf("antes do blue %s\n", str);
 	rgb->blue = rgb_color_parser(str);
 	while (*str && (*str >= '0' && *str <= '9'))
 		str++;

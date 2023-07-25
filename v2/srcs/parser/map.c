@@ -72,6 +72,7 @@ int ft_maps(t_file *file, char *filemap)
 
 	i = -1;
 	(void)file;
+	(void)result;
 	result = map_rows(file, filemap);
 	while (file->map[++i]) // só para imprimir linhas
 	{

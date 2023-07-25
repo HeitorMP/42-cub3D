@@ -6,7 +6,7 @@
 #    By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/06 15:56:37 by hmaciel-          #+#    #+#              #
-#    Updated: 2023/07/14 12:53:12 by hmaciel-         ###   ########.fr        #
+#    Updated: 2023/07/25 16:27:35 by hmaciel-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ OBJSDIR		=	objs
 INCLUDES	=	includes
 
 SRCS		=	ft_printf/ft_printf.c ft_printf/ft_printf_chars.c ft_printf/ft_printf_numbers.c ft_printf/ft_printf_utils.c \
-			 	get_next_line/get_next_line.c get_next_line/get_next_line_utils.c \
+			 	get_next_line/get_next_line.c \
 				libft/ft_isalnum.c libft/ft_isprint.c libft/ft_memcmp.c libft/ft_putchar_fd.c libft/ft_split.c \
 				libft/ft_strlcat.c libft/ft_strncmp.c libft/ft_substr.c libft/ft_atoi.c libft/ft_isalpha.c \
 				libft/ft_itoa.c libft/ft_memcpy.c libft/ft_putendl_fd.c libft/ft_strchr.c libft/ft_strlcpy.c \

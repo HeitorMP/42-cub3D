@@ -18,10 +18,10 @@ SRCS			:=	main.c \
 					move/straight.c move/turn.c move/strafe.c move/move_router.c \
 					draw_utils/draw_img.c draw_utils/draw_pixel.c draw_utils/draw_walls.c draw_utils/create_rgb.c draw_utils/draw_background.c \
 					events/input_handler.c events/dda.c events/dda_utils.c \
-					exit_game/exit_request.c \
+					exit_game/exit_request.c exit_game/free_parser.c \
 					setup_game/setup.c setup_game/setup_init_direction.c \
 					parser/check_file.c parser/colors.c parser/error_parser.c parser/flood_fill.c /parser/map_utils.c parser/map.c \
-					parser/parser_utils.c parser/parser.c parse/utils.c
+					parser/parser_utils.c parser/parser.c parser/utils.c 
 
 SRCS_BONUS		:=	main_bonus.c \
 					move/straight_bonus.c move/turn_bonus.c move/strafe_bonus.c move/move_router_bonus.c move/mouse_bonus.c \
@@ -66,6 +66,7 @@ ${OBJS}:		${OBJSDIR}/%.o: ${SRCDIR}/%.c
 				@mkdir -p ${OBJSDIR}/exit_game
 				@mkdir -p ${OBJSDIR}/draw_utils
 				@mkdir -p ${OBJSDIR}/events
+				@mkdir -p ${OBJSDIR}/parser
 				${CC} -I. -O3 ${FLAGS} -c $< -o $@
 
 ${OBJS_BONUS}:	${OBJSDIR_BONUS}/%.o: ${SRCDIR_BONUS}/%.c

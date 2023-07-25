@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 08:30:48 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/25 08:59:27 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/25 21:28:02 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_file
 	char	*so;
 	char	*we;
 	char	*ea;
+	char	orientaton;
 	t_rgb	floor;
 	t_rgb	ceilling;
 	char	**map;
