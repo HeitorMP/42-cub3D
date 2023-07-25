@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 09:38:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/23 16:48:40 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/25 08:35:20 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <math.h>
 # include "key_macros.h"
 # include "consts.h"
+# include "parser.h"
 # include "../minilibx-linux/mlx.h"
 # include "../libft/includes/libft.h"
 

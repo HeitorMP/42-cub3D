@@ -19,7 +19,9 @@ SRCS			:=	main.c \
 					draw_utils/draw_img.c draw_utils/draw_pixel.c draw_utils/draw_walls.c draw_utils/create_rgb.c draw_utils/draw_background.c \
 					events/input_handler.c events/dda.c events/dda_utils.c \
 					exit_game/exit_request.c \
-					setup_game/setup.c setup_game/setup_init_direction.c
+					setup_game/setup.c setup_game/setup_init_direction.c \
+					parser/check_file.c parser/colors.c parser/error_parser.c parser/flood_fill.c /parser/map_utils.c parser/map.c \
+					parser/parser_utils.c parser/parser.c parse/utils.c
 
 SRCS_BONUS		:=	main_bonus.c \
 					move/straight_bonus.c move/turn_bonus.c move/strafe_bonus.c move/move_router_bonus.c move/mouse_bonus.c \
