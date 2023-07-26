@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:54:42 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/26 13:35:08 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/26 15:21:23 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	main(int argc, char **argv)
 		ft_free_sfile(&file);
 		exit(1);
 	}
+
 	init_values(&game, &file);
 	game.mlx = mlx_init();
 	game.background.img = mlx_new_image(game.mlx, SCREENWIDTH, SCREENHEIGHT);

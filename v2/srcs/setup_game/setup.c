@@ -6,31 +6,12 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 11:33:21 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/26 14:01:28 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/26 15:20:19 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-static void	init_calcs(t_root *game)
-{
-	game->calc_dda.camera_x = 0;
-	game->calc_dda.map_x = 0;
-	game->calc_dda.map_y = 0;
-	game->calc_dda.x = 0;
-
-	game->calc_wall.draw_end = 0;
-	game->calc_wall.draw_start = 0;
-	game->calc_wall.line_height = 0;
-	game->calc_wall.map_x = 0;
-	game->calc_wall.map_y = 0;
-	game->calc_wall.tex_x = 0;
-	game->calc_wall.tex_y = 0;
-	game->calc_wall.texpos = 0;
-	game->calc_wall.wallx = 0;
-	game->calc_wall.wally = 0;
-
-}
 
 static void copy_map(t_root *game, t_file *file)
 {
@@ -43,11 +24,10 @@ static void copy_map(t_root *game, t_file *file)
 
 static void	file_to_game(t_root *game, t_file *file)
 {
-	copy_map(game, file);
 	game->player.x_pos = (float)file->x + 0.5;
 	game->player.y_pos = (float)file->y + 0.5;
-	game->calc_dda.map_x = game->player.x_pos;
-	game->calc_dda.map_y = game->player.y_pos;
+	copy_map(game, file);
+	game->map[(int)game->player.y_pos][(int)game->player.x_pos] = '0';
 	game->f_color = create_trgb(TRANSPARENCY, file->floor.red , file->floor.green, file->floor.blue); // receive from parse in the future
 	game->c_color = create_trgb(TRANSPARENCY, file->ceilling.red, file->ceilling.green, file->ceilling.blue); // receive from parse in the future
 	game->init_dir = file->orientation; // receive from parse in the future
@@ -71,13 +51,12 @@ void	init_values(t_root *game, t_file *file)
 {
 	int	i;
 	
-	file_to_game(game, file);
-	init_calcs(game);
 	i = 0;
 	game->ray.side = 0;
 	game->ray.hit = 0;
 	game->move_speed = 0.08f;
 	game->rot_speed = 0.03f;
+	file_to_game(game, file);
 	while (i < 6)
 	{
 		game->keys[i] = 0;

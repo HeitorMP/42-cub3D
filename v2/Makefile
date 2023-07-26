@@ -2,7 +2,7 @@
 NAME			:= cub3D
 NAME_BONUS		:= cub3D_bonus
 CC				:= cc
-FLAGS			:= -Wall -Wextra -Werror -g #-fsanitize=address
+FLAGS			:= #-Wall -Wextra -Werror -g #-fsanitize=address
 MLXFLAGS		:= -lmlx -lXext -lX11 -lm -lbsd
 RM				:= rm -f
 SRCDIR			:= srcs
