@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:54:42 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/26 21:09:36 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/26 22:26:43 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 int	game_loop(t_root *game)
 {
- 	
-	draw_back(game); // draw ceiling and floor
+	draw_back(game);
 	dda_calculation(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->background.img, 0, 0);
 	move_player(game);
@@ -37,9 +36,9 @@ int	main(int argc, char **argv)
 	game.mlx = mlx_init();
 	init_textures(&game, &file);
 	game.win = mlx_new_window(game.mlx, SCREENWIDTH, SCREENHEIGHT, "cub3d");
-	mlx_hook(game.win, 02, (1L<<0), input, &game);
-	mlx_hook(game.win, 03, (1L<<1), input_release, &game);
-	mlx_hook(game.win, 17, 1L<<0, exit_game_request, &game);
+	mlx_hook(game.win, 02, 1L << 0, input, &game);
+	mlx_hook(game.win, 03, 1L << 1, input_release, &game);
+	mlx_hook(game.win, 17, 1L << 0, exit_game_request, &game);
 	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_loop(game.mlx);
 	return (0);

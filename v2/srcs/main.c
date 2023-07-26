@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:54:42 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/26 15:58:31 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/26 22:25:17 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	game_loop(t_root *game)
 {
- 	
 	draw_back(game); // draw ceiling and floor
 	dda_calculation(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->background.img, 0, 0);
