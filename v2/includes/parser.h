@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 08:30:48 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/25 21:28:02 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/26 13:38:22 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,14 @@ typedef struct s_file
 	int		fd3;
 	int		rows;
 	int		x;
+	int		x0;
 	int		y;
+	int		y0;
+	char	orientation;
 	char	*no;
 	char	*so;
 	char	*we;
 	char	*ea;
-	char	orientaton;
 	t_rgb	floor;
 	t_rgb	ceilling;
 	char	**map;
@@ -69,7 +71,9 @@ int		ft_count_player(t_file *file, char **map);
 
 /* MAP */
 
+int		find_zero(t_file *file, char **map);
 int		ft_maps(t_file *file, char *filemap);
+int		checkmap(t_file *file, char **map);
 
 /* PARSER UTILS */
 
@@ -86,6 +90,11 @@ int		is_player(char c);
 int		valid_char(char c);
 int		empty_line(char *str);
 
-
+/*mtr_utils*/
+int		mtr_len(char **matriz);
+void	mtr_free(char **matriz);
+char	**mtr_dup(char **matriz);
+char	**mtr_addnew(char *str, char **matrizold);
+char	**mtr_rmv(int pos, char **matrizold);
 
 #endif

@@ -21,14 +21,17 @@ static int rgb_color_parser(char *str)
 	num = 0;
 	if (!str)
 		return (-2);
+	// printf("num str %s\n", str);
 	while (str[i] && (str[i] >= '0' && str[i] <= '9'))
 	{
 		num = num * 10;
 		num += str[i] - 48;
 		i++; 
 	}
-/* 	if ((str[i] >= '0' && str[i] <= '9') || str[i] != ',')
-		return (-2); */
+	// printf("num %d\n", num);
+	// printf("str i %c\n", str[i]);
+	if (str[i] && str[i] != ',')
+		return (-2);
 	if (i && (num >= 0 && num <= 255))
 		return (num);
 	return (-1);
@@ -41,22 +44,23 @@ static int parse_colors(t_rgb *rgb, char *str)
 	temp = str;
 	if (*str && *str == ',')
 		str++;
-	printf("antes do red %s\n", str);
 	rgb->red = rgb_color_parser(str);
 	while (*str && (*str >= '0' && *str <= '9'))
 		str++;
 	if (*str && *str == ',')
 		str++;
-	printf("antes do green %s\n", str);	
 	rgb->green = rgb_color_parser(str);
 	while (*str && (*str >= '0' && *str <= '9'))
 		str++;
 	if (*str && *str == ',')
 		str++;
-	printf("antes do blue %s\n", str);
 	rgb->blue = rgb_color_parser(str);
 	while (*str && (*str >= '0' && *str <= '9'))
 		str++;
+	// printf("num red %d\n", rgb->red);
+	// printf("num green %d\n", rgb->green);
+	// printf("num blue %d\n", rgb->blue);
+	// printf("*str 1 %c\n", *str);
 	if (!*str && rgb->red >= 0 && rgb->red <= 255 && rgb->green >= 0 && \
 		rgb->green <= 255 && rgb->blue >= 0 && rgb->blue <= 255)
 	{
@@ -84,7 +88,9 @@ int ft_colors(t_file *file, char *filemap)
 		temp = get_next_line(file->fd2);
 		if (!temp)
 			break;
+		// printf("%s\n", temp);
 		line = ft_trim(temp);
+		// printf("%s\n", line);
 		free(temp);
 		if (f && ft_strlen(line) > 2 && line[0] == 'F' && line[1] == ' ')
 			f = parse_colors(&file->floor, ft_strdup(line + 2));
@@ -92,6 +98,12 @@ int ft_colors(t_file *file, char *filemap)
 			c = parse_colors(&file->ceilling, ft_strdup(line + 2));
 		free(line);
 	}
+	// printf("num floor red %d\n", file->floor.red);
+	// printf("num floor green %d\n", file->floor.green);
+	// printf("num floor blue %d\n", file->floor.blue);
+	// printf("num ceiling red %d\n", file->ceilling.red);
+	// printf("num ceiling green %d\n", file->ceilling.green);
+	// printf("num ceiling blue %d\n", file->ceilling.blue);
 	if (c)
 		return (printf("\033[0;34mError\nIn ceiling colors!\033[0\n"));
 	if (f)

@@ -20,8 +20,8 @@ SRCS			:=	main.c \
 					events/input_handler.c events/dda.c events/dda_utils.c \
 					exit_game/exit_request.c exit_game/free_parser.c \
 					setup_game/setup.c setup_game/setup_init_direction.c \
-					parser/check_file.c parser/colors.c parser/error_parser.c parser/flood_fill.c /parser/map_utils.c parser/map.c \
-					parser/parser_utils.c parser/parser.c parser/utils.c 
+					parser/check_file.c parser/colors.c parser/error_parser.c parser/floodfill.c parser/map_utils.c parser/map.c \
+					parser/parser_utils.c parser/parser.c parser/utils.c parser/mtr_util.c
 
 SRCS_BONUS		:=	main_bonus.c \
 					move/straight_bonus.c move/turn_bonus.c move/strafe_bonus.c move/move_router_bonus.c move/mouse_bonus.c \

@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 17:02:17 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/22 17:07:54 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/26 12:18:55 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # define TRANSPARENCY 0x00980088
 
 /* MARGIN FROM WALL */
-# define MARGIN 0.2f
+# define MARGIN 0.1f
 
 /* WINDOW SIZE */
 # define SCREENWIDTH 1024

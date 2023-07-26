@@ -19,7 +19,7 @@ int	is_player(char c)
 	return (0);
 }
 
-/*No linux terei que retirar a função ft_issapce ou não*/
+/*No linux terei que retirar a função ft_issapce*/
 int	valid_char(char c)
 {
 	if (c == '0' || c == ' ' || c == '1' || is_player(c) || c == 'D' || ft_isspace(c))

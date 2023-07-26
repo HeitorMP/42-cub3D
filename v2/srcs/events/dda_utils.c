@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:18:43 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/21 16:20:06 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/26 13:47:03 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	init_dda_values(t_root *game)
 		game->player.plane_x * game->calc_dda.camera_x;
 	game->ray.ray_dir_y = game->player.dir_y + \
 		game->player.plane_y * game->calc_dda.camera_x;
+	printf("dda pos %f - %f\n", game->player.y_pos, game->player.x_pos);
 	game->calc_dda.map_x = (int)(game->player.y_pos);
 	game->calc_dda.map_y = (int)(game->player.x_pos);
 	game->ray.hit = 0;

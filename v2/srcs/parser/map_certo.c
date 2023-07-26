@@ -3,30 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nmoreira <nmoreira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:46:04 by nmoreira          #+#    #+#             */
-/*   Updated: 2023/07/26 13:55:02 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/22 16:46:04 by nmoreira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
-
-static void ft_map_trimed(t_file *file)
-{
-	int i;
-	char *temp;
-
-	i = -1;
-	temp =  NULL;
-	while(file->map[++i])
-	{
-		temp = ft_strdup(file->map[i]);
-		free(file->map[i]);
-		file->map[i] = ft_trim_end(temp);
-		free(temp);
-	}
-}
 
 static int	ft_get_map(t_file *file, int size)
 {
@@ -78,7 +62,6 @@ static int map_rows(t_file *file, char *filemap)
 		line = get_next_line(file->fd3);
 	}
 	rows = ft_get_map(file, 0);
-	ft_map_trimed(file);
 	free (line);
 	return (rows);
 }
@@ -123,43 +106,20 @@ int ft_maps(t_file *file, char *filemap)
 {
 	int i;
 	int result;
-	int result1;
-	char **mapdup;
 
-	// i = -1;
-	result = 0;
-	if ((result = map_rows(file, filemap)))
-		return (1);
-	printf("result %d\n", result);
-	// while (file->map[++i])
-	// {
-	// 	printf("linha %i - %s\n", i, file->map[i]);
-	// }
-	if (ft_count_player(file, file->map))
-		return (1);
-	mapdup = mtr_dup(file->map);
 	i = -1;
-	while (mapdup[++i])
+	// result = 0;
+	(void)file;
+	result = map_rows(file, filemap);
+	while (file->map[++i])
 	{
 		printf("linha %i - %s\n", i, file->map[i]);
 	}
-	// find_zero(file, mapdup);
-	printf("x0 %d\n", file->x0);
-	printf("y0 %d\n", file->y0);
-	printf("pos %d\n", mapdup[1][2]);
-	// result1 = checkmap(mapdup, file->y0, file->x0);
-	// printf("result1 %d\n", result1);
-	// mtr_free(mapdup);
-	if ((result1 = checkmap(file, mapdup)))
-	{
-		printf("result1 %d\n", result1);
-		mtr_free(mapdup);
-		return (printf("Error!\nMap not closed!\n"));
-	}
-	printf("result1 %d\n", result1);
-	mtr_free(mapdup);
+	if (ft_count_player(file, file->map))
+		return (1);
+	printf("result %d\n", result);
 	// printf("rows %d\n", file->rows);
-	// printf("x player %d\n", file->x);
-	// printf("y player %d\n", file->y);
+	printf("x player %d\n", file->x);
+	printf("y player %d\n", file->y);
 	return (0);
 }

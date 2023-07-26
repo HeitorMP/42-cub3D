@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:54:42 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/23 16:31:46 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/26 14:02:38 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ int	main(int argc, char const *argv[])
 
 	t_root game;
 	
-	game.map_cols = 10;
-	game.map_lines = 10;
+	//game.map_cols = 10;
+	//game.map_lines = 10;
 	game.map = malloc(sizeof(char *) * 10);
 	
 	game.map[0] = ft_strdup("1111111111");

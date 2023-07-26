@@ -6,36 +6,33 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 16:40:58 by nmoreira          #+#    #+#             */
-/*   Updated: 2023/07/25 21:28:12 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/26 13:38:04 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-/*não utilizada pode ser o find_zero*/
-int player_pos(t_file *file, char **map)
-{
-	int y;
-	int x;
-
-	y = -1;
-	while (map[++y]) 
-	{
-		x = -1;
-		while (map[y][++x]) 
-		{
-			if (map[y][x] == 'x') 
-			{
-				file->x = x;
-				file->y = y;
-				break;
-			}
-		}
-		if (file->x != -1 && file->y != -1) 
-			return (0);
-	}
-	return (1);
-}
+/*não utilizada*/
+// static int player_pos(t_file *file, char **map)
+// {
+// 	int y;
+//     int x;
+    
+// 	y = -1;
+// 	while (map[++y]) {
+//         x = -1;
+//         while (map[y][++x]) {
+//             if (map[y][x] == 'x') {
+//                 file->x = x;
+//                 file->y = y;
+//                 break;
+//             }
+//         }
+//         if (file->x != -1 && file->y != -1) // Sai do loop externo se a posição do jogador for encontrada
+//             return (0);
+//     }
+// 	return (1);
+// }
 
 char *ft_trim_end(const char *str)
 {
@@ -47,46 +44,51 @@ char *ft_trim_end(const char *str)
 
 	if (!str)
 		return NULL;
-	if (*str == '\0')
+	if (*str == '\0') // Se a string consiste apenas de espaços em branco, retorna uma string vazia
 	{
 		char *result = malloc(1);
 		if (result)
 			result[0] = '\0';
 		return (result);
 	}
+    // Encontra o final do conteúdo relevante
 	start = str;
 	end = str;
 	while (*end)
 		end++;
 	end--;
 	while (end >= str && ft_isspace(*end))
-	end--;
-	size = end - start + 1;
+    	end--;
+	// printf("2 end %s\n", end);
+	size = end - start + 1; // Tamanho do conteúdo relevante
+	// printf("3 %ld\n", size);
 	result = malloc(size + 1);
 	if (!result)
 		return (NULL);
+    // Copia o conteúdo relevante para a nova string
 	i = 0;
 	while (i < size)
 	{
 		result[i] = str[i];
 		i++;
 	}
-result[size] = '\0';
-return (result);
-
+	result[size] = '\0'; // Adiciona o caractere nulo ao final
+	return (result);
 }
+
 static int check_edges(t_file *file, char **map)
 {
 	int y;
 	int x;
-
+	// char *result;
+    
 	y = 0;
 	while (map[y] && y <= file->y) 
 	{
 		x = 0;
 		while (map[y][x]) 
 		{
-			if (y == file->y && y > 0 && file->x > (int)(ft_strlen(map[y - 1]) - 3)) 
+			if (y == file->y && y > 0 && file->x > (int)(ft_strlen(map[y - 1]) - 1)) 
 			{
 				printf("\033[0;34mError!\nCheck top of player edges.\033[0\n");
 				return (1);
@@ -110,15 +112,26 @@ static int check_edges(t_file *file, char **map)
 		}
 		y++;
 	}
-	if (!map[y] || file->y == 0 || file->x == 0 || \
-	file->x == (int)(ft_strlen(map[file->y]) - 3))
+	printf("x player %d\n", file->x);
+	printf("y player %d\n", file->y);
+	// printf("y player %d\n", y);
+	printf("len %d\n", (int)ft_strlen(map[file->y]));
+	printf("len %d\n", (int)ft_strlen(map[9]));
+	// printf("len %d\n", (int)ft_strlen("\n"));
+	// printf("linha trim end %s", result = ft_trim_end(map[1]));
+	// printf("linha trim end len %d\n", (int)ft_strlen(result));
+	// free(result);
+	// printf("map y %s\n", map[y]);
+	if (!map[y] || file->y == 0 || file->x == 0 || file->x == (int)(ft_strlen(map[file->y]) - 1)) // tem o \n por isso tiro 1
 	{
 		printf("\033[0;34mError!\nPlayer on the edges.\033[0\n");
 		return (1);
-	}
+		}
 	x = 0;
+	// printf("x e y player %d\n", map[y][x]);
 	while (map[y][x]) 
 	{
+		// printf("x e y player %d\n", map[y][x]);
 		if (x >= file->x) 
 			return(0);
 		x++;
@@ -150,7 +163,7 @@ int ft_count_player(t_file *file, char **map)
 				p++;
 				file->y = y;
 				file->x = x;
-				file->orientaton = map[y][x];
+				file->orientation = map[y][x];
 			}
 		}
 	}
