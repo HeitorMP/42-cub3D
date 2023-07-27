@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.h                                           :+:      :+:    :+:   */
+/*   parser_bonus.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 08:30:48 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/27 13:12:04 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/27 13:39:32 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@ typedef struct s_file
 	t_rgb	floor;
 	t_rgb	ceilling;
 	char	**map;
+	int		enemy_x;
+	int		enemy_y;
+	int		has_enemy;
 }	t_file;
 
 typedef struct s_coord
@@ -53,6 +56,7 @@ int		ft_checkfile(char *filemap, char *extension);
 char	*ft_strdup_cub(const char *str);
 int		ft_checktile(char *filemap, char *extension);
 int		ft_checktile_ext(char *filemap, char *extension);
+int		check_enemy(t_file *file, char **map);
 
 /* COLORS */
 
@@ -96,5 +100,8 @@ void	mtr_free(char **matriz);
 char	**mtr_dup(char **matriz);
 char	**mtr_addnew(char *str, char **matrizold);
 char	**mtr_rmv(int pos, char **matrizold);
+
+/* ENEMY */
+int		check_enemy(t_file *file, char **map);
 
 #endif

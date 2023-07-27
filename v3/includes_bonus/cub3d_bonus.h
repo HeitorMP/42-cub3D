@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 09:38:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/23 16:26:58 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/27 13:39:35 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <math.h>
 # include "key_macros_bonus.h"
 # include "consts_bonus.h"
+# include "parser_bonus.h"
 # include "../minilibx-linux/mlx.h"
 # include "../libft/includes/libft.h"
 
@@ -127,19 +128,25 @@ typedef struct s_root {
 	int				c_color;
 	int				f_color;
 	char			init_dir;
+	t_file			*file;
 }			t_root;
 
 // PROTOTYPE
 
 /* SETUP INIT */
-void	init_values(t_root *game);
+void	init_values(t_root *game, t_file *file);
 void	init_east(t_root *game);
 void	init_west(t_root *game);
 void	init_north(t_root *game);
 void	init_south(t_root *game);
+void	init_textures(t_root *game, t_file *file);
+int		init_file(t_file *file);
+void	init_calc_structs(t_root *game);
 
 /* EXIT */
 int		exit_game_request(t_root *game);
+void	ft_free_sfile(t_file *file);
+void	free_file(t_root *game);
 
 /* MOVES */
 void	turn_left(t_root *game);

@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 11:16:40 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/23 16:32:28 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/27 12:10:56 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	draw_minimap(t_root *game)
 {
-	int	line;
-	int	col;
+	int		line;
+	int		col;
 
 	col = 0;
 	line = 0;
-	while (line < 10)
+	while (line < game->map_lines)
 	{
-		while (col < 10)
+		while (col < game->map_cols)
 		{
 			if (game->map[line][col] == '1')
 				put_img_to_img(&game->background, game->mini_wall, \

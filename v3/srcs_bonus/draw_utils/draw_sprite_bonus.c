@@ -6,13 +6,13 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 20:39:05 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/23 16:33:20 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/27 13:02:27 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes_bonus/cub3d_bonus.h"
 
-static void	init_calc_sprite(t_root *game)
+static void	set_calc_sprite(t_root *game)
 {
 	game->barrel.sprite_distance = ((game->player.y_pos - game->barrel.y_pos) \
 	* (game->player.y_pos - game->barrel.y_pos) + (game->player.x_pos - \
@@ -72,7 +72,7 @@ static void	do_sprite_print(t_root *game)
 
 void	draw_sprite(t_root *game)
 {
-	init_calc_sprite(game);
+	set_calc_sprite(game);
 	find_y_values(game);
 	find_x_values(game);
 	game->calc_sp.stripe = game->calc_sp.draw_start_x;

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   floodfill.c                                        :+:      :+:    :+:   */
+/*   floodfill_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 03:31:08 by nmoreira          #+#    #+#             */
-/*   Updated: 2023/07/27 09:49:22 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/27 13:30:28 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/cub3d.h"
+#include "../../includes_bonus/cub3d_bonus.h"
 
 int	find_zero(t_file *file, char **map)
 {

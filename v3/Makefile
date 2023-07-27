@@ -2,8 +2,8 @@
 NAME			:= cub3D
 NAME_BONUS		:= cub3D_bonus
 CC				:= cc
-FLAGS			:= -g #-Wall -Wextra -Werror -g #-fsanitize=address
-MLXFLAGS		:= -lmlx -lXext -lX11 -lm -lbsd
+FLAGS			:= -Wall -Wextra -Werror -Wno-unused-result -g #-fsanitize=address
+MLXFLAGS		:= -lmlx -lXext -lX11 -lm -lz -lbsd
 RM				:= rm -f
 SRCDIR			:= srcs
 SRCDIR_BONUS	:= srcs_bonus
@@ -28,10 +28,13 @@ SRCS_BONUS		:=	main_bonus.c \
 					draw_utils/draw_img_bonus.c draw_utils/draw_pixel_bonus.c draw_utils/draw_walls_bonus.c draw_utils/create_rgb_bonus.c draw_utils/draw_background_bonus.c \
 					draw_utils/draw_sprite_bonus.c \
 					events/lock_mouse_bonus.c events/input_handler_bonus.c events/player_animation_bonus.c events/dda_bonus.c events/dda_utils_bonus.c  events/door_bonus.c \
-					exit_game/exit_request_bonus.c \
-					setup_game/setup_bonus.c setup_game/setup_init_direction_bonus.c \
-					minimap/draw_minimap_bonus.c
+					exit_game/exit_request_bonus.c exit_game/free_parser_bonus.c \
+					setup_game/setup_bonus.c setup_game/setup_init_direction_bonus.c  setup_game/init_textures_bonus.c setup_game/init_calc_structs.c \
+					minimap/draw_minimap_bonus.c \
+					parser/check_file_bonus.c parser/colors_bonus.c parser/error_parser_bonus.c parser/floodfill_bonus.c parser/map_utils_bonus.c parser/map_bonus.c \
+					parser/parser_utils_bonus.c parser/parser_bonus.c parser/utils_bonus.c parser/mtr_util_bonus.c parser/check_enemy_bonus.c
 
+# CREATE OBJS
 OBJS			= ${SRCS:%.c=${OBJSDIR}/%.o}
 OBJS_BONUS		= ${SRCS_BONUS:%.c=${OBJSDIR_BONUS}/%.o}
 
@@ -43,45 +46,33 @@ YELLOW			:= \033[1;33m
 BLUE			:= \033[1;34m
 CYAN			:= \033[1;36m
 
-all: ${NAME}
 
-# EXECUTION
-${NAME}:		${OBJS} ${LIBFT} MLX
+all: external_libs ${NAME}
+
+# MANDATORY
+${NAME}:		${OBJS}
 				@echo "${GREEN}Compilation ${CLR_RMV}of ${YELLOW}${NAME} ${CLR_RMV}..."
 				${CC} ${OBJS} -L${MLX_DIR} ${LIBFT} ${MLXFLAGS} ${FLAGS} -o ${NAME}
 				@echo "${GREEN}${NAME} created[0m 🎮 ✔️"
 
-bonus: ${NAME_BONUS}
+${OBJS}:		${OBJSDIR}/%.o: ${SRCDIR}/%.c
+				@mkdir -p $(@D)
+				${CC} ${FLAGS} -I. -O3 -c $< -o $@
 
-${NAME_BONUS}:	${OBJS_BONUS} ${LIBFT} MLX
+# BONUS
+bonus: external_libs ${NAME_BONUS}
+
+${NAME_BONUS}:	${OBJS_BONUS}
 				@echo "${GREEN}Compilation ${CLR_RMV}of ${YELLOW}${NAME} ${CLR_RMV}..."
 				${CC} ${OBJS_BONUS} -L${MLX_DIR} ${LIBFT} ${MLXFLAGS} ${FLAGS} -o ${NAME_BONUS}
 				@echo "${GREEN}${NAME} bonus created[0m 🎮 ✔️"
 
-# CREATE OBJS
-${OBJS}:		${OBJSDIR}/%.o: ${SRCDIR}/%.c
-				@mkdir -p ${OBJSDIR}
-				@mkdir -p ${OBJSDIR}/move
-				@mkdir -p ${OBJSDIR}/setup_game
-				@mkdir -p ${OBJSDIR}/exit_game
-				@mkdir -p ${OBJSDIR}/draw_utils
-				@mkdir -p ${OBJSDIR}/events
-				@mkdir -p ${OBJSDIR}/parser
-				${CC} -I. -O3 ${FLAGS} -c $< -o $@
-
 ${OBJS_BONUS}:	${OBJSDIR_BONUS}/%.o: ${SRCDIR_BONUS}/%.c
-				@mkdir -p ${OBJSDIR_BONUS}
-				@mkdir -p ${OBJSDIR_BONUS}/move
-				@mkdir -p ${OBJSDIR_BONUS}/setup_game
-				@mkdir -p ${OBJSDIR_BONUS}/exit_game
-				@mkdir -p ${OBJSDIR_BONUS}/draw_utils
-				@mkdir -p ${OBJSDIR_BONUS}/events
-				@mkdir -p ${OBJSDIR_BONUS}/minimap
-				${CC} -I. -O3 ${FLAGS} -c $< -o $@
+				@mkdir -p $(@D)
+				${CC} ${FLAGS} -I. -O3 -c $< -o $@
 
-${LIBFT}:
+external_libs:
 				${MAKE} -C ${LIBFT_DIR}
-MLX:
 				${MAKE} -C ${MLX_DIR}
 
 clean:

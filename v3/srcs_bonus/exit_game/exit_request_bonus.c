@@ -6,33 +6,52 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 11:24:26 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/23 16:32:33 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/27 14:01:01 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes_bonus/cub3d_bonus.h"
 
+static void	free_array(char **array)
+{
+	int	y;
+
+	y = -1;
+	if (array)
+	{
+		while (array[++y])
+			free(array[y]);
+		free(array);
+	}
+}
+
+void	free_file(t_root *game)
+{
+	free_array(game->file->map);
+	free(game->file->so);
+	free(game->file->no);
+	free(game->file->we);
+	free(game->file->ea);
+}
+
 int	exit_game_request(t_root *game)
 {
-	int	i;
-
-	i = -1;
+	free_file(game);
+	free_array(game->map);
 	mlx_clear_window(game->mlx, game->win);
 	mlx_destroy_window(game->mlx, game->win);
-	mlx_destroy_image(game->mlx, game->player.img);
-	mlx_destroy_image(game->mlx, game->mini_player.img);
 	mlx_destroy_image(game->mlx, game->north_wall.img);
 	mlx_destroy_image(game->mlx, game->south_wall.img);
 	mlx_destroy_image(game->mlx, game->east_wall.img);
 	mlx_destroy_image(game->mlx, game->west_wall.img);
-	mlx_destroy_image(game->mlx, game->mini_wall.img);
-	mlx_destroy_image(game->mlx, game->bar.img);
 	mlx_destroy_image(game->mlx, game->background.img);
+	mlx_destroy_image(game->mlx, game->bar.img);
+	mlx_destroy_image(game->mlx, game->door.img);
 	mlx_destroy_image(game->mlx, game->barrel.img);
+	mlx_destroy_image(game->mlx, game->player.img);
 	mlx_destroy_image(game->mlx, game->mini_door.img);
-	while (++i < 10)
-		free(game->map[i]);
-	free(game->map);
+	mlx_destroy_image(game->mlx, game->mini_player.img);
+	mlx_destroy_image(game->mlx, game->mini_wall.img);
 	mlx_destroy_display(game->mlx);
 	free(game->mlx);
 	printf("Good bye and thanks for playing!!\n");

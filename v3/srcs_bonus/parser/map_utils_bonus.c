@@ -6,11 +6,11 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 16:40:58 by nmoreira          #+#    #+#             */
-/*   Updated: 2023/07/27 09:53:19 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/27 13:30:42 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/cub3d.h"
+#include "../../includes_bonus/cub3d_bonus.h"
 
 char	*ft_trim_end(const char *str)
 {
