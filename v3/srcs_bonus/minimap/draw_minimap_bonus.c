@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 11:16:40 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/27 12:10:56 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/07/27 19:49:40 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	draw_minimap(t_root *game)
 	line = 0;
 	while (line < game->map_lines)
 	{
-		while (col < game->map_cols)
+		while (col < (int)ft_strlen(game->map[line]))
 		{
 			if (game->map[line][col] == '1')
 				put_img_to_img(&game->background, game->mini_wall, \
@@ -36,5 +36,4 @@ void	draw_minimap(t_root *game)
 	}
 	put_img_to_img(&game->background, game->mini_player, \
 		(int)game->player.x_pos * 10, (int)game->player.y_pos * 10);
-	mlx_put_image_to_window(game->mlx, game->win, game->background.img, 0, 0);
 }
