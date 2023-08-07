@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:46:04 by nmoreira          #+#    #+#             */
-/*   Updated: 2023/07/26 22:20:52 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/08/07 13:52:55 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ static void	ft_map_trimed(t_file *file)
 	while (file->map[++i])
 	{
 		temp = ft_strdup(file->map[i]);
+		if (temp && ft_strlen(temp) == 1)
+			file->valid = 1;
 		free(file->map[i]);
 		file->map[i] = ft_trim_end(temp);
 		free(temp);
@@ -93,6 +95,8 @@ int	ft_maps(t_file *file, char *filemap)
 		return (1);
 	if (ft_count_player(file, file->map))
 		return (1);
+	if (file->valid)
+		return (printf("Error!\nMap with empty lines!\n"));
 	mapdup = mtr_dup(file->map);
 	result1 = checkmap(file, mapdup);
 	if (result1)

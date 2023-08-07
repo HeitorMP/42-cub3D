@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 11:33:21 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/08/07 09:43:28 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/08/07 13:33:28 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int	init_file(t_file *file)
 	file->floor.green = -1;
 	file->floor.blue = -1;
 	file->rows = 0;
+	file->valid = 0;
 	file->x = -1;
 	file->y = -1;
 	file->x0 = -1;
