@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 11:33:21 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/08/07 19:09:49 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/08/07 23:00:24 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void	init_values(t_root *game, t_file *file)
 	game->ray.hit = 0;
 	game->move_speed = 0.08f;
 	game->rot_speed = 0.03f;
+	game->menu.play = 0;
 	file_to_game(game, file);
 	game->map_lines = file->rows;
 	game->map_cols = get_bigest_line(game);

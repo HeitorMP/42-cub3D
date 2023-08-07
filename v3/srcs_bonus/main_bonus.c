@@ -6,27 +6,45 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:54:42 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/08/07 19:15:17 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/08/07 23:30:12 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes_bonus/cub3d_bonus.h"
 
-int	game_loop(t_root *game)
+int	main_menu(t_root *game)
 {
-	draw_back(game);
-	dda_calculation(game);
-	check_mouse_lock(game);
-	player_animation(game);
-	if (game->file->has_enemy)
-		draw_sprite(game);
-	put_img_to_img(&game->background, game->bar, 0, 668);
-	put_img_to_img(&game->background, game->player, 448, 539);
+	put_img_to_img(&game->background, game->menu.menu_back, 0, 0);
+	put_img_to_img(&game->background, game->menu.button_h, 380, 200);
+	put_img_to_img(&game->background, game->menu.button_n, 380, 300);
+	put_img_to_img(&game->background, game->menu.button_q, 450, 400);
 	mlx_put_image_to_window(game->mlx, game->win, game->background.img, 0, 0);
-	draw_minimap(game);
-	move_player(game);
+	if (game->keys[7] == 1)
+		game->menu.play = 1;
 	return (0);
 }
+
+int	game_loop(t_root *game)
+{
+	if (game->menu.play == 0)
+		main_menu(game);
+	else
+	{
+		draw_back(game);
+		dda_calculation(game);
+		check_mouse_lock(game);
+		player_animation(game);
+		if (game->file->has_enemy)
+			draw_sprite(game);
+		put_img_to_img(&game->background, game->bar, 0, 668);
+		put_img_to_img(&game->background, game->player, 448, 539);
+		mlx_put_image_to_window(game->mlx, game->win, game->background.img, 0, 0);
+		draw_minimap(game);
+		move_player(game);
+	}
+	return (0);
+}
+
 
 int	main(int argc, char **argv)
 {

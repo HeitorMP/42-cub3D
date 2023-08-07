@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 09:38:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/27 13:39:35 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/08/07 23:12:36 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,14 @@ typedef struct s_sprite {
 	double	z_buffer[SCREENWIDTH];
 }			t_sprite;
 
+typedef struct s_menu {
+	int			play;
+	t_sprite	button_h;
+	t_sprite	button_n;
+	t_sprite	button_q;
+	t_sprite	menu_back;
+}			t_menu;
+
 typedef struct s_root {
 	void			*mlx;
 	void			*win;
@@ -129,6 +137,7 @@ typedef struct s_root {
 	int				f_color;
 	char			init_dir;
 	t_file			*file;
+	t_menu			menu;
 }			t_root;
 
 // PROTOTYPE
