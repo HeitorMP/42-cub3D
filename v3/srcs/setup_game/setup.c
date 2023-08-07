@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 11:33:21 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/26 22:17:12 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/08/07 09:43:28 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	init_textures(t_root *game, t_file *file)
 
 int	init_file(t_file *file)
 {
+	file->orientation = 0;
 	file->ceilling.blue = -1;
 	file->ceilling.green = -1;
 	file->ceilling.red = -1;

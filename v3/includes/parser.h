@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 08:30:48 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/27 13:12:04 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/08/07 09:35:55 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int		ft_write_error_ext(char *message, char*extension);
 int 	player_pos(t_file *file, char **map);
 char	*ft_trim_end(const char *str);
 int		ft_count_player(t_file *file, char **map);
+int		check_edges(t_file *file, char **map);
 
 /* MAP */
 
