@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 11:33:21 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/08/07 11:24:02 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/08/07 19:09:49 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int	init_file(t_file *file)
 	file->y = -1;
 	file->x0 = -1;
 	file->y0 = -1;
+	file->valid = 0;
 	file->no = NULL;
 	file->so = NULL;
 	file->we = NULL;

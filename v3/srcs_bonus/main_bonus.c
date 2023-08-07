@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:54:42 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/08/07 14:15:25 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/08/07 19:15:17 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	game_loop(t_root *game)
 	player_animation(game);
 	if (game->file->has_enemy)
 		draw_sprite(game);
+	put_img_to_img(&game->background, game->bar, 0, 668);
+	put_img_to_img(&game->background, game->player, 448, 539);
 	mlx_put_image_to_window(game->mlx, game->win, game->background.img, 0, 0);
 	draw_minimap(game);
 	move_player(game);

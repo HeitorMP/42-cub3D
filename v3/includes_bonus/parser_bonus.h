@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 08:30:48 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/27 13:39:32 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/08/07 19:09:23 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_file
 	int		x0;
 	int		y;
 	int		y0;
+	int		valid;
 	char	orientation;
 	char	*no;
 	char	*so;
