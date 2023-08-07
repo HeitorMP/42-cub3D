@@ -1,12 +1,17 @@
-NO ./assets/N.xpm
+NO ./assets/N1.xpm
 SO ./assets/S1.xpm
 WE ./assets/W1.xpm
-EA ./assets/adam.xpm
+EA ./assets/E1.xpm
 
 F 0,0,225
 
-C 225,0,0
+C 255,0,0
 
- 1111111
-1N00000M1
- 1111111
+ 1111111111111
+1E0000000000001
+ 11111110000011
+        111111
+
+111111
+1000001
+1111111

@@ -32,7 +32,7 @@ SRCS_BONUS		:=	main_bonus.c \
 					setup_game/setup_bonus.c setup_game/setup_init_direction_bonus.c  setup_game/init_textures_bonus.c setup_game/init_calc_structs.c \
 					minimap/draw_minimap_bonus.c \
 					parser/check_file_bonus.c parser/colors_bonus.c parser/error_parser_bonus.c parser/floodfill_bonus.c parser/map_utils_bonus.c parser/map_bonus.c \
-					parser/parser_utils_bonus.c parser/parser_bonus.c parser/utils_bonus.c parser/mtr_util_bonus.c parser/check_enemy_bonus.c
+					parser/parser_utils_bonus.c parser/parser_bonus.c parser/utils_bonus.c parser/mtr_util_bonus.c parser/check_enemy_bonus.c parser/map_utils_2_bonus.c
 
 # CREATE OBJS
 OBJS			= ${SRCS:%.c=${OBJSDIR}/%.o}
