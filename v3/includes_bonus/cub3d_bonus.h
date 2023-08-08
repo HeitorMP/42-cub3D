@@ -6,18 +6,19 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 09:38:07 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/08/07 23:12:36 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/08/08 20:12:27 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_H
-# define CUB3D_H
+#ifndef CUB3D_BONUS_H
+# define CUB3D_BONUS_H
 
 # include <stdio.h>
 # include <math.h>
 # include "key_macros_bonus.h"
 # include "consts_bonus.h"
 # include "parser_bonus.h"
+# include "xpm_path.h"
 # include "../minilibx-linux/mlx.h"
 # include "../libft/includes/libft.h"
 
@@ -101,6 +102,9 @@ typedef struct s_sprite {
 
 typedef struct s_menu {
 	int			play;
+	int			is_area_b1;
+	int			is_area_b2;
+	int			is_area_b3;
 	t_sprite	button_h;
 	t_sprite	button_n;
 	t_sprite	button_q;
@@ -151,6 +155,7 @@ void	init_south(t_root *game);
 void	init_textures(t_root *game, t_file *file);
 int		init_file(t_file *file);
 void	init_calc_structs(t_root *game);
+void	check_direction(t_root *game);
 
 /* EXIT */
 int		exit_game_request(t_root *game);
@@ -171,6 +176,7 @@ int		mouse_move(int x, int y, t_root *game);
 void	my_mlx_pixel_put(t_sprite *data, int x, int y, int color);
 void	put_img_to_img(t_sprite *dst, t_sprite src, int x, int y);
 void	put_ray_to_img(t_sprite *dst, t_sprite src, int x, int y);
+void	set_image(t_root *game, t_sprite *sprite, char *path);
 int		get_pixel_img(t_sprite img, int x, int y);
 int		create_trgb(int t, int r, int g, int b);
 
@@ -199,4 +205,10 @@ void	lenght_of_ray(t_root *game);
 void	calculate_step(t_root *game);
 void	jump_next_square(t_root *game);
 void	open_door(t_root *game);
+
+/* MENU */
+void	is_button1_area(int x, int y, t_root *game);
+void	is_button2_area(int x, int y, t_root *game);
+void	is_button3_area(int x, int y, t_root *game);
+
 #endif

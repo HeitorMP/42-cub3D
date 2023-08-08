@@ -6,12 +6,12 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:59:37 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/07/27 11:05:39 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/08/08 20:11:17 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef KEY_MACROS_H
-# define KEY_MACROS_H
+#ifndef KEY_MACROS_BONUS_H
+# define KEY_MACROS_BONUS_H
 
 /* KEY MACROS */
 # define ESC 65307

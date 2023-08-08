@@ -26,13 +26,14 @@ SRCS			:=	main.c \
 SRCS_BONUS		:=	main_bonus.c \
 					move/straight_bonus.c move/turn_bonus.c move/strafe_bonus.c move/move_router_bonus.c move/mouse_bonus.c \
 					draw_utils/draw_img_bonus.c draw_utils/draw_pixel_bonus.c draw_utils/draw_walls_bonus.c draw_utils/create_rgb_bonus.c draw_utils/draw_background_bonus.c \
-					draw_utils/draw_sprite_bonus.c \
+					draw_utils/draw_sprite_bonus.c draw_utils/set_image_bonus.c \
 					events/lock_mouse_bonus.c events/input_handler_bonus.c events/player_animation_bonus.c events/dda_bonus.c events/dda_utils_bonus.c  events/door_bonus.c \
 					exit_game/exit_request_bonus.c exit_game/free_parser_bonus.c \
 					setup_game/setup_bonus.c setup_game/setup_init_direction_bonus.c  setup_game/init_textures_bonus.c setup_game/init_calc_structs.c \
 					minimap/draw_minimap_bonus.c \
 					parser/check_file_bonus.c parser/colors_bonus.c parser/error_parser_bonus.c parser/floodfill_bonus.c parser/map_utils_bonus.c parser/map_bonus.c \
-					parser/parser_utils_bonus.c parser/parser_bonus.c parser/utils_bonus.c parser/mtr_util_bonus.c parser/check_enemy_bonus.c parser/map_utils_2_bonus.c
+					parser/parser_utils_bonus.c parser/parser_bonus.c parser/utils_bonus.c parser/mtr_util_bonus.c parser/check_enemy_bonus.c parser/map_utils_2_bonus.c \
+					menu/button_area_bonus.c
 
 # CREATE OBJS
 OBJS			= ${SRCS:%.c=${OBJSDIR}/%.o}

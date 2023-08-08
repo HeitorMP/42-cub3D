@@ -6,12 +6,12 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 08:30:48 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/08/07 19:09:23 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/08/08 20:11:57 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_H
-# define PARSER_H
+#ifndef PARSER_BONUS_H
+# define PARSER_BONUS_H
 
 typedef struct s_rgb
 {
@@ -44,12 +44,6 @@ typedef struct s_file
 	int		has_enemy;
 }	t_file;
 
-typedef struct s_coord
-{
-	int x;
-	int y;
-}			t_coord;
-
 /* CHECK FILE */
 
 int		check_path(int argc, char **argv);
@@ -70,7 +64,7 @@ int		ft_write_error_ext(char *message, char*extension);
 
 /* MAP UTILS */
 
-int 	player_pos(t_file *file, char **map);
+int		player_pos(t_file *file, char **map);
 char	*ft_trim_end(const char *str);
 int		ft_count_player(t_file *file, char **map);
 

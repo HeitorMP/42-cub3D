@@ -1,7 +1,7 @@
 /* XPM */
 static char * play_h_selected_xpm[] = {
 "247 50 616 2",
-"  	c None",
+"  	c #980088",
 ". 	c #A12727",
 "+ 	c #A92A2A",
 "@ 	c #CD3737",

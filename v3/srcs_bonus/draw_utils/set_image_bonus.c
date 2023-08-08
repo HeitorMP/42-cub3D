@@ -1,35 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw_background_bonus.c                            :+:      :+:    :+:   */
+/*   set_image_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/19 10:18:45 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/08/08 19:44:48 by hmaciel-         ###   ########.fr       */
+/*   Created: 2023/08/08 19:43:23 by hmaciel-          #+#    #+#             */
+/*   Updated: 2023/08/08 19:48:58 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes_bonus/cub3d_bonus.h"
 
-void	draw_back(t_root *game)
+void	set_image(t_root *game, t_sprite *sprite, char *path)
 {
-	int	y;
-	int	x;
-
-	y = 0;
-	x = 0;
-	while (y < SCREENHEIGHT)
-	{
-		while (x < SCREENWIDTH)
-		{
-			if (y < SCREENHEIGHT / 2)
-				my_mlx_pixel_put(&game->background, x, y, game->c_color);
-			else
-				my_mlx_pixel_put(&game->background, x, y, game->f_color);
-			x++;
-		}
-		x = 0;
-		y++;
-	}
+	mlx_destroy_image(game->mlx, sprite->img);
+	sprite->img = mlx_xpm_file_to_image(game->mlx, path, \
+		&sprite->w, &sprite->h);
+	sprite->addr = mlx_get_data_addr(sprite->img, &sprite->bits_per_pixel, \
+		&sprite->line_length, &sprite->endian);
 }

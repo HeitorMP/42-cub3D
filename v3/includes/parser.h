@@ -6,7 +6,7 @@
 /*   By: hmaciel- <hmaciel-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 08:30:48 by hmaciel-          #+#    #+#             */
-/*   Updated: 2023/08/07 13:32:46 by hmaciel-         ###   ########.fr       */
+/*   Updated: 2023/08/08 20:13:27 by hmaciel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,6 @@ typedef struct s_file
 	char	**map;
 }	t_file;
 
-typedef struct s_coord
-{
-	int x;
-	int y;
-}			t_coord;
-
 /* CHECK FILE */
 
 int		check_path(int argc, char **argv);
@@ -66,7 +60,7 @@ int		ft_write_error_ext(char *message, char*extension);
 
 /* MAP UTILS */
 
-int 	player_pos(t_file *file, char **map);
+int		player_pos(t_file *file, char **map);
 char	*ft_trim_end(const char *str);
 int		ft_count_player(t_file *file, char **map);
 int		check_edges(t_file *file, char **map);
