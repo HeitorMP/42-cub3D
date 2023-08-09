@@ -23,7 +23,6 @@ int	main_menu(t_root *game)
 		game->menu.play = 1;
 	if (game->keys[7] == 1 && game->menu.is_area_b2)
 	{
-		mlx_destroy_image(game->mlx, game->bar.img);
 		set_image(game, &game->bar, BAR_N_XPM);
 		game->menu.play = 1;
 	}
